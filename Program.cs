@@ -4,10 +4,12 @@ class Program
 {
     static void Main()
     {
-        Map map = new Map(10, 5);
+
+        Map map = new Map(120, 28); // Taille de la carte en colomnes et lignes
 
         while (true)
         {
+            //map.DrawHouse(10, 10);
             map.DisplayMap();
 
             ConsoleKeyInfo keyInfo = Console.ReadKey();
