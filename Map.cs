@@ -88,11 +88,20 @@ public class Map
     }
 
 
-    public void MovePlayer(int mooveX, int mooveY)
+    public void MovePlayer(int moveX, int moveY)
     {
-        ground[positionX, positionY] = ' '; // ancienne position
-        positionX += mooveX;
-        positionY += mooveY;
-        ground[positionX, positionY] = 'P'; // nouvelle position
+        ground[positionX, positionY] = ' ';
+
+        int newPosX = positionX + moveX;
+        int newPosY = positionY + moveY;
+
+        if (newPosX >= 0 && newPosX < width && newPosY >= 0 && newPosY < height &&
+            (ground[newPosX, newPosY] == ' ' || ground[newPosX, newPosY] == '#'))
+        {
+            positionX = newPosX;
+            positionY = newPosY;
+        }
+
+        ground[positionX, positionY] = 'P';
     }
 }
