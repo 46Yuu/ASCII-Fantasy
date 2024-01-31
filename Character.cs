@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace ASCIIFantasy
 {
-    public class Character
+    public class Character 
     {
         private string name;
         private StatsCharacter stats { get; set; }

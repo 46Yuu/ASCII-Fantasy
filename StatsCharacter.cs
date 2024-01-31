@@ -14,6 +14,7 @@ namespace ASCIIFantasy
         private int defense;
         private int intelligence;
         private int agility;
+        private int speed;
         private int luck;
         private int actual_hp;
         private int actual_mana;
