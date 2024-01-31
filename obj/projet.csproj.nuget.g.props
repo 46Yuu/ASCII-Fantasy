@@ -11,5 +11,3 @@
   </PropertyGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <SourceRoot Include="C:\Users\Tran Henri\.nuget\packages\" />
-  </ItemGroup>
-</Project>
