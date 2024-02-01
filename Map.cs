@@ -2,6 +2,8 @@
 
 public class Map
 {
+    public const char TALL_GRASS = '#';
+
     private char[,] ground;
     private int width; // largeur
     private int height; // hauteur
@@ -24,11 +26,11 @@ public class Map
         {
             for (int j = 0; j < height; j++)
             {
-                ground[i, j] = ' '; // Initialize with empty space
+                ground[i, j] = ' ';
             }
         }
 
-        // Draw borders
+        // Borders
         for (int i = 0; i < width; i++)
         {
             ground[i, 0] = '-';
@@ -74,7 +76,7 @@ public class Map
 
     public void DrawTallGrass(int x, int y)
     {
-        ground[x, y] = '#';
+        ground[x, y] = TALL_GRASS;
     }
 
     public void DrawNPC(int x, int y)
@@ -87,6 +89,10 @@ public class Map
         ground[x + 1, y + 2] = '\\'; // Right leg
     }
 
+    public void DrawTree(int x, int y)
+    {
+        // faudra faire un arbre ici
+    }
 
     public void MovePlayer(int moveX, int moveY)
     {

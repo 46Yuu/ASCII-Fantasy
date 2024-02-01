@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 
 class Program
 {
@@ -7,6 +7,11 @@ class Program
         Console.CursorVisible = false;
 
         Map map = new Map(120, 28);
+        map.DrawSmallHouse(10, 10);
+        map.DrawSmallHouse2(20, 5);
+        map.DrawNPC(30, 10);
+        map.DrawTree(40, 15);
+
         Menu mainMenu = new Menu(new string[] { "NEW GAME", "LOAD GAME", "EXIT" });
 
         while (true)
@@ -75,4 +80,4 @@ class Program
             }
         }
     }
-}*/
+}
