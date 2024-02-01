@@ -10,8 +10,10 @@ namespace ASCIIFantasy
     {
         public void FieldGame()
         {
-            for (int i = 0; i < 75; i++)
+            Console.Write("+");
+            for (int i = 0; i < 73; i++)
                 Console.Write("=");
+            Console.Write("+");
             Console.WriteLine();
         }
 
@@ -48,61 +50,60 @@ namespace ASCIIFantasy
             }
         }
 
-        public void FieldSetup(int turn, List<Character> listCharacters)
+        public void FieldSetup(int turn, List<Character> listCharacters, List<Character> listEnemies)
         {
             FieldGame();
-            if (turn == 0)
-            {
-                Console.WriteLine("\t\t\t" + listCharacters[0].GetName() + "'s turn !\n\n");
-                FieldPlayer2(listCharacters[1]);
-                FieldPlayer1(listCharacters[0]);
-            }
-            else
-            {
-                Console.WriteLine("\t\t\t" + listCharacters[1].GetName() + "'s turn !\n\n");
-                FieldPlayer2(listCharacters[0]);
-                FieldPlayer1(listCharacters[1]);
-            }
+            FieldPlayer2(listEnemies[0]);
+            FieldPlayer1(listCharacters[0]);
             FieldGame();
         }
 
-        public int MeleeAttack(int turn, List<Character> listCharacters)
+        public int MeleeAttack(int turn, List<Character> listCharacters, List<Character> listEnemies)
         {
             Console.Clear();
             if (turn == 0)
             {
-                listCharacters[0].GetAttack("Melee").Attacking(listCharacters[0], listCharacters[1]);
+                listCharacters[0].GetAttack("Melee").Attacking(listCharacters[0], listEnemies[0]);
             }
             else
             {
-                listCharacters[1].GetAttack("Melee").Attacking(listCharacters[1], listCharacters[0]);
+                listEnemies[0].GetAttack("Melee").Attacking(listEnemies[0], listCharacters[0]);
             }
             Console.WriteLine(" End of " + listCharacters[turn].GetName() + "'s turn");
             return turn == 1 ? 0 : 1;
         }
 
-        public int SpellChoice(int turn, List<Character> listCharacters)
+        public int SpellChoice(int turn, List<Character> listCharacters, List<Character> listEnemies)
         {
             int choixspell = 0;
             List<string> spells;
             List<int> spellsCost;
             string spellTmp = "";
-            Console.WriteLine(" Choose your spell\n 0) Return\n ");
             if (turn == 0)
             {
+                Console.WriteLine(" Choose your spell\n 0) Return\n ");
                 spells = listCharacters[0].GetListSpells();
                 spellsCost = listCharacters[0].GetListCost();
             }
             else
             {
-                spells = listCharacters[1].GetListSpells();
-                spellsCost = listCharacters[1].GetListCost();
+                spells = listEnemies[0].GetListSpells();
+                spellsCost = listEnemies[0].GetListCost();
             }
             for (int i = 0; i < spells.Count; i++)
             {
                 Console.WriteLine(" " + (i + 1) + ") " + spells[i] + " , Cost : " + spellsCost[i] + "mana\n ");
             }
             string input = Console.ReadLine();
+            if (turn == 1)
+            {
+                choixspell = rnd.Next(0, spells.Count);
+                spellTmp = spells[choixspell];
+                //execution du sort;
+                listEnemies[0].GetAttack(spellTmp).Attacking(listEnemies[0], listCharacters[0]);
+                Console.WriteLine(" End of " + listEnemies[0].GetName() + "'s turn");
+                return turn == 1 ? 0 : 1;
+            }
             if (int.TryParse(input, out choixspell))
             {
                 choixspell -= 1;
@@ -110,27 +111,13 @@ namespace ASCIIFantasy
                 {
                     spellTmp = spells[choixspell];
                     //execution du sort;
-                    if (turn == 0)
-                    {
-                        listCharacters[0].GetAttack(spellTmp).Attacking(listCharacters[0], listCharacters[1]);
-                    }
-                    else
-                    {
-                        listCharacters[1].GetAttack(spellTmp).Attacking(listCharacters[1], listCharacters[0]);
-                    }
+                    listCharacters[0].GetAttack(spellTmp).Attacking(listCharacters[0], listCharacters[1]);
                     Console.WriteLine(" End of " + listCharacters[turn].GetName() + "'s turn");
                     return turn == 1 ? 0 : 1;
                 }
                 else if (choixspell == -1)
                 {
-                    if (turn == 0)
-                    {
-                        Console.WriteLine(listCharacters[0].GetName() + " return to action choice");
-                    }
-                    else
-                    {
-                        Console.WriteLine(listCharacters[1].GetName() + " return to action choice");
-                    }
+                    Console.WriteLine(listCharacters[0].GetName() + " return to action choice");
                     return turn;
                 }
                 else
@@ -145,38 +132,46 @@ namespace ASCIIFantasy
                 return turn;
             }
         }
-        public int ChoicePlayer(int turn, List<Character> listCharacters)
+        public int ChoicePlayer(int turn, List<Character> listCharacters, List<Character> listEnemies)
         {
             int choice = 0;
-            Console.WriteLine(" What are you going to do ? \n 1) Attack \n 2) Spells\n 3) Stats");
-            choice = int.Parse(Console.ReadLine());
-            Console.WriteLine();
-            /*Switch depending on the user choice.*/
-            switch (choice)
+            string input= "";
+            if(turn == 0)
             {
-                case 1:
-                    turn = MeleeAttack(turn, listCharacters);
-                    return turn;
-                case 2:
-                    turn = SpellChoice(turn, listCharacters);
-                    return turn;
-                case 3:
-                    if (turn + 1 == 1)
-                        Console.WriteLine(listCharacters[0].ToString());
-                    else
-                        Console.WriteLine(listCharacters[1].ToString());
-                    return turn;
-                default:
-                    Console.WriteLine(" Not a valid number");
-                    return turn;
-            }
-        }
-        /*static void Main(string[] args)
+                Console.WriteLine(" What are you going to do ? \n 1) Attack \n 2) Spells\n 3) Stats");
+                input = Console.ReadLine();
+                Console.WriteLine();
+                if (int.TryParse(input, out choice))
+                {
+                    /*Switch depending on the user choice.*/
+                    switch (choice)
+                    {
+                        case 1:
+                            turn = MeleeAttack(turn, listCharacters);
+                            return turn;
+                        case 2:
+                            turn = SpellChoice(turn, listCharacters);
+                            return turn;
+                        case 3:
+                            if (turn + 1 == 1)
+                                Console.WriteLine(listCharacters[0].ToString());
+                            else
+                                Console.WriteLine(listCharacters[1].ToString());
+                            return turn;
+                        default:
+                            Console.WriteLine(" Not a valid number");
+                            return turn;
+                    }
+                }
+            }           
+            
+        static void Main(string[] args)
         {
             Combat combat = new Combat();
-            Character player1 = new Character("Player1", 100, 100, 10, 10, 10, 10, 10);
-            Character player2 = new Character("Player2", 100, 100, 10, 10, 10, 10, 10);
+            Character player = new Character("Player", 100, 100, 10, 10, 10, 10, 10);
+            Character enemy = new Character("Enemy", 50, 50, 5, 5, 5, 5, 5);
             List<Character> listCharacters = new List<Character>();
+            List<Character> listEnemies = new List<Character>();
             listCharacters.Add(player1);
             listCharacters.Add(player2);
             player1.AddAttack("Fireball");
@@ -186,13 +181,13 @@ namespace ASCIIFantasy
             int winner = 0;
             do
             {
-                combat.FieldSetup(turn, listCharacters);
-                turn = combat.ChoicePlayer(turn, listCharacters);
-            } while ((listCharacters[0].GetStats().GetActualHealth() > 0) && (listCharacters[1].GetStats().GetActualHealth() > 0));
+                combat.FieldSetup(turn, listCharacters, listEnemies);
+                turn = combat.ChoicePlayer(turn, listCharacters, listEnemies);
+            } while ((listCharacters[0].GetStats().GetActualHealth() > 0) && (listEnemies[0].GetStats().GetActualHealth() > 0));
 
             winner = (listCharacters[0].GetStats().GetActualHealth() == 0 ? 2 : 1);
             Console.WriteLine(" Player " + winner + " won !");
-        }*/
+        }
 
     }
    
