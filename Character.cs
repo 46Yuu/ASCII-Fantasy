@@ -51,11 +51,10 @@ namespace ASCIIFantasy
             List<string> ret = new List<string>();
             foreach (var p in listAttack)
             {
- /*               if (p.Key != "Melee")
+                if (p.Key != "Melee")
                 {
                     ret.Add(p.Key);
-                }*/
-                ret.Add(p.Key);
+                }
             }
             return ret;
         }
