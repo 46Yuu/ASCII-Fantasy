@@ -87,8 +87,7 @@ namespace ASCIIFantasy
             {
                 Console.WriteLine(" " + (i + 1) + ") " + spells[i] + " , Cost : " + spellsCost[i] + "mana\n ");
             }
-            string input = Console.ReadLine();
-            if (int.TryParse(input, out choixspell))
+            if (int.TryParse(Console.ReadLine(), out choixspell))
             {
                 choixspell -= 1;
                 if (choixspell >= 0 && choixspell < spells.Count)
@@ -121,10 +120,9 @@ namespace ASCIIFantasy
         {
             int choice = 0;
             string input = "";
-            Console.WriteLine(" What are you going to do ? \n 1) Attack \n 2) Spells\n 3) Stats");
-            input = Console.ReadLine();
-            Console.WriteLine();
-            if (int.TryParse(input, out choice))
+            Console.WriteLine(" What are you going to do ? \n 1) Attack \n 2) Spells\n 3) Stats\n");
+
+            if (int.TryParse(Console.ReadLine(), out choice))
             {
                 /*Switch depending on the user choice.*/
                 switch (choice)
@@ -191,7 +189,6 @@ namespace ASCIIFantasy
 
         static void Main(string[] args)
         {
-            Console.SetWindowSize(80, 40);
             Combat combat = new Combat();
             Character player = new Character("Player", 100, 100, 10, 10, 10, 10, 10);
             Character enemy = new Character("Enemy", 50, 50, 5, 5, 5, 5, 5);
@@ -202,6 +199,7 @@ namespace ASCIIFantasy
             player.AddAttack("Fireball");
             player.AddAttack("Bulk_up");
             enemy.AddAttack("Fireball");
+            enemy.AddAttack("Bulk_up");
             int turn = 0;
             int winner = 0;
             do
