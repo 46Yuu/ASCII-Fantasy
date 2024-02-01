@@ -67,12 +67,12 @@
             {
                 damage = damage * 2;
                 receiver.GetStats().IncrementHealth(-damage);
-                Console.WriteLine($" \x1B[31mCritical hit ! {receiver.GetName()} received {damage} damage!\033[0m");
+                Console.WriteLine($" Critical hit ! {receiver.GetName()} received {damage} damage!");
             }
             else
             {
                 receiver.GetStats().IncrementHealth(-damage);
-                Console.WriteLine($" \x1B[91m{receiver.GetName()} received {damage} damage!\033[0m");
+                Console.WriteLine($" {receiver.GetName()} received {damage} damage!");
             }
         }
         /*private void HealToString(string name, Character attacker, Character receiver)
@@ -130,22 +130,22 @@
                 attacker.GetStats().IncrementMana(-cost);
                 if (name == "Bulk_up")
                 {
-                    Console.WriteLine($"\x1B[96m{attacker.GetName()} buffed by 8 points his strength stat!\033[0m");
+                    Console.WriteLine($"{attacker.GetName()} buffed by 8 points his strength stat!");
                     attacker.GetStats().IncrementAttack(8);
                 }
                 else if (name == "Bookworm")
                 {
-                    Console.WriteLine($"\x1B[96m{attacker.GetName()} buffed by 8 points his intelligence stat!\033[0m");
+                    Console.WriteLine($"{attacker.GetName()} buffed by 8 points his intelligence stat!");
                     attacker.GetStats().IncrementIntel(8);
                 }
                 else if (name == "Evasion")
                 {
-                    Console.WriteLine($"\x1B[96m{attacker.GetName()} buffed by 10 points his agility stat!\033[0m");
+                    Console.WriteLine($"{attacker.GetName()} buffed by 10 points his agility stat!");
                     attacker.GetStats().IncrementAgility(10);
                 }
                 else if (name == "Luckier")
                 {
-                    Console.WriteLine($"\x1B[96m{attacker.GetName()} buffed by 5 points his luck stat!\033[0m");
+                    Console.WriteLine($"{attacker.GetName()} buffed by 5 points his luck stat!");
                     attacker.GetStats().IncrementLuck(5);
                 }
             }
@@ -165,22 +165,22 @@
                 bool crit = IsCriticalHit(attacker.GetStats().GetLuck());
                 bool dodged = IsDodged(receiver.GetStats().GetAgility());
                 Console.WriteLine($" {attacker.GetName()} used {name}");
+                attacker.GetStats().IncrementMana(-cost);
                 if (dodged)
                 {
+
                     Console.WriteLine($" But {receiver.GetName()} dodged !");
                 }
                 else if (crit)
                 {
                     damage = damage * 2;
-                    attacker.GetStats().IncrementMana(-cost);
                     receiver.GetStats().IncrementHealth(-damage);
-                    Console.WriteLine($" \x1B[31mCritical hit ! {receiver.GetName()} received {damage} damage!\033[0m");
+                    Console.WriteLine($" Critical hit ! {receiver.GetName()} received {damage} damage!");
                 }
                 else
                 {
-                    attacker.GetStats().IncrementMana(-cost);
                     receiver.GetStats().IncrementHealth(-damage);
-                    Console.WriteLine($" \x1B[91m{receiver.GetName()} received {damage} damage!\033[0m");
+                    Console.WriteLine($" {receiver.GetName()} received {damage} damage!");
                 }
             }
             else

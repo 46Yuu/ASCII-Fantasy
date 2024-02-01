@@ -100,41 +100,48 @@ namespace ASCIIFantasy
             }
             for (int i = 0; i < spells.Count; i++)
             {
-                Console.WriteLine(i + 1 + ") " + spells[i] + " , Cost : " + spellsCost[i] + "mana\n ");
+                Console.WriteLine(" " + (i + 1) + ") " + spells[i] + " , Cost : " + spellsCost[i] + "mana\n ");
             }
-            choixspell = int.Parse(s: Console.ReadLine());
-            choixspell -= 1;
-            Console.Clear();
-            if (choixspell >= 0 && choixspell < spells.Count)
+            string input = Console.ReadLine();
+            if (int.TryParse(input, out choixspell))
             {
-                spellTmp = spells[choixspell];
-                //execution du sort;
-                if (turn == 0)
+                choixspell -= 1;
+                if (choixspell >= 0 && choixspell < spells.Count)
                 {
-                    listCharacters[0].GetAttack(spellTmp).Attacking(listCharacters[0], listCharacters[1]);
+                    spellTmp = spells[choixspell];
+                    //execution du sort;
+                    if (turn == 0)
+                    {
+                        listCharacters[0].GetAttack(spellTmp).Attacking(listCharacters[0], listCharacters[1]);
+                    }
+                    else
+                    {
+                        listCharacters[1].GetAttack(spellTmp).Attacking(listCharacters[1], listCharacters[0]);
+                    }
+                    Console.WriteLine(" End of " + listCharacters[turn].GetName() + "'s turn");
+                    return turn == 1 ? 0 : 1;
+                }
+                else if (choixspell == -1)
+                {
+                    if (turn == 0)
+                    {
+                        Console.WriteLine(listCharacters[0].GetName() + " return to action choice");
+                    }
+                    else
+                    {
+                        Console.WriteLine(listCharacters[1].GetName() + " return to action choice");
+                    }
+                    return turn;
                 }
                 else
                 {
-                    listCharacters[1].GetAttack(spellTmp).Attacking(listCharacters[1], listCharacters[0]);
+                    Console.WriteLine(" Not a valid number");
+                    return turn;
                 }
-                Console.WriteLine(" End of " + listCharacters[turn].GetName() + "'s turn");
-                return turn == 1 ? 0 : 1;
-            }
-            else if (choixspell == -1)
-            {
-                if (turn == 0)
-                {
-                    Console.WriteLine(listCharacters[0].GetName() + " return to action choice");
-                }
-                else
-                {
-                    Console.WriteLine(listCharacters[1].GetName() + " return to action choice");
-                }
-                return turn;
             }
             else
             {
-                Console.WriteLine(" Not a valid number");
+                Console.WriteLine("Invalid input. Please enter a number.");
                 return turn;
             }
         }
@@ -164,7 +171,7 @@ namespace ASCIIFantasy
                     return turn;
             }
         }
-        static void Main(string[] args)
+        /*static void Main(string[] args)
         {
             Combat combat = new Combat();
             Character player1 = new Character("Player1", 100, 100, 10, 10, 10, 10, 10);
@@ -184,8 +191,8 @@ namespace ASCIIFantasy
             } while ((listCharacters[0].GetStats().GetActualHealth() > 0) && (listCharacters[1].GetStats().GetActualHealth() > 0));
 
             winner = (listCharacters[0].GetStats().GetActualHealth() == 0 ? 2 : 1);
-            Console.WriteLine(" \x1B[32mPlayer " + winner + " won !\033[0m");
-        }
+            Console.WriteLine(" Player " + winner + " won !");
+        }*/
 
     }
    
