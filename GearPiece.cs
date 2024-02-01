@@ -8,7 +8,7 @@ namespace ASCIIFantasy
 {
     class GearPiece
     {
-        private enum GearType
+        public enum GearType
         {
             Tete,
             Torse,
@@ -16,14 +16,14 @@ namespace ASCIIFantasy
             Pieds,
             Arme
         }
-        private GearType type;
+        public GearType type;
 
-        private int bonusHealth { get; set; }
-        private int bonusMana { get; set; }
-        private int bonusAttack { get; set; }
-        private int bonusDefense { get; set; }
-        private int bonusIntelligence { get; set; }
-        private int bonusAgility { get; set; }
-        private int bonusLuck { get; set; }
+        public int bonusHealth { get; set; }
+        public int bonusMana { get; set; }
+        public int bonusAttack { get; set; }
+        public int bonusDefense { get; set; }
+        public int bonusIntelligence { get; set; }
+        public int bonusAgility { get; set; }
+        public int bonusLuck { get; set; }
     }
 }
