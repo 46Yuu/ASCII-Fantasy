@@ -48,6 +48,15 @@ public class Menu
 
         Console.SetCursorPosition(leftPosition, Console.CursorTop);
         Console.WriteLine("+------------------+");
+
+        Console.SetCursorPosition(leftPosition - 15, Console.CursorTop);
+        Console.WriteLine("         />_________________________________");
+
+        Console.SetCursorPosition(leftPosition - 15, Console.CursorTop);
+        Console.WriteLine("[########[]_________________________________>");
+
+        Console.SetCursorPosition(leftPosition - 15, Console.CursorTop);
+        Console.WriteLine("         \\>");
     }
 
     public void MoveUp()
