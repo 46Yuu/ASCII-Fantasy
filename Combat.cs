@@ -12,7 +12,7 @@ namespace ASCIIFantasy
         {
             Console.Write("+");
             for (int i = 0; i < 73; i++)
-                Console.Write("=");
+                Console.Write("-");
             Console.Write("+");
             Console.WriteLine();
         }
@@ -116,12 +116,49 @@ namespace ASCIIFantasy
                 return turn;
             }
         }
+
+        public int ChangeCharacter(int turn, List<Character> listCharacters)
+        {
+            int choice = 0;
+            Console.WriteLine(" Choose your character\n 0) Return\n ");
+            for (int i = 1; i < listCharacters.Count; i++)
+            {
+                Console.WriteLine(" " + i + ") " + listCharacters[i].GetName());
+            }
+            if (int.TryParse(Console.ReadLine(), out choice))
+            {
+                if (choice == 0)
+                {
+                    Console.WriteLine(listCharacters[0].GetName() + " return to action choice");
+                    return turn;
+                }
+                else if (choice < listCharacters.Count)
+                {
+                    Console.Clear();
+                    Console.WriteLine(listCharacters[0].GetName() + " changed to " + listCharacters[choice].GetName());
+                    Character temp = listCharacters[0];
+                    listCharacters[0] = listCharacters[choice];
+                    listCharacters[choice] = temp;
+                    return turn == 1 ? 0 : 1;
+                }
+                else
+                {
+                    Console.WriteLine(" Not a valid number");
+                    return turn;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a number.");
+                return turn;
+            }
+        }
+
         public int ChoicePlayer(int turn, List<Character> listCharacters, List<Character> listEnemies)
         {
             int choice = 0;
             string input = "";
-            Console.WriteLine(" What are you going to do ? \n 1) Attack \n 2) Spells\n 3) Stats\n");
-
+            Console.WriteLine(" What are you going to do ? \n 1) Attack \n 2) Spells\n 3) Stats\n 4) Change Character\n");
             if (int.TryParse(Console.ReadLine(), out choice))
             {
                 /*Switch depending on the user choice.*/
@@ -137,6 +174,9 @@ namespace ASCIIFantasy
                         if (turn == 0)
                             Console.Clear();
                             Console.WriteLine(listCharacters[0].ToString());
+                        return turn;
+                    case 4:
+                        turn = ChangeCharacter(turn, listCharacters);
                         return turn;
                     default:
                         Console.WriteLine(" Not a valid number");
@@ -191,10 +231,12 @@ namespace ASCIIFantasy
         {
             Combat combat = new Combat();
             Character player = new Character("Player", 100, 100, 10, 10, 10, 10, 10);
+            Character player2 = new Character("VICTROR", 100, 100, 10, 10, 10, 10, 10);
             Character enemy = new Character("Enemy", 50, 50, 5, 5, 5, 5, 5);
             List<Character> listCharacters = new List<Character>();
             List<Character> listEnemies = new List<Character>();
             listCharacters.Add(player);
+            listCharacters.Add(player2);
             listEnemies.Add(enemy);
             player.AddAttack("Fireball");
             player.AddAttack("Bulk_up");
@@ -212,7 +254,7 @@ namespace ASCIIFantasy
                 else
                 {
                     for (int i = 0; i < 25; i++)
-                        Console.Write("=");
+                        Console.Write("-");
                     Console.WriteLine();
                     turn = combat.ChoiceEnemy(turn, listCharacters, listEnemies);
                 }

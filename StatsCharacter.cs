@@ -146,7 +146,7 @@ namespace ASCIIFantasy
 
         public void ShowHealth()
         {
-            Console.WriteLine($"Life: {actual_hp}/{health}");
+            Console.Write($"Life: {actual_hp}/{health}  ");
         }
 
         public void ShowMana()

@@ -130,29 +130,29 @@
                 attacker.GetStats().IncrementMana(-cost);
                 if (name == "Bulk_up")
                 {
-                    Console.WriteLine($"{attacker.GetName()} buffed by 8 points his strength stat!");
+                    Console.WriteLine($" {attacker.GetName()} buffed by 8 points his strength stat!");
                     attacker.GetStats().IncrementAttack(8);
                 }
                 else if (name == "Bookworm")
                 {
-                    Console.WriteLine($"{attacker.GetName()} buffed by 8 points his intelligence stat!");
+                    Console.WriteLine($" {attacker.GetName()} buffed by 8 points his intelligence stat!");
                     attacker.GetStats().IncrementIntel(8);
                 }
                 else if (name == "Evasion")
                 {
-                    Console.WriteLine($"{attacker.GetName()} buffed by 10 points his agility stat!");
+                    Console.WriteLine($" {attacker.GetName()} buffed by 10 points his agility stat!");
                     attacker.GetStats().IncrementAgility(10);
                 }
                 else if (name == "Luckier")
                 {
-                    Console.WriteLine($"{attacker.GetName()} buffed by 5 points his luck stat!");
+                    Console.WriteLine($" {attacker.GetName()} buffed by 5 points his luck stat!");
                     attacker.GetStats().IncrementLuck(5);
                 }
             }
             else
             {
                 Console.WriteLine($" {attacker.GetName()} tried using {name} but forgot to look at his mana");
-                Console.WriteLine($"{attacker.GetName()} lost his turn because of that...");
+                Console.WriteLine($" {attacker.GetName()} lost his turn because of that...");
             }
         }
 
@@ -186,7 +186,7 @@
             else
             {
                 Console.WriteLine($" {attacker.GetName()} tried using {name} but forgot to look at his mana");
-                Console.WriteLine($"{attacker.GetName()} lost his turn because of that...");
+                Console.WriteLine($" {attacker.GetName()} lost his turn because of that...");
             }
         }
     }
