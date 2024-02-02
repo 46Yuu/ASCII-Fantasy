@@ -57,45 +57,135 @@ public class Map
         }
     }
 
-    public void DrawSmallHouse(int x, int y)
+    public void DrawHouse1(int x, int y)
     {
-        ground[x, y] = 'H'; // House
-        ground[x, y - 1] = 'A'; // Roof
-        ground[x - 1, y] = '|'; // Left wall
-        ground[x + 1, y] = '|'; // Right wall
-    }
-    public void DrawSmallHouse2(int x, int y)
-    {
-        ground[x, y] = 'C'; // Country House
-        ground[x, y - 1] = 'V'; // Roof
-        ground[x - 1, y] = '|'; // Left wall
-        ground[x + 1, y] = '|'; // Right wall
-        ground[x - 1, y - 1] = '/'; // Country details
-        ground[x + 1, y - 1] = '\\'; // Country details
+        ground[x, y] = 'm';
+        ground[x - 1, y] = '_';
+        ground[x + 1, y] = '_';
+
+        ground[x, y + 1] = '_';
+        ground[x - 1, y + 1] = '_';
+        ground[x + 1, y + 1] = '_';
+        ground[x + 2, y + 1] = '\\';
+        ground[x - 2, y + 1] = '\\';
+        ground[x - 3, y + 1] = '/';
+
+        ground[x, y + 2] = '"';
+        ground[x - 1, y + 2] = '|';
+        ground[x + 1, y + 2] = '"';
+        ground[x + 2, y + 2] = '|';
+        ground[x - 2, y + 2] = '_';
+        ground[x - 3, y + 2] = '|';
     }
 
-    public void DrawTallGrass(int x, int y)
+    public void DrawHouse2(int x, int y)
+    {
+        ground[x, y] = '[';
+        ground[x + 1, y] = ']';
+        ground[x + 2, y] = '_';
+        ground[x + 3, y] = '_';
+        ground[x + 4, y] = '_';
+
+        ground[x - 1 , y + 1] = '/';
+        ground[x + 4, y + 1] = '/';
+        ground[x + 5, y + 1] = '\\';
+
+        ground[x - 2, y + 2] = '/';
+        ground[x - 1, y + 2] = '_';
+        ground[x, y + 2] = '_';
+        ground[x + 1, y + 2] = '_';
+        ground[x + 2, y + 2] = '_';
+        ground[x + 3, y + 2] = '/';
+        ground[x + 4, y + 2] = '_';
+        ground[x + 5, y + 2] = '_';
+        ground[x + 6, y + 2] = '\\';
+
+        ground[x - 2, y + 3] = '|';
+        ground[x - 1, y + 3] = '[';
+        ground[x, y + 3] = ']';
+        ground[x + 1, y + 3] = '[';
+        ground[x + 2, y + 3] = ']';
+        ground[x + 3, y + 3] = '|';
+        ground[x + 4, y + 3] = '|';
+        ground[x + 5, y + 3] = '|';
+        ground[x + 6, y + 3] = '|';
+    }
+
+    public void Draw1TallGrass(int x, int y)
     {
         ground[x, y] = TALL_GRASS;
     }
 
+    public void DrawRoundTallGrass(int x, int y)
+    {
+        ground[x, y] = TALL_GRASS;
+        ground[x + 1, y] = TALL_GRASS;
+        ground[x - 1, y] = TALL_GRASS;
+        ground[x + 2, y] = TALL_GRASS;
+
+        ground[x, y + 1] = TALL_GRASS;
+        ground[x - 1, y + 1] = TALL_GRASS;
+        ground[x - 2, y + 1] = TALL_GRASS;
+        ground[x + 1, y + 1] = TALL_GRASS;
+        ground[x + 2, y + 1] = TALL_GRASS;
+        ground[x + 3, y + 1] = TALL_GRASS;
+
+        ground[x, y + 2] = TALL_GRASS;
+        ground[x - 1, y + 2] = TALL_GRASS;
+        ground[x - 2, y + 2] = TALL_GRASS;
+        ground[x - 3, y + 2] = TALL_GRASS;
+        ground[x + 1, y + 2] = TALL_GRASS;
+        ground[x + 2, y + 2] = TALL_GRASS;
+        ground[x + 3, y + 2] = TALL_GRASS;
+        ground[x + 4, y + 2] = TALL_GRASS;
+
+        ground[x, y + 3] = TALL_GRASS;
+        ground[x - 1, y + 3] = TALL_GRASS;
+        ground[x - 2, y + 3] = TALL_GRASS;
+        ground[x + 1, y + 3] = TALL_GRASS;
+        ground[x + 2, y + 3] = TALL_GRASS;
+        ground[x + 3, y + 3] = TALL_GRASS;
+
+        ground[x, y + 4] = TALL_GRASS;
+        ground[x + 1, y + 4] = TALL_GRASS;
+        ground[x - 1, y + 4] = TALL_GRASS;
+        ground[x + 2, y + 4] = TALL_GRASS;
+    }
+
     public void DrawNPC(int x, int y)
     {
-        ground[x, y] = 'o'; // Head
-        ground[x, y + 1] = '|'; // Body
-        ground[x - 1, y + 1] = '/'; // Left arm
-        ground[x + 1, y + 1] = '\\'; // Right arm
-        ground[x - 1, y + 2] = '/'; // Left leg
-        ground[x + 1, y + 2] = '\\'; // Right leg
+        ground[x, y] = '8';
     }
 
     public void DrawTree(int x, int y)
     {
-        // faudra faire un arbre ici
+        ground[x, y + 4] = '|';
+
+        ground[x , y] = '^';
+
+        ground[x, y + 1] = '^';
+        ground[x - 1, y + 1] = '^';
+        ground[x + 1, y + 1] = '^';
+
+        ground[x, y + 2] = '^';
+        ground[x - 1, y + 2] = '^';
+        ground[x - 2, y + 2] = '^';
+        ground[x + 1, y + 2] = '^';
+        ground[x + 2, y + 2] = '^';
+
+        ground[x, y + 3] = '^';
+        ground[x - 1, y + 3] = '^';
+        ground[x - 2, y + 3] = '^';
+        ground[x - 3, y + 3] = '^';
+        ground[x + 1, y + 3] = '^';
+        ground[x + 2, y + 3] = '^';
+        ground[x + 3, y + 3] = '^';
+
     }
 
     public void MovePlayer(int moveX, int moveY)
     {
+        // Faudra gérer ici le déclenchement combat aléatoire si on est en #
         ground[positionX, positionY] = ' ';
 
         int newPosX = positionX + moveX;
