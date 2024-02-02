@@ -95,8 +95,12 @@ namespace ASCIIFantasy
                     spellTmp = spells[choixspell];
                     //execution du sort;
                     Console.Clear();
-                    listCharacters[0].GetAttack(spellTmp).Attacking(listCharacters[0], listCharacters[1]);
-                    Console.WriteLine(" End of " + listCharacters[turn].GetName() + "'s turn");
+                    listCharacters[0].GetAttack(spellTmp).Attacking(listCharacters[0], listEnemies[0]);
+                    if(spellTmp == "Heal")
+                    {
+                        listCharacters[0].GetAttack(spellTmp).HealToString("Heal", listCharacters[0], listCharacters);
+                    }
+                    Console.WriteLine(" End of " + listCharacters[0].GetName() + "'s turn");
                     return turn == 1 ? 0 : 1;
                 }
                 else if (choixspell == -1)
@@ -165,6 +169,7 @@ namespace ASCIIFantasy
                 switch (choice)
                 {
                     case 1:
+
                         turn = MeleeAttack(turn, listCharacters, listEnemies);
                         return turn;
                     case 2:
@@ -240,6 +245,7 @@ namespace ASCIIFantasy
             listEnemies.Add(enemy);
             player.AddAttack("Fireball");
             player.AddAttack("Bulk_up");
+            player.AddAttack("Heal");
             enemy.AddAttack("Fireball");
             enemy.AddAttack("Bulk_up");
             int turn = 0;

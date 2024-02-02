@@ -9,7 +9,7 @@
         public Attack(string name)
         {
             attack_name = name;
-            /*if (attack_name == "Heal") cost = 5;*/
+            if (attack_name == "Heal") cost = 5;
             if (attack_name == "Bulk_up") cost = 20;
             else if (attack_name == "Fireball") cost = 7;
             else if (attack_name == "Bookworm") cost = 20;
@@ -25,10 +25,6 @@
             {
                 AttackToString("Melee", attacker, receiver);
             }
-            /*else if (attack_name == "Heal")
-            {
-                HealToString("Heal", attacker, receiver);
-            }*/
             else if (attack_name == "Bulk_up")
             {
                 BuffingToString("Bulk_up", attacker, receiver);
@@ -75,34 +71,65 @@
                 Console.WriteLine($" {receiver.GetName()} received {damage} damage!");
             }
         }
-        /*private void HealToString(string name, Character attacker, Character receiver)
+
+        public int HealToString(string name, Character attacker, List<Character> listCharacters)
         {
-            int mana = attacker.GetActualMana();
-            bool crit = IsCriticalHit(attacker.GetLuck());
-            int value = rnd.Next(attacker.GetIntel() + 1) + 4;
+            int mana = attacker.GetStats().GetActualMana();
+            bool crit = IsCriticalHit(attacker.GetStats().GetLuck());
+            int value = rnd.Next(attacker.GetStats().GetIntel() + 1) + 4;
             if ((mana - cost) >= 0)
             {
-                Console.WriteLine($" {attacker.GetName()} used Heal");
-                if (crit)
+
+                Console.WriteLine(" Who do you want to heal ?");
+                Console.WriteLine(" 0) Return");
+                for(int i = 0; i < listCharacters.Count; i++)
                 {
-                    value = value * 2;
-                    Console.WriteLine($" \x1B[92mLucky critical ! {attacker.GetName()} healed {value} hp!\033[0m");
-                    attacker.IncrementMana(-cost);
-                    attacker.IncrementHealth(value);
+                    Console.WriteLine(" " + (i+1) + ") " + listCharacters[i].GetName() + "    Health: " + listCharacters[i].GetStats().GetActualHealth() + "/" + listCharacters[i].GetStats().GetMaxHealth());
+                }
+                int choix = 0;
+                if (int.TryParse(Console.ReadLine(), out choix))
+                {
+                    choix=choix-1;
+                    if (choix == -1)
+                    {
+                        return 0;
+                    }
+                    else if (choix >= 0 && choix < listCharacters.Count)
+                    {
+                        Console.Clear();
+                        Console.WriteLine($" {attacker.GetName()} used Heal");
+                        if (crit)
+                        {
+                            value = value * 2;
+                            Console.WriteLine($" Lucky critical ! {attacker.GetName()} healed {value} hp to {listCharacters[choix].GetName()}!");
+                        }
+                        else
+                        {
+                            Console.WriteLine($" {attacker.GetName()} healed {value} hp to {listCharacters[choix].GetName()}");
+                        }
+                        attacker.GetStats().IncrementMana(-cost);
+                        listCharacters[choix].GetStats().IncrementHealth(value);
+                        return 1;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid choice");
+                        return 0;
+                    }
                 }
                 else
                 {
-                    Console.WriteLine($"\x1B[32m{attacker.GetName()} healed {value} hp\033[0m");
-                    attacker.IncrementMana(-cost);
-                    attacker.IncrementHealth(value);
+                    Console.WriteLine("Invalid choice");
+                    return 0;
                 }
             }
             else
             {
                 Console.WriteLine($" {attacker.GetName()} tried using {name} but forgot to look at his mana");
-                Console.WriteLine($"{attacker.GetName()} lost his turn because of that...");
+                Console.WriteLine($" {attacker.GetName()} lost his turn because of that...");
+                return 1;
             }
-        }*/
+        }
 
         // Verifies if the attack is a critical hit.
         private bool IsCriticalHit(int luck)
