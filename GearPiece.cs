@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace ASCIIFantasy
 {
-    class GearPiece
+    public class GearPiece
     {
         public static GearPiece instance;
+        public string gearName { get; set; }
         public enum GearType
         {
             Tete,
@@ -29,14 +30,15 @@ namespace ASCIIFantasy
         public int bonusLuck { get; set; }
 
 
-        public GearPiece CreateNewGear(GearType type, int _bonusHealth = 0, int _bonusMana = 0, int _bonusAttack = 0, int _bonusDefense = 0, int _bonusIntellingence = 0, int _bonusAgility = 0, int _bonusLuck = 0)
+        public GearPiece CreateNewGear(GearType type,string _name , int _bonusHealth = 0, int _bonusMana = 0, int _bonusAttack = 0, int _bonusDefense = 0, int _bonusIntelligence = 0, int _bonusAgility = 0, int _bonusLuck = 0)
         {
             this.type = type;
+            this.gearName = _name;
             this.bonusHealth = _bonusHealth;
             this.bonusMana = _bonusMana;
             this.bonusAttack = _bonusAttack;
             this.bonusDefense = _bonusDefense;
-            this.bonusIntelligence = _bonusIntellingence;
+            this.bonusIntelligence = _bonusIntelligence;
             this.bonusAgility = _bonusAgility;
             this.bonusLuck = _bonusLuck;
 

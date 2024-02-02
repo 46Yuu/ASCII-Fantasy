@@ -6,9 +6,10 @@ namespace ASCIIFantasy
 {
     public class Character 
     {
-        private string name;
-        private StatsCharacter stats { get; set; }
-        private Dictionary<string, Attack> listAttack = new Dictionary<string, Attack>();
+        protected string name;
+        protected StatsCharacter stats { get; set; }
+        protected Dictionary<string, Attack> listAttack = new Dictionary<string, Attack>();
+        protected Gear CharacterGear { get;}
 
         public Character()
         {

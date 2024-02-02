@@ -7,23 +7,14 @@ using System.Threading.Tasks;
 namespace ASCIIFantasy
 {
     
-    class Gear
+    public class Gear
     {
-        Array gearList[];
-        GearPiece head {  get; set; } 
-        GearPiece chest { get; set; }
-        GearPiece legs { get; set; }
-        GearPiece feet { get; set; }
-        GearPiece weapon { get; set; }
-
-        private  Gear()
-        {
-            head = GearPiece.CreateInstance().CreateNewGear(GearPiece.GearType.Tete);
-            chest = GearPiece.instance.CreateNewGear(GearPiece.GearType.Torse);
-            legs = GearPiece.instance.CreateNewGear(GearPiece.GearType.Jambe);
-            feet = GearPiece.instance.CreateNewGear(GearPiece.GearType.Pieds);
-            weapon = GearPiece.instance.CreateNewGear(GearPiece.GearType.Arme);
-        }
+        GearPiece[] pieces = new GearPiece[5];
+        GearPiece? head { get; set; } = null;
+        GearPiece? chest { get; set; } = null;
+        GearPiece? legs { get; set; } = null;
+        GearPiece? feet { get; set; } = null;
+        GearPiece? weapon { get; set; } = null;
 
         public void Equip(GearPiece piece)
         {
