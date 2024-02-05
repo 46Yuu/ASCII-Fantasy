@@ -146,12 +146,37 @@ namespace ASCIIFantasy
 
         public void ShowHealth()
         {
-            Console.Write($"Life: {actual_hp}/{health}  ");
+            Console.Write(" Health: ");
+            int healthPercentage = (int)((double)actual_hp / health * 100);
+            int totalSegments = 20;
+            int filledSegments = healthPercentage / 5;
+            if (healthPercentage > 50)
+                Console.ForegroundColor = ConsoleColor.Green;
+            else if (healthPercentage > 25)
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            else
+                Console.ForegroundColor = ConsoleColor.Red;
+            for (int i = 0; i < filledSegments; i++)
+                Console.Write("█");
+            Console.ResetColor();
+            for (int i = filledSegments; i < totalSegments; i++)
+                Console.Write("_");
+            Console.Write(" " + actual_hp + "/" + health);
         }
 
         public void ShowMana()
         {
-            Console.WriteLine($"Mana: {actual_mana}/{mana}");
+            Console.Write(" Mana: ");
+            int manaPercentage = (int)((double)actual_mana / mana * 100);
+            int totalSegments = 20;
+            int filledSegments = manaPercentage / 5;
+            Console.ForegroundColor = ConsoleColor.Blue;
+            for (int i = 0; i < filledSegments; i++)
+                Console.Write("█");
+            Console.ResetColor();
+            for (int i = filledSegments; i < totalSegments; i++)
+                Console.Write("_");
+            Console.WriteLine(" " + actual_mana + "/" + mana);
         }
     }
 }
