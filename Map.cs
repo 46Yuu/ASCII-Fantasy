@@ -10,6 +10,10 @@ public class Map
     private int positionX;
     private int positionY;
 
+    private bool inDialogue;
+    private List<string> dialogues;
+    private int currentDialogueIndex;
+
     public Map(int width, int height)
     {
         this.width = width;
@@ -18,6 +22,16 @@ public class Map
         positionX = width / 2;
         positionY = height / 2;
         InitializeMap();
+
+        dialogues = new List<string>
+        {
+            "NPC: Bonjour, aventurier !",
+            "NPC: Comment puis-je vous aider ?",
+            "NPC: N'hésitez pas à me poser des questions !"
+        };
+
+        inDialogue = false;
+        currentDialogueIndex = 0;
     }
 
     private void InitializeMap()
@@ -200,4 +214,39 @@ public class Map
 
         ground[positionX, positionY] = 'P';
     }
+
+    public bool InDialogue
+    {
+        get { return inDialogue; }
+        set { inDialogue = value; }
+    }
+
+    public string GetCurrentDialogue()
+    {
+        return dialogues[currentDialogueIndex];
+    }
+
+    public void NextDialogue()
+    {
+        Console.Clear();
+        currentDialogueIndex++;
+
+        if (currentDialogueIndex >= dialogues.Count)
+        {
+            inDialogue = false;
+            currentDialogueIndex = 0;
+        }
+    }
+
+    public bool HasMoreDialogues()
+    {
+        return currentDialogueIndex <= dialogues.Count;
+    }
+
+    public int CurrentDialogueIndex
+    {
+        get { return currentDialogueIndex; }
+    }
+
+
 }
