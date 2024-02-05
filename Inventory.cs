@@ -1,29 +1,30 @@
-﻿using ASCIIFantasy;
+﻿/*using ASCIIFantasy;
 using System;
 
-class Player : Character
+class Inventory
 {
-    List<Character> listCharacters;
+    List<GearPiece> listGearInventory;
+    //List<Item> listItemInventory;
 
-    public Player()
+    public Inventory()
     {
-        listCharacters = new List<Character>();
+        listGearInventory = new List<GearPiece>();
     }
 
-    public void AddCharacter(Character c)
+    public void AddGear(GearPiece c)
     {
-        listCharacters.Add(c);
+        listGearInventory.Add(c);
     }
 
-    public void RemoveCharacter(Character c)
+    public void RemoveGear(GearPiece c)
     {
-        listCharacters.Remove(c);
+        listGearInventory.Remove(c);
     }
 
 
     public void SelectCharacter()
     {
-        string[] options = new string[this.listCharacters.Count + 1];
+        string[] options = new string[this.listGearInventory.Count + 1];
         options[0] = "Return";
         int selectedIndex = 0;
         bool isChoiceDone = false;
@@ -259,15 +260,13 @@ class Player : Character
         Character player1 = new Character("Player1", 100, 100, 10, 10, 10, 10, 10);
         Character player2 = new Character("Player2", 100, 100, 10, 10, 10, 10, 10);
         Player player = new Player();
-        GearList.CreateInstance();
         player.listCharacters.Add(player1);
         player.listCharacters.Add(player2);
-        player1.GetGear().Equip(GearList.instance.listGear[0]);
-        player1.GetGear().Equip(GearList.instance.listGear[1]);
-        player1.GetGear().Equip(GearList.instance.listGear[2]);
-        player1.GetGear().Equip(GearList.instance.listGear[3]);
-        player1.GetGear().Equip(GearList.instance.listGear[4]);
+        player1.AddAttack("Fireball");
+        player1.AddAttack("Bulk_up");
+        player2.AddAttack("Fireball");
         player.SelectCharacter();
     }
 
 }
+*/

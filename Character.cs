@@ -4,26 +4,27 @@ using System.Numerics;
 
 namespace ASCIIFantasy
 {
-    public class Character 
+    public class Character
     {
         protected string name;
         protected StatsCharacter stats { get; set; }
         protected Dictionary<string, Attack> listAttack = new Dictionary<string, Attack>();
-        protected Gear CharacterGear { get;}
+        public Gear characterGear { get; }
+
 
         public Character()
         {
-            name = "&&&";
+            name = "Jean-mi";
             stats = new StatsCharacter();
-            CharacterGear = new Gear();
+            AddGearStats();
         }
 
         public Character(string n, int hp, int man, int atk, int def, int intel, int agi, int luc)
         {
             name = n;
-            stats = new StatsCharacter(hp,man,atk,def,intel,agi,luc);
+            stats = new StatsCharacter(hp, man, atk, def, intel, agi, luc);
             AddAttack("Melee");
-            CharacterGear = new Gear();
+            AddGearStats();
         }
 
         public void AddAttack(string name)
@@ -74,7 +75,7 @@ namespace ASCIIFantasy
             }
             return ret;
         }
-       
+
         public string GetName()
         {
             return name;
@@ -82,7 +83,7 @@ namespace ASCIIFantasy
 
         public Gear GetGear()
         {
-            return CharacterGear;
+            return characterGear;
         }
         public void SetName(string n)
         {
@@ -93,6 +94,38 @@ namespace ASCIIFantasy
         public override string ToString()
         {
             return $"Name: {name}\nHealth: {stats.GetActualHealth()} / {stats.GetMaxHealth()}\nMana: {stats.GetActualMana()} / {stats.GetMaxMana()}\nAttack: {stats.GetAttack()}\nDefense: {stats.GetDefense()}\nAgility: {stats.GetAgility()}\nIntelligence: {stats.GetIntel()}\nLuck: {stats.GetLuck()}\n";
+        }
+
+        public void AddGearStats()
+        {
+            if (characterGear != null)
+            {
+
+                int tempAttack = 0;
+                int tempHealth = 0;
+                int tempMana = 0;
+                int tempDef = 0;
+                int tempAgi = 0;
+                int tempLuck = 0;
+                int tempIntel = 0;
+                foreach (GearPiece piece in characterGear.pieces)
+                {
+                    tempAttack += piece.bonusAttack;
+                    tempHealth += piece.bonusHealth;
+                    tempMana += piece.bonusMana;
+                    tempDef += piece.bonusDefense;
+                    tempAgi += piece.bonusAgility;
+                    tempLuck += piece.bonusLuck;
+                    tempIntel += piece.bonusIntelligence;
+                }
+                stats.SetBonusHealth(tempHealth);
+                stats.SetBonusMana(tempMana);
+                stats.SetBonusAttack(tempAttack);
+                stats.SetBonusDefense(tempDef);
+                stats.SetBonusIntelligence(tempIntel);
+                stats.SetBonusAgility(tempAgi);
+                stats.SetBonusLuck(tempLuck);
+            }
         }
 
         //Main for testing

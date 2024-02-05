@@ -15,11 +15,11 @@ namespace ASCIIFantasy
         public string gearName { get; set; }
         public enum GearType
         {
-            Tete,
-            Torse,
-            Jambe,
-            Pieds,
-            Arme
+            Head,
+            Chest,
+            Legs,
+            Feet,
+            Weapon
         }
         public GearType type;
 
@@ -32,7 +32,7 @@ namespace ASCIIFantasy
         public int bonusLuck { get; set; }
 
 
-        public GearPiece(GearType type, string name, int bonusHealth, int bonusMana, int bonusAttack, int bonusDefense, int bonusIntelligence, int bonusAgility, int bonusLuck)
+/*        public GearPiece(GearType type, string name, int bonusHealth = 0, int bonusMana = 0, int bonusAttack = 0, int bonusDefense = 0, int bonusIntelligence = 0, int bonusAgility = 0, int bonusLuck = 0)
         {
             this.type = type;
             this.gearName = name;
@@ -43,8 +43,8 @@ namespace ASCIIFantasy
             this.bonusIntelligence = bonusIntelligence;
             this.bonusAgility = bonusAgility;
             this.bonusLuck = bonusLuck;
-        }
-        public GearPiece CreateNewGear(GearType type,string _name , int _bonusHealth = 0, int _bonusMana = 0, int _bonusAttack = 0, int _bonusDefense = 0, int _bonusIntelligence = 0, int _bonusAgility = 0, int _bonusLuck = 0)
+        }*/
+        public GearPiece CreateNewGear(GearType type, string _name, int _bonusHealth = 0, int _bonusMana = 0, int _bonusAttack = 0, int _bonusDefense = 0, int _bonusIntelligence = 0, int _bonusAgility = 0, int _bonusLuck = 0)
         {
             this.type = type;
             this.gearName = _name;
@@ -61,10 +61,10 @@ namespace ASCIIFantasy
 
         public static GearPiece CreateInstance()
         {
-/*            if(instance == null)
+            if (instance == null)
             {
-                instance = new GearPiece()
-            }*/
+                instance = new GearPiece();
+            }
             return instance;
         }
 

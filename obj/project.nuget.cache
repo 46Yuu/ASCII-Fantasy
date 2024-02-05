@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/qhRVI3eG397uG/n/l7vrDxgJbch8vdAtxHjs7KlD+fPNMwpBXq7EYXxniOTBbmW3JcUAQuoxZWdmX/RjRUh2Q==",
+  "dgSpecHash": "rEDjUsey6KOcwAkXdb8CksIryGyDj1/85zKAZp0HixR2lfyLzfZ90r5sgEHfTAoVc16Dy+Bv0QFKxy0Ywz0aeg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\VICTOR0323\\source\\repos\\46Yuu\\ASCII-Fantasy\\ASCIIFantasy.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\VICTOR0323\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\VICTOR0323\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\VICTOR0323\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\VICTOR0323\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.25\\microsoft.netcore.app.host.win-x64.6.0.25.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\vlopez\\Documents\\GitHub\\ASCII-Fantasy\\ASCIIFantasy.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

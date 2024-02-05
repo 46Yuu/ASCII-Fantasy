@@ -16,38 +16,38 @@ namespace ASCIIFantasy
         public GearPiece? feet { get; set; } = null;
         public GearPiece? weapon { get; set; } = null;
 
-        public Gear()
+        /*public Gear()
         {
-            GearPiece test1 = new GearPiece(GearPiece.GearType.Tete,"test", 0, 0, 0, 0, 0, 0, 0);
-            GearPiece test2 = new GearPiece(GearPiece.GearType.Pieds,"test", 0, 0, 0, 0, 0, 0, 0);
-            GearPiece test3 = new GearPiece(GearPiece.GearType.Torse,"test", 0, 0, 0, 0, 0, 0, 0);
-            GearPiece test4 = new GearPiece(GearPiece.GearType.Arme,"test", 0, 0, 0, 0, 0, 0, 0);
-            GearPiece test5 = new GearPiece(GearPiece.GearType.Jambe,"test", 0, 0, 0, 0, 0, 0, 0);
-            pieces.Add(test1);
-            pieces.Add(test2);
-            pieces.Add(test3);
+            GearPiece test4 = new GearPiece(GearPiece.GearType.Weapon,"test",bonusAttack:15);
+            GearPiece test1 = new GearPiece(GearPiece.GearType.Head,"test",bonusHealth:12,bonusIntelligence:5);
+            GearPiece test3 = new GearPiece(GearPiece.GearType.Chest,"test",bonusDefense:25,bonusLuck:2);
+            GearPiece test5 = new GearPiece(GearPiece.GearType.Legs,"test");
+            GearPiece test2 = new GearPiece(GearPiece.GearType.Feet,"test");
             pieces.Add(test4);
+            pieces.Add(test1);
+            pieces.Add(test3);
             pieces.Add(test5);
-        }
+            pieces.Add(test2);
+        }*/
 
         public void Equip(GearPiece piece)
         {
             switch (piece.type)
             {
-                case GearPiece.GearType.Tete:
-                    head = piece;
+                case GearPiece.GearType.Head:
+                    this.head = piece;
                     break;
-                case GearPiece.GearType.Torse:
-                    chest = piece;
+                case GearPiece.GearType.Chest:
+                    this.chest = piece;
                     break;
-                case GearPiece.GearType.Jambe:
-                    legs = piece;
+                case GearPiece.GearType.Legs:
+                    this.legs = piece;
                     break;
-                case GearPiece.GearType.Pieds:
-                    feet = piece;
+                case GearPiece.GearType.Feet:
+                    this.feet = piece;
                     break;
-                case GearPiece.GearType.Arme:
-                    weapon = piece;
+                case GearPiece.GearType.Weapon:
+                    this.weapon = piece;
                     break;
                 default:
                     break;

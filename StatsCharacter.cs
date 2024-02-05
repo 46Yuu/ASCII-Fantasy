@@ -19,6 +19,17 @@ namespace ASCIIFantasy
         private int luck;
         private int actual_hp;
         private int actual_mana;
+        private int gearBonusHealth;
+        private int gearBonusMana;
+        private int gearBonusAttack;
+        private int gearBonusDefense;
+        private int gearBonusIntelligence;
+        private int gearBonusAgility;
+        private int gearBonusLuck;
+
+
+
+
         /*private int level = 1;
         private int xp = 0;
         private int xp_needed = 100;*/
@@ -158,6 +169,69 @@ namespace ASCIIFantasy
         {
             return actual_hp;
         }
+
+        public int GetBonusHealth()
+        {
+            return gearBonusHealth;
+        }
+
+        public int GetBonusMana()
+        {
+            return gearBonusMana;
+        }
+        public int GetBonusAttack()
+        {
+            return gearBonusAttack;
+        }
+        public int GetBonusDefense()
+        {
+            return gearBonusDefense;
+        }
+
+        public int GetBonusIntelligence()
+        {
+            return gearBonusIntelligence;
+        }
+        public int GetBonusAgility()
+        {
+            return gearBonusAgility;
+        }
+
+        public int GetBonusLuck()
+        {
+            return gearBonusLuck;
+        }
+
+        public void SetBonusHealth(int i)
+        {
+            gearBonusHealth = i;
+        }
+
+        public void SetBonusMana(int i)
+        {
+            gearBonusMana = i;
+        }
+        public void SetBonusAttack(int i)
+        {
+            gearBonusAttack = i;
+        }
+        public void SetBonusDefense(int i)
+        {
+            gearBonusDefense = i;
+        }
+        public void SetBonusIntelligence(int i)
+        {
+            gearBonusIntelligence = i;
+        }
+        public void SetBonusAgility(int i)
+        {
+            gearBonusAgility = i;
+        }
+        public void SetBonusLuck(int i)
+        {
+            gearBonusLuck = i;
+        }
+
 
         public void ShowHealth()
         {
