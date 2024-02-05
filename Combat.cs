@@ -60,12 +60,12 @@ namespace ASCIIFantasy
             {
                 Console.Clear();
                 FieldGame();
-                listCharacters[0].GetAttack("Melee").Attacking(listCharacters[0], enemy);
+                listCharacters[0].GetAttack("Melee").Use(listCharacters[0], enemy);
                 Console.WriteLine(" End of " + listCharacters[0].GetName() + "'s turn");
             }
             else
             {
-                enemy.GetAttack("Melee").Attacking(enemy, listCharacters[0]);
+                enemy.GetAttack("Melee").Use(enemy, listCharacters[0]);
                 Console.WriteLine(" End of " + listCharacters[0].GetName() + "'s turn");
             }
             return turn == 1 ? 0 : 1;
@@ -132,7 +132,7 @@ namespace ASCIIFantasy
                 }
                 else
                 {
-                    listCharacters[0].GetAttack(spellTmp).Attacking(listCharacters[0], enemy);
+                    listCharacters[0].GetAttack(spellTmp).Use(listCharacters[0], enemy);
                 }
                 Console.WriteLine(" End of " + listCharacters[turn].GetName() + "'s turn");
                 return (turn == 1 ? 0 : 1, selectedIndex);
@@ -336,7 +336,7 @@ namespace ASCIIFantasy
             choixspell = rnd.Next(0, spells.Count);
             spellTmp = spells[choixspell];
             //execution du sort;
-            enemy.GetAttack(spellTmp).Attacking(enemy, listCharacters[0]);
+            enemy.GetAttack(spellTmp).Use(enemy, listCharacters[0]);
             Console.WriteLine(" End of " + enemy.GetName() + "'s turn");
             return turn == 1 ? 0 : 1;
         }
@@ -349,13 +349,11 @@ namespace ASCIIFantasy
             Character player2 = new Character("VICTROR", 100, 100, 10, 10, 10, 10, 10);
             Character enemy = new Character("Enemy", 50, 50, 5, 5, 5, 5, 5);
             List<Character> listCharacters = new List<Character>();
+            Fireball fireball = new Fireball();
             listCharacters.Add(player);
             listCharacters.Add(player2);
-            player.AddAttack("Fireball");
-            player.AddAttack("Bulk_up");
-            player.AddAttack("Heal");
-            enemy.AddAttack("Fireball");
-            enemy.AddAttack("Bulk_up");
+            player.AddAttack(fireball);
+            enemy.AddAttack(fireball);
             int turn = 0;
             int winner = 0;
             do

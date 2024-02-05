@@ -3,5 +3,5 @@ using System;
 
 class Player : Character
 {
-   List<Character> listCharacters;
+  // List<Character> listCharacters;
 }

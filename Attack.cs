@@ -1,26 +1,59 @@
-﻿namespace ASCIIFantasy
+﻿using ASCIIFantasy;
+
+namespace ASCIIFantasy
 {
+    public enum AttackType 
+    {
+        Physical,
+        Spell,
+        Buff,
+        Heal,
+    }
+    public enum AttackElement
+    {
+        Fire,
+        Water,
+        Grass,
+        Neutral,
+    }
+
     public class Attack
     {
-        private string attack_name;
-        private int cost = 0;
-        private static Random rnd = new Random();
+        protected AttackType type;
+        protected AttackElement element;
+        protected string attack_name;
+        protected int cost = 0;
+        protected static Random rnd = new Random();
 
         public Attack(string name)
         {
             attack_name = name;
-            if (attack_name == "Heal") cost = 5;
+/*            if (attack_name == "Heal") cost = 5;
             if (attack_name == "Bulk_up") cost = 20;
-            else if (attack_name == "Fireball") cost = 7;
             else if (attack_name == "Bookworm") cost = 20;
             else if (attack_name == "Evasion") cost = 10;
-            else if (attack_name == "Luckier") cost = 10;
+            else if (attack_name == "Luckier") cost = 10;*/
         }
 
-        /*Calls the differents functions needed for the differents attacks.*/
-        public void Attacking(Character attacker, Character receiver)
-        {
+        public string GetAttackName() { return attack_name; }
 
+        /*Calls the differents functions needed for the differents attacks.*/
+        public virtual void Use(Character attacker, Character receiver)//virtual Use()
+        {
+            /*switch(AttackType)
+            {
+                case AttackType.Physical:
+                    PhysicalAttackToString(attack_name,attacker, receiver); break;
+                case AttackType.Spell:
+                    SpellAttackToString(attack_name,attacker,receiver); break;
+                case AttackType.Buff:
+                    BuffingToString(attack_name,attacker,receiver); break;
+                case AttackType.Heal:
+                   
+            }*/
+        }
+      /*  {
+           
             if (attack_name == "Melee")
             {
                 AttackToString("Melee", attacker, receiver);
@@ -45,10 +78,10 @@
             {
                 BuffingToString("Luckier", attacker, receiver);
             }
-        }
+        }*/
 
         /*Applies the differents attack calculations and then prints the result.*/
-        private void AttackToString(string name, Character attacker, Character receiver)
+        protected void PhysicalAttackToString(string name, Character attacker, Character receiver)
         {
             int damage = rnd.Next(attacker.GetStats().GetAttack() + 1);
             bool crit = IsCriticalHit(attacker.GetStats().GetLuck());
@@ -69,6 +102,39 @@
             {
                 receiver.GetStats().IncrementHealth(-damage);
                 Console.WriteLine($" {receiver.GetName()} received {damage} damage!");
+            }
+        }
+
+        private void SpellAttackToString(string name, Character attacker, Character receiver)
+        {
+            int damage = rnd.Next(attacker.GetStats().GetIntel() + 6) + 5;
+            int mana = attacker.GetStats().GetActualMana();
+            if ((mana - cost) >= 0)
+            {
+                bool crit = IsCriticalHit(attacker.GetStats().GetLuck());
+                bool dodged = IsDodged(receiver.GetStats().GetAgility());
+                Console.WriteLine($" {attacker.GetName()} used {name}");
+                attacker.GetStats().IncrementMana(-cost);
+                if (dodged)
+                {
+                    Console.WriteLine($" But {receiver.GetName()} dodged !");
+                }
+                else if (crit)
+                {
+                    damage = damage * 2;
+                    receiver.GetStats().IncrementHealth(-damage);
+                    Console.WriteLine($" Critical hit ! {receiver.GetName()} received {damage} damage!");
+                }
+                else
+                {
+                    receiver.GetStats().IncrementHealth(-damage);
+                    Console.WriteLine($" {receiver.GetName()} received {damage} damage!");
+                }
+            }
+            else
+            {
+                Console.WriteLine($" {attacker.GetName()} tried using {name} but forgot to look at his mana");
+                Console.WriteLine($" {attacker.GetName()} lost his turn because of that...");
             }
         }
 
@@ -177,13 +243,13 @@
         }
 
         // Verifies if the attack is a critical hit.
-        private bool IsCriticalHit(int luck)
+        protected bool IsCriticalHit(int luck)
         {
             return rnd.Next(100) + 1 <= luck;
         }
 
         // Verifies if the receiver of the attack dodged.
-        private bool IsDodged(int agility)
+        protected bool IsDodged(int agility)
         {
             return rnd.Next(100) + 1 <= agility;
         }
@@ -193,7 +259,7 @@
             return cost;
         }
 
-        private void BuffingToString(string name, Character attacker, Character receiver)
+        protected void BuffingToString(string name, Character attacker, Character receiver)
         {
             int mana = attacker.GetStats().GetActualMana();
             if ((mana - cost) >= 0)
@@ -227,39 +293,6 @@
                 Console.WriteLine($" {attacker.GetName()} lost his turn because of that...");
             }
         }
-
-        private void FireballToString(string name, Character attacker, Character receiver)
-        {
-            int damage = rnd.Next(attacker.GetStats().GetIntel() + 6) + 5;
-            int mana = attacker.GetStats().GetActualMana();
-            if ((mana - cost) >= 0)
-            {
-                bool crit = IsCriticalHit(attacker.GetStats().GetLuck());
-                bool dodged = IsDodged(receiver.GetStats().GetAgility());
-                Console.WriteLine($" {attacker.GetName()} used {name}");
-                attacker.GetStats().IncrementMana(-cost);
-                if (dodged)
-                {
-
-                    Console.WriteLine($" But {receiver.GetName()} dodged !");
-                }
-                else if (crit)
-                {
-                    damage = damage * 2;
-                    receiver.GetStats().IncrementHealth(-damage);
-                    Console.WriteLine($" Critical hit ! {receiver.GetName()} received {damage} damage!");
-                }
-                else
-                {
-                    receiver.GetStats().IncrementHealth(-damage);
-                    Console.WriteLine($" {receiver.GetName()} received {damage} damage!");
-                }
-            }
-            else
-            {
-                Console.WriteLine($" {attacker.GetName()} tried using {name} but forgot to look at his mana");
-                Console.WriteLine($" {attacker.GetName()} lost his turn because of that...");
-            }
-        }
+        
     }
 }

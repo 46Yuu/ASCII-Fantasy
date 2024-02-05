@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Numerics;
 
 namespace ASCIIFantasy
@@ -8,7 +9,7 @@ namespace ASCIIFantasy
     {
         protected string name;
         protected StatsCharacter stats { get; set; }
-        protected Dictionary<string, Attack> listAttack = new Dictionary<string, Attack>();
+        protected List<Attack> listAttack = new List<Attack>();
         protected Gear CharacterGear { get;}
 
         public Character()
@@ -21,25 +22,23 @@ namespace ASCIIFantasy
         {
             name = n;
             stats = new StatsCharacter(hp,man,atk,def,intel,agi,luc);
-            AddAttack("Melee");
+            Physical melee = new Physical();
+            listAttack.Add(melee);
         }
 
-        public void AddAttack(string name)
+        public void AddAttack(Attack atk)
         {
-            Attack attack = new Attack(name);
-            listAttack.Add(name, attack);
+            listAttack.Add(atk);
         }
 
         public Attack GetAttack(string name)
         {
-            if (listAttack.ContainsKey(name))
+            foreach(Attack attack in listAttack)
             {
-                return listAttack[name];
+                if(attack.GetAttackName().Equals(name))
+                    return attack;
             }
-            else
-            {
-                throw new Exception("Attack not found");
-            }
+            throw new Exception("Attack not found");
         }
 
         public StatsCharacter GetStats()
@@ -50,11 +49,11 @@ namespace ASCIIFantasy
         public List<string> GetListSpells()
         {
             List<string> ret = new List<string>();
-            foreach (var p in listAttack)
+            foreach (Attack p in listAttack)
             {
-                if (p.Key != "Melee")
+                if (p.GetAttackName() != "Melee")
                 {
-                    ret.Add(p.Key);
+                    ret.Add(p.GetAttackName());
                 }
             }
             return ret;
@@ -63,11 +62,11 @@ namespace ASCIIFantasy
         public List<int> GetListCost()
         {
             List<int> ret = new List<int>();
-            foreach (var p in listAttack)
+            foreach (Attack p in listAttack)
             {
-                if (p.Key != "Melee")
+                if (p.GetAttackName() != "Melee")
                 {
-                    ret.Add(p.Value.GetCost());
+                    ret.Add(p.GetCost());
                 }
             }
             return ret;
