@@ -10,7 +10,7 @@ class Program
         map.DrawHouse1(10, 10);
         map.DrawHouse2(20, 10);
         map.DrawRoundTallGrass(10, 2);
-        map.DrawNPC(30, 20);
+        map.DrawNPC(55, 12);
         map.DrawTree(40, 15);
 
         Menu mainMenu = new Menu(new string[] { "NEW GAME", "LOAD GAME", "EXIT" });
@@ -57,14 +57,13 @@ class Program
             }
             else
             {
-                DisplayDialog(map);
+                map.DisplayDialog();
             }
         }
     }
 
     static void RunGame(Map map)
     {
-        bool isEPressed = false;
 
         while (true)
         {
@@ -88,38 +87,12 @@ class Program
                     map.MovePlayer(1, 0);
                     break;
                 case ConsoleKey.E:
-                    isEPressed = true;
+                    if (map.InteractWithNPC())
+                    {
+                        map.DisplayDialog();
+                    }
                     break;
             }
-
-            if (isEPressed && !map.InDialogue)
-            {
-                map.InDialogue = true;
-                DisplayDialog(map);
-                isEPressed = false;  // Réinitialise l'état de la touche "E" après le dialogue
-            }
         }
-    }
-
-    static void DisplayDialog(Map map)
-    {
-
-        while (map.InDialogue && map.HasMoreDialogues())
-        {
-            string currentDialogue = map.GetCurrentDialogue();
-            Console.WriteLine(currentDialogue);
-            Console.WriteLine("Appuyez sur Entrée pour continuer...");
-
-            ConsoleKeyInfo keyInfo;
-            do
-            {
-                keyInfo = Console.ReadKey(true);
-            } while (keyInfo.Key != ConsoleKey.Enter);
-
-            map.NextDialogue();
-        }
-
-        map.InDialogue = false;
-        Console.Clear();
     }
 }

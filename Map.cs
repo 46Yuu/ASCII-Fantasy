@@ -197,22 +197,57 @@ public class Map
 
     }
 
-    public void MovePlayer(int moveX, int moveY)
+    public bool MovePlayer(int moveX, int moveY)
     {
-        // Faudra gérer ici le déclenchement combat aléatoire si on est en #
-        ground[positionX, positionY] = ' ';
-
         int newPosX = positionX + moveX;
         int newPosY = positionY + moveY;
 
-        if (newPosX >= 0 && newPosX < width && newPosY >= 0 && newPosY < height &&
-            (ground[newPosX, newPosY] == ' ' || ground[newPosX, newPosY] == '#'))
+        if (newPosX >= 0 && newPosX < width && newPosY >= 0 && newPosY < height)
         {
-            positionX = newPosX;
-            positionY = newPosY;
+            char nextCell = ground[newPosX, newPosY];
+
+            if (nextCell == ' ' || nextCell == '#')
+            {
+                // bon faudra refaire ça pcq c pas bon
+                if (nextCell == ' ')
+                {
+                    ground[positionX, positionY] = ' ';
+                }
+                else
+                {
+                    ground[positionX, positionY] = TALL_GRASS;
+                }
+                    
+                positionX = newPosX;
+                positionY = newPosY;
+                ground[positionX, positionY] = 'P';
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void DisplayDialog()
+    {
+        while (InDialogue && HasMoreDialogues())
+        {
+            string currentDialogue = GetCurrentDialogue();
+            Console.WriteLine(currentDialogue);
+            Console.WriteLine("\n");
+            Console.WriteLine("Appuyez sur Entrée pour continuer...");
+
+            ConsoleKeyInfo keyInfo;
+            do
+            {
+                keyInfo = Console.ReadKey(true);
+            } while (keyInfo.Key != ConsoleKey.Enter);
+
+            NextDialogue();
         }
 
-        ground[positionX, positionY] = 'P';
+        InDialogue = false;
+        Console.Clear();
     }
 
     public bool InDialogue
@@ -248,5 +283,30 @@ public class Map
         get { return currentDialogueIndex; }
     }
 
+    public int PlayerPositionX { get { return positionX; } }
+    public int PlayerPositionY { get { return positionY; } }
+
+    public bool IsNPCNearby(int x, int y)
+    {
+        return x >= 0 && x < width && y >= 0 && y < height && ground[x, y] == '8';
+    }
+
+    public bool InteractWithNPC()
+    {
+        int playerX = PlayerPositionX;
+        int playerY = PlayerPositionY;
+
+        if ((IsNPCNearby(playerX - 1, playerY) ||
+             IsNPCNearby(playerX + 1, playerY) ||
+             IsNPCNearby(playerX, playerY - 1) ||
+             IsNPCNearby(playerX, playerY + 1)) && InDialogue == false)
+        {
+            InDialogue = true;
+            currentDialogueIndex = 0;
+            return true;
+        }
+
+        return false;
+    }
 
 }
