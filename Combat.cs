@@ -166,7 +166,7 @@ namespace ASCIIFantasy
             }
             while (turn == 0 )
             {
-                DisplayPlayerChoice(turn, listCharacters, listEnemies, options, selectedIndex);
+                DisplayPlayerChoiceWithHealth(turn, listCharacters, listEnemies, options, selectedIndex);
 
                 ConsoleKeyInfo keyInfo = Console.ReadKey();
                 Console.Clear();
@@ -193,6 +193,30 @@ namespace ASCIIFantasy
             return turn;
         }
 
+        public void DisplayPlayerChoiceWithHealth(int turn,List<Character> listCharacters, List<Character> listEnemies,string[] options, int selectedIndex)
+        {
+            this.FieldSetup(turn, listCharacters, listCharacters);
+            for (int i = 0; i < options.Count(); i++)
+            {
+                if (i == selectedIndex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("> ");
+                    Console.WriteLine(options[i]);
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.Write("  ");
+                    Console.WriteLine(options[i]);
+                }
+                if(i > 0 && i < listCharacters.Count)
+                {
+                    listCharacters[i].GetStats().ShowHealth();
+                    listCharacters[i].GetStats().ShowMana();
+                }
+            }
+        }
         public void DisplayPlayerChoice(int turn, List<Character> listCharacters, List<Character> listEnemies, string[] options, int selectedIndex)
         {
             this.FieldSetup(turn, listCharacters, listEnemies);
