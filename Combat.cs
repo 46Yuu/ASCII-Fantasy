@@ -72,44 +72,65 @@ namespace ASCIIFantasy
 
         public int SpellChoice(int turn, List<Character> listCharacters, List<Character> listEnemies)
         {
-            int choixspell = 0;
-            List<string> spells;
-            List<int> spellsCost;
-            string spellTmp = "";
-            Console.WriteLine(" Choose your spell\n 0) Return\n ");
-            spells = listCharacters[0].GetListSpells();
-            spellsCost = listCharacters[0].GetListCost();
-            for (int i = 0; i < spells.Count; i++)
+            int length = listCharacters[0].GetListSpells().Count;
+            string[] options = new string[length+1];
+            options[0] = "Return";
+            int selectedIndex = 0;
+            List<string> spells = listCharacters[0].GetListSpells(); ;
+            List<int> spellsCost = listCharacters[0].GetListCost();
+            for (int i = 0; i < length; i++)
             {
-                Console.WriteLine(" " + (i + 1) + ") " + spells[i] + " , Cost : " + spellsCost[i] + "mana\n ");
+                options[i+1] = (spells[i] + " , Cost : " + spellsCost[i] + "mana");
             }
-            if (int.TryParse(Console.ReadLine(), out choixspell))
+            while (turn == 0)
             {
-                choixspell -= 1;
-                if (choixspell >= 0 && choixspell < spells.Count)
+                DisplayPlayerChoice(turn, listCharacters, listEnemies, options, selectedIndex);
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                Console.Clear();
+
+                if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    spellTmp = spells[choixspell];
-                    //execution du sort;
-                    Console.Clear();
-                    listCharacters[0].GetAttack(spellTmp).Attacking(listCharacters[0], listCharacters[1]);
-                    Console.WriteLine(" End of " + listCharacters[turn].GetName() + "'s turn");
-                    return turn == 1 ? 0 : 1;
-                }
-                else if (choixspell == -1)
-                {
-                    Console.WriteLine(" " + listCharacters[0].GetName() + " return to action choice");
-                    return turn;
+                    (turn, selectedIndex) = SpellCharacterChoice(turn, listCharacters, selectedIndex,spells);
+                    if (selectedIndex == 0)
+                        break;
                 }
                 else
                 {
-                    Console.WriteLine(" Not a valid number");
-                    return turn;
+                    switch (keyInfo.Key)
+                    {
+                        case ConsoleKey.UpArrow:
+                            selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
+                            break;
+                        case ConsoleKey.DownArrow:
+                            selectedIndex = (selectedIndex + 1) % options.Length;
+                            break;
+                    }
                 }
+            }
+            return turn;
+
+        }
+        public (int, int) SpellCharacterChoice(int turn, List<Character> listCharacters, int selectedIndex,List<string> spells)
+        {
+            if (selectedIndex == 0)
+            {
+                Console.WriteLine(" " + listCharacters[0].GetName() + " return to action choice");
+                return (turn, selectedIndex);
+            }
+            else if (selectedIndex < listCharacters[0].GetListSpells().Count)
+            {
+                string spellTmp = spells[selectedIndex];
+                //execution du sort;
+                Console.Clear();
+                listCharacters[0].GetAttack(spellTmp).Attacking(listCharacters[0], listCharacters[1]);
+                Console.WriteLine(" End of " + listCharacters[turn].GetName() + "'s turn");
+                return (turn == 1 ? 0 : 1, selectedIndex);
             }
             else
             {
-                Console.WriteLine(" Invalid input. Please enter a number.");
-                return turn;
+                Console.WriteLine(" Not a valid number");
+                return (turn, selectedIndex);
             }
         }
         public (int,int) ChangeCharacterChoice(int turn, List<Character> listCharacters, int selectedIndex)
