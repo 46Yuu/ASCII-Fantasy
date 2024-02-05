@@ -46,7 +46,7 @@ class Player : Character
                 }
                 else
                 {
-                    SelectCharacterMenu(listCharacters[selectedIndex]);
+                    SelectCharacterMenu(listCharacters[selectedIndex-1]);
                 }
             }
             else
@@ -164,7 +164,7 @@ class Player : Character
 
     private void SelectGearToEquip(GearPiece.GearType _selectedGear)
     {
-        GearList list = new GearList();
+        GearList list = GearList.instance;
         string[] options = new string[list.listGear.Count + 1];
         options[0] = "Return";
         int selectedIndex = 0;
@@ -175,7 +175,7 @@ class Player : Character
         }
         while (!isChoiceDone)
         {
-            DisplayPlayerChoice(this.listCharacters, options, selectedIndex);
+            DisplayGearChoice(list, options, selectedIndex);
 
             ConsoleKeyInfo keyInfo = Console.ReadKey();
             Console.Clear();
@@ -185,10 +185,10 @@ class Player : Character
                 if (selectedIndex == 0)
                 {
                     isChoiceDone = true;
+                    SelectCharacterMenu(listCharacters[selectedIndex]);
                 }
                 else
                 {
-                    SelectCharacterMenu(listCharacters[selectedIndex]);
                 }
             }
             else
@@ -253,6 +253,24 @@ class Player : Character
             }
         }
     }
+    public void DisplayGearChoice(GearList listGear, string[] options, int selectedIndex)
+    {
+        for (int i = 0; i < options.Length; i++)
+        {
+            if (i == selectedIndex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write(" > ");
+                Console.WriteLine(options[i]);
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.Write("   ");
+                Console.WriteLine(options[i]);
+            }
+        }
+    }
 
     static void Main(string[] args)
     {
@@ -262,11 +280,12 @@ class Player : Character
         GearList.CreateInstance();
         player.listCharacters.Add(player1);
         player.listCharacters.Add(player2);
-        player1.GetGear().Equip(GearList.instance.listGear[0]);
-        player1.GetGear().Equip(GearList.instance.listGear[1]);
-        player1.GetGear().Equip(GearList.instance.listGear[2]);
+        player2.GetGear().Equip(GearList.instance.listGear[0]);
+        player2.GetGear().Equip(GearList.instance.listGear[1]);
+        player2.GetGear().Equip(GearList.instance.listGear[2]);
         player1.GetGear().Equip(GearList.instance.listGear[3]);
         player1.GetGear().Equip(GearList.instance.listGear[4]);
+        
         player.SelectCharacter();
     }
 

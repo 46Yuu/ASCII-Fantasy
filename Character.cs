@@ -16,6 +16,7 @@ namespace ASCIIFantasy
         {
             name = "Jean-mi";
             stats = new StatsCharacter();
+            characterGear = new Gear();
             AddGearStats();
         }
 
@@ -24,6 +25,7 @@ namespace ASCIIFantasy
             name = n;
             stats = new StatsCharacter(hp, man, atk, def, intel, agi, luc);
             AddAttack("Melee");
+            characterGear = new Gear();
             AddGearStats();
         }
 
@@ -110,13 +112,17 @@ namespace ASCIIFantasy
                 int tempIntel = 0;
                 foreach (GearPiece piece in characterGear.pieces)
                 {
-                    tempAttack += piece.bonusAttack;
-                    tempHealth += piece.bonusHealth;
-                    tempMana += piece.bonusMana;
-                    tempDef += piece.bonusDefense;
-                    tempAgi += piece.bonusAgility;
-                    tempLuck += piece.bonusLuck;
-                    tempIntel += piece.bonusIntelligence;
+                    if (piece != null)
+                    {
+
+                        tempAttack += piece.bonusAttack;
+                        tempHealth += piece.bonusHealth;
+                        tempMana += piece.bonusMana;
+                        tempDef += piece.bonusDefense;
+                        tempAgi += piece.bonusAgility;
+                        tempLuck += piece.bonusLuck;
+                        tempIntel += piece.bonusIntelligence;
+                    }
                 }
                 stats.SetBonusHealth(tempHealth);
                 stats.SetBonusMana(tempMana);

@@ -16,22 +16,19 @@ namespace ASCIIFantasy
         public GearPiece? feet { get; set; } = null;
         public GearPiece? weapon { get; set; } = null;
 
-        /*public Gear()
+        public Gear()
         {
-            GearPiece test4 = new GearPiece(GearPiece.GearType.Weapon,"test",bonusAttack:15);
-            GearPiece test1 = new GearPiece(GearPiece.GearType.Head,"test",bonusHealth:12,bonusIntelligence:5);
-            GearPiece test3 = new GearPiece(GearPiece.GearType.Chest,"test",bonusDefense:25,bonusLuck:2);
-            GearPiece test5 = new GearPiece(GearPiece.GearType.Legs,"test");
-            GearPiece test2 = new GearPiece(GearPiece.GearType.Feet,"test");
-            pieces.Add(test4);
-            pieces.Add(test1);
-            pieces.Add(test3);
-            pieces.Add(test5);
-            pieces.Add(test2);
-        }*/
+
+            pieces.Add(head);
+            pieces.Add(chest);
+            pieces.Add(legs);
+            pieces.Add(feet);
+            pieces.Add(weapon);
+        }
 
         public void Equip(GearPiece piece)
         {
+            if(piece == null) throw new ArgumentNullException(nameof(piece),"Piece Null");
             switch (piece.type)
             {
                 case GearPiece.GearType.Head:
