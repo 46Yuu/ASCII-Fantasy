@@ -72,62 +72,107 @@
             }
         }
 
-        public int HealToString(string name, Character attacker, List<Character> listCharacters)
+        public (int,int) HealCharacterSelected(int turn, List<Character> listCharacters, int selectedIndex)
         {
-            int mana = attacker.GetStats().GetActualMana();
-            bool crit = IsCriticalHit(attacker.GetStats().GetLuck());
-            int value = rnd.Next(attacker.GetStats().GetIntel() + 1) + 4;
-            if ((mana - cost) >= 0)
+            if (selectedIndex == 0)
             {
-
-                Console.WriteLine(" Who do you want to heal ?");
-                Console.WriteLine(" 0) Return");
-                for(int i = 0; i < listCharacters.Count; i++)
+                return (turn,0);
+            }
+            else if (selectedIndex > 0 && selectedIndex < listCharacters.Count)
+            {
+                bool crit = IsCriticalHit(listCharacters[0].GetStats().GetLuck());
+                int value = rnd.Next(listCharacters[0].GetStats().GetIntel() + 1) + 4;
+                Console.Clear();
+                Console.WriteLine($" {listCharacters[0].GetName()} used Heal");
+                if (crit)
                 {
-                    Console.WriteLine(" " + (i+1) + ") " + listCharacters[i].GetName() + "    Health: " + listCharacters[i].GetStats().GetActualHealth() + "/" + listCharacters[i].GetStats().GetMaxHealth());
-                }
-                int choix = 0;
-                if (int.TryParse(Console.ReadLine(), out choix))
-                {
-                    choix=choix-1;
-                    if (choix == -1)
-                    {
-                        return 0;
-                    }
-                    else if (choix >= 0 && choix < listCharacters.Count)
-                    {
-                        Console.Clear();
-                        Console.WriteLine($" {attacker.GetName()} used Heal");
-                        if (crit)
-                        {
-                            value = value * 2;
-                            Console.WriteLine($" Lucky critical ! {attacker.GetName()} healed {value} hp to {listCharacters[choix].GetName()}!");
-                        }
-                        else
-                        {
-                            Console.WriteLine($" {attacker.GetName()} healed {value} hp to {listCharacters[choix].GetName()}");
-                        }
-                        attacker.GetStats().IncrementMana(-cost);
-                        listCharacters[choix].GetStats().IncrementHealth(value);
-                        return 1;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid choice");
-                        return 0;
-                    }
+                    value = value * 2;
+                    Console.WriteLine($" Lucky critical ! {listCharacters[0].GetName()} healed {value} hp to {listCharacters[selectedIndex].GetName()}!");
                 }
                 else
                 {
-                    Console.WriteLine("Invalid choice");
-                    return 0;
+                    Console.WriteLine($" {listCharacters[0].GetName()} healed {value} hp to {listCharacters[selectedIndex].GetName()}");
                 }
+                listCharacters[0].GetStats().IncrementMana(-cost);
+                listCharacters[selectedIndex].GetStats().IncrementHealth(value);
+                return (turn == 1 ? 0 : 1, selectedIndex);
             }
             else
             {
-                Console.WriteLine($" {attacker.GetName()} tried using {name} but forgot to look at his mana");
+                Console.WriteLine("Invalid choice");
+                return (turn,selectedIndex) ;
+            }
+        }
+
+        public void DisplayListCharacter(List<Character> listCharacters, string[] options, int selectedIndex)
+        {
+            for (int i = 0; i < options.Length; i++)
+            {
+                if (i == selectedIndex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write(" > ");
+                    Console.WriteLine(options[i]);
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.Write("   ");
+                    Console.WriteLine(options[i]);
+                }
+                if (i > 0 && i < listCharacters.Count)
+                {
+                    listCharacters[i].GetStats().ShowHealth();
+                    listCharacters[i].GetStats().ShowMana();
+                }
+            }
+        }
+
+        public int HealToString(int turn, Character attacker, List<Character> listCharacters, Character enemy)
+        {
+            int mana = attacker.GetStats().GetActualMana();
+            if ((mana - cost) >= 0)
+            {
+                string[] options = new string[listCharacters.Count];
+                options[0] = "Return";
+                int selectedIndex = 0;
+                for (int i = 1; i < listCharacters.Count; i++)
+                {
+                    options[i] = listCharacters[i].GetName();
+                }
+                while (turn == 0)
+                {
+                    DisplayListCharacter(listCharacters,options, selectedIndex);
+
+                    ConsoleKeyInfo keyInfo = Console.ReadKey();
+                    Console.Clear();
+
+                    if (keyInfo.Key == ConsoleKey.Enter)
+                    {
+                        (turn,selectedIndex) = HealCharacterSelected(turn, listCharacters, selectedIndex);
+                        if (selectedIndex == 0)
+                            break;
+                    }
+                    else
+                    {
+                        switch (keyInfo.Key)
+                        {
+                            case ConsoleKey.UpArrow:
+                                selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
+                                break;
+                            case ConsoleKey.DownArrow:
+                                selectedIndex = (selectedIndex + 1) % options.Length;
+                                break;
+                        }
+                    }
+                }
+                return turn;
+            }
+            else
+            {
+                Console.WriteLine($" {attacker.GetName()} tried using Heal but forgot to look at his mana");
                 Console.WriteLine($" {attacker.GetName()} lost his turn because of that...");
-                return 1;
+                return turn;
             }
         }
 
