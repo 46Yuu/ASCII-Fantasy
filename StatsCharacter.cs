@@ -8,6 +8,7 @@ namespace ASCIIFantasy
 {
     public class StatsCharacter
     {
+        public List<int> statsList = new List<int>();
         private int health;
         private int mana;
         private int attack;
@@ -33,6 +34,13 @@ namespace ASCIIFantasy
             luck = 0;
             actual_hp = health;
             actual_mana = mana;
+            statsList.Add(health);
+            statsList.Add(mana);
+            statsList.Add(attack);
+            statsList.Add(defense);
+            statsList.Add(intelligence);
+            statsList.Add(agility);
+            statsList.Add(luck);
         }
 
         public StatsCharacter(int health, int mana, int attack, int defense, int intelligence, int agility, int luck)
@@ -46,6 +54,13 @@ namespace ASCIIFantasy
             this.luck = luck;
             this.actual_hp = health;
             this.actual_mana = mana;
+            statsList.Add(health);
+            statsList.Add(mana);
+            statsList.Add(attack);
+            statsList.Add(defense);
+            statsList.Add(intelligence);
+            statsList.Add(agility);
+            statsList.Add(luck);
         }
 
         public void SetStats(int health, int mana, int attack, int defense, int intelligence, int agility, int luck)

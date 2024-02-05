@@ -13,8 +13,9 @@ namespace ASCIIFantasy
 
         public Character()
         {
-            name = "";
+            name = "&&&";
             stats = new StatsCharacter();
+            CharacterGear = new Gear();
         }
 
         public Character(string n, int hp, int man, int atk, int def, int intel, int agi, int luc)
@@ -22,6 +23,7 @@ namespace ASCIIFantasy
             name = n;
             stats = new StatsCharacter(hp,man,atk,def,intel,agi,luc);
             AddAttack("Melee");
+            CharacterGear = new Gear();
         }
 
         public void AddAttack(string name)
@@ -78,6 +80,10 @@ namespace ASCIIFantasy
             return name;
         }
 
+        public Gear GetGear()
+        {
+            return CharacterGear;
+        }
         public void SetName(string n)
         {
             name = n;

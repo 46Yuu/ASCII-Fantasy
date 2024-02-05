@@ -10,6 +10,8 @@ namespace ASCIIFantasy
     public class GearPiece
     {
         public static GearPiece instance;
+        
+
         public string gearName { get; set; }
         public enum GearType
         {
@@ -30,6 +32,18 @@ namespace ASCIIFantasy
         public int bonusLuck { get; set; }
 
 
+        public GearPiece(GearType type, string name, int bonusHealth, int bonusMana, int bonusAttack, int bonusDefense, int bonusIntelligence, int bonusAgility, int bonusLuck)
+        {
+            this.type = type;
+            this.gearName = name;
+            this.bonusHealth = bonusHealth;
+            this.bonusMana = bonusMana;
+            this.bonusAttack = bonusAttack;
+            this.bonusDefense = bonusDefense;
+            this.bonusIntelligence = bonusIntelligence;
+            this.bonusAgility = bonusAgility;
+            this.bonusLuck = bonusLuck;
+        }
         public GearPiece CreateNewGear(GearType type,string _name , int _bonusHealth = 0, int _bonusMana = 0, int _bonusAttack = 0, int _bonusDefense = 0, int _bonusIntelligence = 0, int _bonusAgility = 0, int _bonusLuck = 0)
         {
             this.type = type;
@@ -47,10 +61,10 @@ namespace ASCIIFantasy
 
         public static GearPiece CreateInstance()
         {
-            if(instance == null)
+/*            if(instance == null)
             {
-                instance = new GearPiece();
-            }
+                instance = new GearPiece()
+            }*/
             return instance;
         }
 
