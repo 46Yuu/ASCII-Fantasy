@@ -50,7 +50,8 @@ namespace ASCIIFantasy
                 {
                     if (selectedIndex == 0)
                     {
-                        isChoiceDone = true;
+                        // isChoiceDone = true;
+                        break;
                     }
                     else
                     {
@@ -71,7 +72,7 @@ namespace ASCIIFantasy
                     }
                 }
             }
-            //renvoie au menu précédent
+            // renvoie au menu précédent
         }
 
         public void SelectCharacterMenu(Character _selected)
@@ -192,6 +193,7 @@ namespace ASCIIFantasy
                     {
                         isChoiceDone = true;
                         SelectCharacterMenu(listCharacters[selectedIndex]);
+                        break;
                     }
                     else
                     {

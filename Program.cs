@@ -1,10 +1,14 @@
 ﻿using ASCIIFantasy;
 using System;
+using System.Numerics;
+using System.Xml.Linq;
 
 class Program
 {
     static void Main()
     {
+        Console.CursorVisible = false;
+
         Character player1 = new Character("Player1", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
         Character player2 = new Character("Player2", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
         Player player = new Player();
@@ -17,15 +21,6 @@ class Program
         player1.Equip(GearList.instance.listGear[3]);
         player1.Equip(GearList.instance.listGear[4]);
         player.inventory.AddGear(GearList.instance.listGear[6]);
-        //player.inventory.AddItem(ItemList.instance.listItem[0], 5);
-
-        /*player.SelectCharacter();*/ //ouvrir menu selection personnage
-        //player.inventory.SelectGearToDisplay(); //ouvrir menu selection objet
-        
-
-        /*CreateCharacter();*/
-
-        Console.CursorVisible = false;
 
         Map map = new Map(120, 28);
         map.DrawHouse1(10, 10);
@@ -38,7 +33,9 @@ class Program
 
         while (true)
         {
-            if (!map.InDialogue)
+            bool inGame = false;
+
+            while (!inGame)
             {
                 mainMenu.Display();
 
@@ -51,7 +48,9 @@ class Program
 
                     if (selectedOption == "NEW GAME")
                     {
-                        RunGame(map);
+                        // Faudra implémenter un reset de partie ici qui clean toute la map
+                        inGame = true;
+                        RunGame(map, player);
                     }
                     else if (selectedOption == "LOAD GAME")
                     {
@@ -76,15 +75,12 @@ class Program
                     }
                 }
             }
-            else
-            {
-                map.DisplayDialog();
-            }
         }
     }
 
-    static void RunGame(Map map)
+    static void RunGame(Map map, Player player)
     {
+        AltMenu altMenu = new AltMenu(new string[] { "RESUME GAME", "INVENTORY", "TEAM", "MAIN MENU", "EXIT GAME" });
 
         while (true)
         {
@@ -113,26 +109,67 @@ class Program
                         map.DisplayDialog();
                     }
                     break;
+                case ConsoleKey.Escape:
+                    bool returnToMainMenu = ShowAltMenu(altMenu, player);
+                    if (returnToMainMenu)
+                    {
+                        return;
+                    }
+                    break;
             }
         }
     }
 
-/*    static void CreateCharacter()
+    static bool ShowAltMenu(AltMenu altMenu, Player player)
     {
-        Character player1 = new Character("Player1", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
-        Character player2 = new Character("Player2", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
-        Player player = new Player();
-        GearList.CreateInstance();
-        player.listCharacters.Add(player1);
-        player.listCharacters.Add(player2);
-        player2.Equip(GearList.instance.listGear[0]);
-        player2.Equip(GearList.instance.listGear[1]);
-        player2.Equip(GearList.instance.listGear[2]);
-        player1.Equip(GearList.instance.listGear[3]);
-        player1.Equip(GearList.instance.listGear[4]);
-        player.inventory.AddGear(GearList.instance.listGear[6]);
-        player.inventory.AddItem(ItemList.instance.listItem[0], 5);
+        bool altMenuActive = true;
 
-        player.SelectCharacter();
-    }*/
+        while (altMenuActive)
+        {
+            altMenu.Display();
+
+            ConsoleKeyInfo altKeyInfo = Console.ReadKey();
+            Console.Clear();
+
+            if (altKeyInfo.Key == ConsoleKey.Enter)
+            {
+                string selectedAltOption = altMenu.GetSelectedOption();
+
+                if (selectedAltOption == "RESUME GAME")
+                {
+                    altMenuActive = false;
+                }
+                else if (selectedAltOption == "INVENTORY")
+                {
+                    player.inventory.SelectGearToDisplay();
+                }
+                else if (selectedAltOption == "TEAM")
+                {
+                    player.SelectCharacter();
+                }
+                else if (selectedAltOption == "MAIN MENU")
+                {
+                    return true;
+                }
+                else if (selectedAltOption == "EXIT GAME")
+                {
+                    Environment.Exit(0);
+                }
+            }
+            else
+            {
+                switch (altKeyInfo.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        altMenu.MoveUp();
+                        break;
+                    case ConsoleKey.DownArrow:
+                        altMenu.MoveDown();
+                        break;
+                }
+            }
+        }
+
+        return false;
+    }
 }
