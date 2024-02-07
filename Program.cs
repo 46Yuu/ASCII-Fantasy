@@ -9,57 +9,62 @@ class Program
         Map map = new Map(120, 28);
         map.DrawHouse1(10, 10);
         map.DrawHouse2(20, 10);
-
         map.DrawRoundTallGrass(10, 2);
-
-        map.DrawNPC(30, 20);
-
+        map.DrawNPC(55, 12);
         map.DrawTree(40, 15);
 
         Menu mainMenu = new Menu(new string[] { "NEW GAME", "LOAD GAME", "EXIT" });
 
         while (true)
         {
-            mainMenu.Display();
-
-            ConsoleKeyInfo keyInfo = Console.ReadKey();
-            Console.Clear();
-
-            if (keyInfo.Key == ConsoleKey.Enter)
+            if (!map.InDialogue)
             {
-                string selectedOption = mainMenu.GetSelectedOption();
+                mainMenu.Display();
 
-                if (selectedOption == "NEW GAME")
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                Console.Clear();
+
+                if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    RunGame(map);
+                    string selectedOption = mainMenu.GetSelectedOption();
+
+                    if (selectedOption == "NEW GAME")
+                    {
+                        RunGame(map);
+                    }
+                    else if (selectedOption == "LOAD GAME")
+                    {
+                        // Faudra implémenter le chargement de partie ici
+                    }
+                    else if (selectedOption == "EXIT")
+                    {
+                        Console.WriteLine("Thank you for playing !");
+                        Environment.Exit(0);
+                    }
                 }
-                else if (selectedOption == "LOAD GAME")
+                else
                 {
-                    // Faudra implémenter le chargement de partie ici
-                }
-                else if (selectedOption == "EXIT")
-                {
-                    Console.WriteLine("Thank you for playing !");
-                    Environment.Exit(0);
+                    switch (keyInfo.Key)
+                    {
+                        case ConsoleKey.UpArrow:
+                            mainMenu.MoveUp();
+                            break;
+                        case ConsoleKey.DownArrow:
+                            mainMenu.MoveDown();
+                            break;
+                    }
                 }
             }
             else
             {
-                switch (keyInfo.Key)
-                {
-                    case ConsoleKey.UpArrow:
-                        mainMenu.MoveUp();
-                        break;
-                    case ConsoleKey.DownArrow:
-                        mainMenu.MoveDown();
-                        break;
-                }
+                map.DisplayDialog();
             }
         }
     }
 
     static void RunGame(Map map)
     {
+
         while (true)
         {
             map.DisplayMap();
@@ -80,6 +85,12 @@ class Program
                     break;
                 case ConsoleKey.RightArrow:
                     map.MovePlayer(1, 0);
+                    break;
+                case ConsoleKey.E:
+                    if (map.InteractWithNPC())
+                    {
+                        map.DisplayDialog();
+                    }
                     break;
             }
         }
