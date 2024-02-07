@@ -96,7 +96,7 @@ class Program
                     }
                     break;
                 case ConsoleKey.Escape:
-                    bool returnToMainMenu = ShowAltMenu(altMenu, player);
+                    bool returnToMainMenu = ShowAltMenu(altMenu, Player.instance);
                     if (returnToMainMenu)
                     {
                         return;
