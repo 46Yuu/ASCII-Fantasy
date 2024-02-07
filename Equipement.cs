@@ -1,44 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ASCIIFantasy
 {
-    
     public class Gear
     {
-        GearPiece[] pieces = new GearPiece[5];
-        GearPiece? head { get; set; } = null;
-        GearPiece? chest { get; set; } = null;
-        GearPiece? legs { get; set; } = null;
-        GearPiece? feet { get; set; } = null;
-        GearPiece? weapon { get; set; } = null;
+        public List<GearPiece> pieces = new();
+        public GearPiece head { get; set; } = GearPiece.CreateInstance().CreateNewGear(GearPiece.GearType.Head, "", true);
+        public GearPiece chest { get; set; } = GearPiece.instance.CreateNewGear(GearPiece.GearType.Chest, "", true);
+        public GearPiece legs { get; set; } = GearPiece.instance.CreateNewGear(GearPiece.GearType.Legs, "", true);
+        public GearPiece feet { get; set; } = GearPiece.instance.CreateNewGear(GearPiece.GearType.Feet, "", true);
+        public GearPiece weapon { get; set; } = GearPiece.instance.CreateNewGear(GearPiece.GearType.Weapon, "", true);
 
-        public void Equip(GearPiece piece)
+        public Gear()
         {
-            switch (piece.type)
-            {
-                case GearPiece.GearType.Tete:
-                    head = piece;
-                    break;
-                case GearPiece.GearType.Torse:
-                    chest = piece;
-                    break;
-                case GearPiece.GearType.Jambe:
-                    legs = piece;
-                    break;
-                case GearPiece.GearType.Pieds:
-                    feet = piece;
-                    break;
-                case GearPiece.GearType.Arme:
-                    weapon = piece;
-                    break;
-                default:
-                    break;
-            }
+            pieces.Add(head);
+            pieces.Add(chest);
+            pieces.Add(legs);
+            pieces.Add(feet);
+            pieces.Add(weapon);
         }
-
     }
 }
