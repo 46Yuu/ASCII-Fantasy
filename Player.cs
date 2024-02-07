@@ -8,7 +8,7 @@ namespace ASCIIFantasy
     public class Player : Character
     {
         public List<Character> listCharacters { get; set; }
-        public Inventory inventory{ get; set; }
+        public Inventory inventory { get; set; }
         int selectedCharacterIndex;
 
         public Player()
@@ -293,6 +293,8 @@ namespace ASCIIFantasy
               player2.Equip(GearList.instance.listGear[2]);
               player1.Equip(GearList.instance.listGear[3]);
               player1.Equip(GearList.instance.listGear[4]);
+              player.inventory.listGearInventory.AddGear(GearList.instance.listGear[6]);
+              player.inventory.listItemInventory.AddItem(ItemList.instance.listItem[0],5);
 
               player.SelectCharacter();
           }*/
