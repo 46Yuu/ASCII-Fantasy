@@ -1,26 +1,30 @@
-﻿using System;
+﻿using ASCIIFantasy;
+using System;
+using System.Diagnostics;
 
 public class Map
 {
     public const char TALL_GRASS = '#';
 
-    private char[,] ground;
+    private char[,] mapTile;
     private int width; // largeur
     private int height; // hauteur
     private int positionX;
     private int positionY;
+    private int widthGap = 4;
+    private int heightGap = 2;
 
     private bool inDialogue;
     private List<string> dialogues;
     private int currentDialogueIndex;
+    private char nextCell;
 
-    public Map(int width, int height)
+    public Map( int width, int height)
     {
         this.width = width;
         this.height = height;
-        ground = new char[width, height];
-        positionX = width / 2;
-        positionY = height / 2;
+        mapTile = new char[width, height];
+
         InitializeMap();
 
         dialogues = new List<string>
@@ -36,26 +40,57 @@ public class Map
 
     private void InitializeMap()
     {
-        for (int i = 0; i < width; i++)
+        positionX = Player.instance.positionX;
+        positionY = Player.instance.positionY;
+        Debug.WriteLine($"index X : {Player.instance.mapIndexX}\nindex Y : {Player.instance.mapIndexY}");
+        nextCell = ' ';
+        
+        if (MapArray.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]] != null)
         {
+            MapArray.activeMap = MapArray.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]];
+        }
+        else
+        {
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    mapTile[i, j] = ' ';
+                }
+            }
+
+            // Borders
+            for (int i = 0; i < width; i++)
+            {
+                if (i < (width / 2) - widthGap || i > (width / 2) + widthGap)
+                {
+
+                    mapTile[i, 0] = '-';
+                    mapTile[i, height - 1] = '-';
+                }
+                else
+                {
+                    mapTile[i, 0] = ' ';
+                    mapTile[i, height - 1] = ' ';
+                }
+            }
             for (int j = 0; j < height; j++)
             {
-                ground[i, j] = ' ';
+                if (j < (height / 2) - heightGap || j > (height / 2) + heightGap)
+                {
+                    mapTile[0, j] = '|';
+                    mapTile[width - 1, j] = '|';
+                }
+                else
+                {
+                    mapTile[0, j] = ' ';
+                    mapTile[width - 1, j] = ' ';
+                }
             }
+            mapTile[positionX, positionY] = 'P'; // Player
+            GenerateBuilding();
+            MapArray.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]] = this;
         }
-
-        // Borders
-        for (int i = 0; i < width; i++)
-        {
-            ground[i, 0] = '-';
-            ground[i, height - 1] = '-';
-        }
-        for (int j = 0; j < height; j++)
-        {
-            ground[0, j] = '|';
-            ground[width - 1, j] = '|';
-        }
-        ground[positionX, positionY] = 'P'; // Player
     }
 
     public void DisplayMap()
@@ -65,7 +100,7 @@ public class Map
         {
             for (int i = 0; i < width; i++)
             {
-                Console.Write(ground[i, j]);
+                Console.Write(mapTile[i, j]);
             }
             Console.WriteLine();
         }
@@ -73,159 +108,162 @@ public class Map
 
     public void DrawHouse1(int x, int y)
     {
-        ground[x, y] = 'm';
-        ground[x - 1, y] = '_';
-        ground[x + 1, y] = '_';
+        mapTile[x + 2, y] = '_';
+        mapTile[x + 3, y] = 'm';
+        mapTile[x + 4, y] = '_';
 
-        ground[x, y + 1] = '_';
-        ground[x - 1, y + 1] = '_';
-        ground[x + 1, y + 1] = '_';
-        ground[x + 2, y + 1] = '\\';
-        ground[x - 2, y + 1] = '\\';
-        ground[x - 3, y + 1] = '/';
+        mapTile[x, y + 1] = '/';
+        mapTile[x + 1, y + 1] = '\\';
+        mapTile[x + 2, y + 1] = '_';
+        mapTile[x + 3, y + 1] = '_';
+        mapTile[x + 4, y + 1] = '_';
+        mapTile[x + 5, y + 1] = '\\';
 
-        ground[x, y + 2] = '"';
-        ground[x - 1, y + 2] = '|';
-        ground[x + 1, y + 2] = '"';
-        ground[x + 2, y + 2] = '|';
-        ground[x - 2, y + 2] = '_';
-        ground[x - 3, y + 2] = '|';
+        mapTile[x, y + 2] = '|';
+        mapTile[x + 1, y + 2] = '_';
+        mapTile[x + 2, y + 2] = '|';
+        mapTile[x + 3, y + 2] = '"';
+        mapTile[x + 4, y + 2] = '"';
+        mapTile[x + 5, y + 2] = '|';
     }
 
     public void DrawHouse2(int x, int y)
     {
-        ground[x, y] = '[';
-        ground[x + 1, y] = ']';
-        ground[x + 2, y] = '_';
-        ground[x + 3, y] = '_';
-        ground[x + 4, y] = '_';
+        mapTile[x + 2, y] = '[';
+        mapTile[x + 3, y] = ']';
+        mapTile[x + 4, y] = '_';
+        mapTile[x + 5, y] = '_';
+        mapTile[x + 6, y] = '_';
 
-        ground[x - 1 , y + 1] = '/';
-        ground[x + 4, y + 1] = '/';
-        ground[x + 5, y + 1] = '\\';
+        mapTile[x + 1, y + 1] = '/';
+        mapTile[x + 6, y + 1] = '/';
+        mapTile[x + 7, y + 1] = '\\';
 
-        ground[x - 2, y + 2] = '/';
-        ground[x - 1, y + 2] = '_';
-        ground[x, y + 2] = '_';
-        ground[x + 1, y + 2] = '_';
-        ground[x + 2, y + 2] = '_';
-        ground[x + 3, y + 2] = '/';
-        ground[x + 4, y + 2] = '_';
-        ground[x + 5, y + 2] = '_';
-        ground[x + 6, y + 2] = '\\';
+        mapTile[x, y + 2] = '/';
+        mapTile[x + 1, y + 2] = '_';
+        mapTile[x + 2, y + 2] = '_';
+        mapTile[x + 3, y + 2] = '_';
+        mapTile[x + 4, y + 2] = '_';
+        mapTile[x + 5, y + 2] = '/';
+        mapTile[x + 6, y + 2] = '_';
+        mapTile[x + 7, y + 2] = '_';
+        mapTile[x + 8, y + 2] = '\\';
 
-        ground[x - 2, y + 3] = '|';
-        ground[x - 1, y + 3] = '[';
-        ground[x, y + 3] = ']';
-        ground[x + 1, y + 3] = '[';
-        ground[x + 2, y + 3] = ']';
-        ground[x + 3, y + 3] = '|';
-        ground[x + 4, y + 3] = '|';
-        ground[x + 5, y + 3] = '|';
-        ground[x + 6, y + 3] = '|';
+        mapTile[x, y + 3] = '|';
+        mapTile[x + 1, y + 3] = '[';
+        mapTile[x + 2, y + 3] = ']';
+        mapTile[x + 3, y + 3] = '[';
+        mapTile[x + 4, y + 3] = ']';
+        mapTile[x + 5, y + 3] = '|';
+        mapTile[x + 6, y + 3] = '|';
+        mapTile[x + 7, y + 3] = '|';
+        mapTile[x + 8, y + 3] = '|';
     }
 
     public void Draw1TallGrass(int x, int y)
     {
-        ground[x, y] = TALL_GRASS;
+        mapTile[x, y] = TALL_GRASS;
     }
 
     public void DrawRoundTallGrass(int x, int y)
     {
-        ground[x, y] = TALL_GRASS;
-        ground[x + 1, y] = TALL_GRASS;
-        ground[x - 1, y] = TALL_GRASS;
-        ground[x + 2, y] = TALL_GRASS;
+        mapTile[x, y] = TALL_GRASS;
+        mapTile[x + 1, y] = TALL_GRASS;
+        mapTile[x - 1, y] = TALL_GRASS;
+        mapTile[x + 2, y] = TALL_GRASS;
 
-        ground[x, y + 1] = TALL_GRASS;
-        ground[x - 1, y + 1] = TALL_GRASS;
-        ground[x - 2, y + 1] = TALL_GRASS;
-        ground[x + 1, y + 1] = TALL_GRASS;
-        ground[x + 2, y + 1] = TALL_GRASS;
-        ground[x + 3, y + 1] = TALL_GRASS;
+        mapTile[x, y + 1] = TALL_GRASS;
+        mapTile[x - 1, y + 1] = TALL_GRASS;
+        mapTile[x - 2, y + 1] = TALL_GRASS;
+        mapTile[x + 1, y + 1] = TALL_GRASS;
+        mapTile[x + 2, y + 1] = TALL_GRASS;
+        mapTile[x + 3, y + 1] = TALL_GRASS;
 
-        ground[x, y + 2] = TALL_GRASS;
-        ground[x - 1, y + 2] = TALL_GRASS;
-        ground[x - 2, y + 2] = TALL_GRASS;
-        ground[x - 3, y + 2] = TALL_GRASS;
-        ground[x + 1, y + 2] = TALL_GRASS;
-        ground[x + 2, y + 2] = TALL_GRASS;
-        ground[x + 3, y + 2] = TALL_GRASS;
-        ground[x + 4, y + 2] = TALL_GRASS;
+        mapTile[x, y + 2] = TALL_GRASS;
+        mapTile[x - 1, y + 2] = TALL_GRASS;
+        mapTile[x - 2, y + 2] = TALL_GRASS;
+        mapTile[x - 3, y + 2] = TALL_GRASS;
+        mapTile[x + 1, y + 2] = TALL_GRASS;
+        mapTile[x + 2, y + 2] = TALL_GRASS;
+        mapTile[x + 3, y + 2] = TALL_GRASS;
+        mapTile[x + 4, y + 2] = TALL_GRASS;
 
-        ground[x, y + 3] = TALL_GRASS;
-        ground[x - 1, y + 3] = TALL_GRASS;
-        ground[x - 2, y + 3] = TALL_GRASS;
-        ground[x + 1, y + 3] = TALL_GRASS;
-        ground[x + 2, y + 3] = TALL_GRASS;
-        ground[x + 3, y + 3] = TALL_GRASS;
+        mapTile[x, y + 3] = TALL_GRASS;
+        mapTile[x - 1, y + 3] = TALL_GRASS;
+        mapTile[x - 2, y + 3] = TALL_GRASS;
+        mapTile[x + 1, y + 3] = TALL_GRASS;
+        mapTile[x + 2, y + 3] = TALL_GRASS;
+        mapTile[x + 3, y + 3] = TALL_GRASS;
 
-        ground[x, y + 4] = TALL_GRASS;
-        ground[x + 1, y + 4] = TALL_GRASS;
-        ground[x - 1, y + 4] = TALL_GRASS;
-        ground[x + 2, y + 4] = TALL_GRASS;
+        mapTile[x, y + 4] = TALL_GRASS;
+        mapTile[x + 1, y + 4] = TALL_GRASS;
+        mapTile[x - 1, y + 4] = TALL_GRASS;
+        mapTile[x + 2, y + 4] = TALL_GRASS;
     }
 
     public void DrawNPC(int x, int y)
     {
-        ground[x, y] = '8';
+        mapTile[x, y] = '8';
     }
 
     public void DrawTree(int x, int y)
     {
-        ground[x, y + 4] = '|';
+        mapTile[x, y + 4] = '|';
 
-        ground[x , y] = '^';
+        mapTile[x, y] = '^';
 
-        ground[x, y + 1] = '^';
-        ground[x - 1, y + 1] = '^';
-        ground[x + 1, y + 1] = '^';
+        mapTile[x, y + 1] = '^';
+        mapTile[x - 1, y + 1] = '^';
+        mapTile[x + 1, y + 1] = '^';
 
-        ground[x, y + 2] = '^';
-        ground[x - 1, y + 2] = '^';
-        ground[x - 2, y + 2] = '^';
-        ground[x + 1, y + 2] = '^';
-        ground[x + 2, y + 2] = '^';
+        mapTile[x, y + 2] = '^';
+        mapTile[x - 1, y + 2] = '^';
+        mapTile[x - 2, y + 2] = '^';
+        mapTile[x + 1, y + 2] = '^';
+        mapTile[x + 2, y + 2] = '^';
 
-        ground[x, y + 3] = '^';
-        ground[x - 1, y + 3] = '^';
-        ground[x - 2, y + 3] = '^';
-        ground[x - 3, y + 3] = '^';
-        ground[x + 1, y + 3] = '^';
-        ground[x + 2, y + 3] = '^';
-        ground[x + 3, y + 3] = '^';
+        mapTile[x, y + 3] = '^';
+        mapTile[x - 1, y + 3] = '^';
+        mapTile[x - 2, y + 3] = '^';
+        mapTile[x - 3, y + 3] = '^';
+        mapTile[x + 1, y + 3] = '^';
+        mapTile[x + 2, y + 3] = '^';
+        mapTile[x + 3, y + 3] = '^';
 
     }
 
-    public bool MovePlayer(int moveX, int moveY)
+    public void MovePlayer( int moveX, int moveY)
     {
-        int newPosX = positionX + moveX;
-        int newPosY = positionY + moveY;
+        int nextPosX = positionX + moveX;
+        int nextPosY = positionY + moveY;
 
-        if (newPosX >= 0 && newPosX < width && newPosY >= 0 && newPosY < height)
+        if (nextPosX != 0 && nextPosX != width && nextPosY != 0 && nextPosY != height)
         {
-            char nextCell = ground[newPosX, newPosY];
-
-            if (nextCell == ' ' || nextCell == '#')
+            if (mapTile[nextPosX, nextPosY] == ' ' || mapTile[nextPosX, nextPosY] == '#')
             {
-                // bon faudra refaire ça pcq c pas bon
-                if (nextCell == ' ')
-                {
-                    ground[positionX, positionY] = ' ';
-                }
-                else
-                {
-                    ground[positionX, positionY] = TALL_GRASS;
-                }
-                    
-                positionX = newPosX;
-                positionY = newPosY;
-                ground[positionX, positionY] = 'P';
-
-                return true;
+                mapTile[positionX, positionY] = nextCell;
+                nextCell = mapTile[nextPosX, nextPosY];
+                positionX = nextPosX;
+                positionY = nextPosY;
+                mapTile[positionX, positionY] = 'P';
             }
         }
-        return false;
+        else if (nextPosX == 0 || nextPosX == width)
+        {
+            if (nextPosY <= height / 2 + heightGap && nextPosY >= height / 2 - heightGap)
+            {
+                SwapZone();
+                Debug.WriteLine("Changement de map");
+            }
+        }
+        else if (nextPosY == 0 || nextPosY == height)
+        {
+            if (nextPosX <= width / 2 + widthGap && nextPosX >= width / 2 - widthGap)
+            {
+                SwapZone();
+                Debug.WriteLine("Changement de map");
+            }
+        }
     }
 
     public void DisplayDialog()
@@ -288,7 +326,7 @@ public class Map
 
     public bool IsNPCNearby(int x, int y)
     {
-        return x >= 0 && x < width && y >= 0 && y < height && ground[x, y] == '8';
+        return x >= 0 && x < width && y >= 0 && y < height && mapTile[x, y] == '8';
     }
 
     public bool InteractWithNPC()
@@ -307,6 +345,101 @@ public class Map
         }
 
         return false;
+    }
+
+    public void GenerateBuilding()
+    {
+        Random random = new Random();
+
+        int buildingRndNbr = random.Next(4, 10);
+        int kindOfBuilding = 0;
+        for (int o = 0; o < buildingRndNbr; o++)
+        {
+            kindOfBuilding = random.Next(1, 3);
+            bool canBuild = false;
+            int x = 0;
+            int y = 0;
+            while (!canBuild)
+            {
+                x = random.Next(1, width);
+                y = random.Next(1, height);
+                if (x + 9 >= width || y + 5 >= height || x + 6 >= width || y + 3 >= height)
+                {
+                    continue;
+                }
+                if (kindOfBuilding == 1)
+                {
+                    for (int j = x; j < x + 6; j++)
+                    {
+                        for (int k = y; k < y + 3; k++)
+                        {
+                            if (mapTile[j, k] == ' ')
+                            {
+                                canBuild = true;
+                            }
+                            else
+                            {
+                                canBuild = false;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for (int j = x; j < x + 9; j++)
+                    {
+                        for (int k = y; k < y + 5; k++)
+                        {
+                            if (mapTile[j, k] == ' ')
+                            {
+                                canBuild = true;
+                            }
+                            else
+                            {
+                                canBuild = false;
+                            }
+                        }
+                    }
+                }
+            }
+            if (kindOfBuilding == 1)
+            {
+                DrawHouse1(x, y);
+            }
+            else
+            {
+                DrawHouse2(x, y);
+            }
+        }
+    }
+
+    public void SwapZone()
+    {
+        if (positionX == 0)
+        {
+            Player.instance.positionX = width - 1;
+            Player.instance.mapGlobalIndex[0] = Player.instance.mapIndexX - 1;
+            Player.instance.mapIndexX--;
+        }
+        else if (positionX == width)
+        {
+            Player.instance.positionX = 1;
+            Player.instance.mapGlobalIndex[0] = Player.instance.mapIndexX + 1;
+            Player.instance.mapIndexX++;
+        }
+        else if (positionY == 0)
+        {
+            Player.instance.positionY = height - 1;
+            Player.instance.mapGlobalIndex[1] = Player.instance.mapIndexY - 1;
+            Player.instance.mapIndexY--;
+        }
+        else if (positionY == height)
+        {
+            Player.instance.positionY = 1;
+            Player.instance.mapGlobalIndex[1] = Player.instance.mapIndexY + 1;
+            Player.instance.mapIndexY++;
+        }
+        InitializeMap();
     }
 
 }

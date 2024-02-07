@@ -12,7 +12,6 @@ class ItemList
    Item advencedPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Advanced Potion",15);
    Item ultimatePotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Ultimate Potion",30);
 
-
     public ItemList()
     {
         listItem.Add(starterPotion);

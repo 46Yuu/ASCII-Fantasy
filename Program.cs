@@ -1,23 +1,23 @@
-﻿using System;
+﻿using ASCIIFantasy;
+using System;
 
 class Program
 {
+    public static int width = 120;
+    public static int height = 28;
+
     static void Main()
     {
         Console.CursorVisible = false;
-
-        Map map = new Map(120, 28);
-        map.DrawHouse1(10, 10);
-        map.DrawHouse2(20, 10);
-        map.DrawRoundTallGrass(10, 2);
-        map.DrawNPC(55, 12);
-        map.DrawTree(40, 15);
-
+        MapArray mapArray = new MapArray();
+        Player.CreateInstance();
+        MapArray.maps[99, 99] = new Map(width, height);
+        MapArray.activeMap =MapArray.maps[99, 99];
         Menu mainMenu = new Menu(new string[] { "NEW GAME", "LOAD GAME", "EXIT" });
 
         while (true)
         {
-            if (!map.InDialogue)
+            if (!MapArray.activeMap.InDialogue)
             {
                 mainMenu.Display();
 
@@ -30,7 +30,7 @@ class Program
 
                     if (selectedOption == "NEW GAME")
                     {
-                        RunGame(map);
+                        RunGame( MapArray.activeMap);
                     }
                     else if (selectedOption == "LOAD GAME")
                     {
@@ -57,7 +57,7 @@ class Program
             }
             else
             {
-                map.DisplayDialog();
+                MapArray.activeMap.DisplayDialog();
             }
         }
     }
@@ -81,10 +81,10 @@ class Program
                     map.MovePlayer(0, 1);
                     break;
                 case ConsoleKey.LeftArrow:
-                    map.MovePlayer(-1, 0);
+                    map.MovePlayer( -1, 0);
                     break;
                 case ConsoleKey.RightArrow:
-                    map.MovePlayer(1, 0);
+                    map.MovePlayer( 1, 0);
                     break;
                 case ConsoleKey.E:
                     if (map.InteractWithNPC())

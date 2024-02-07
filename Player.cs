@@ -7,7 +7,14 @@ namespace ASCIIFantasy
 {
     public class Player : Character
     {
+        public static Player instance;
         public List<Character> listCharacters { get; set; }
+        public  int positionX;
+        public  int positionY;
+
+        public int mapIndexX = 0;
+        public int mapIndexY = 0;
+        public int[] mapGlobalIndex  = new int[2];
         public Inventory inventory { get; set; }
         int selectedCharacterIndex;
 
@@ -15,6 +22,8 @@ namespace ASCIIFantasy
         {
             listCharacters = new();
             inventory = new();
+            positionX = Program.width / 2;
+            positionY = Program.height / 2;
         }
 
         public void AddCharacter(Character c)
@@ -278,6 +287,15 @@ namespace ASCIIFantasy
                     Console.WriteLine(options[i]);
                 }
             }
+        }
+
+        public static Player CreateInstance()
+        {
+            if (instance == null)
+            {
+                instance = new();
+            }
+            return instance;
         }
 
         /*  static void Main(string[] args)
