@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ASCIIFantasy
+﻿namespace ASCIIFantasy
 {
     public class Item
     {
@@ -16,18 +9,22 @@ namespace ASCIIFantasy
         public int power;
         public enum ItemType
         {
-            Potion,
+            HealthPotion,
+            ManaPotion,
             ItemBuff
         }
 
         public ItemType type;
 
-        public void  Use (Character character)
+        public void Use(Character character)
         {
             switch (type)
             {
-                case ItemType.Potion:
-                    character.stats.IncrementHealth(power) ;
+                case ItemType.HealthPotion:
+                    character.stats.IncrementHealth(power);
+                    break;
+                case ItemType.ManaPotion:
+                    character.stats.IncrementMana(power);
                     break;
                 case ItemType.ItemBuff:
                     break;
@@ -36,7 +33,7 @@ namespace ASCIIFantasy
             }
         }
 
-        public Item CreateNewItem(ItemType type,string _name,int _power,int number = 0)
+        public Item CreateNewItem(ItemType type, string _name, int _power, int number = 0)
         {
             Item item = new();
             item.type = type;
@@ -46,7 +43,7 @@ namespace ASCIIFantasy
             return item;
         }
 
-        public  static Item CreateInstance()
+        public static Item CreateInstance()
         {
             if (instance == null)
             {

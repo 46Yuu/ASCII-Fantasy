@@ -97,6 +97,7 @@ namespace ASCIIFantasy
         public void IncrementMana(int i)
         {
             actual_mana += i;
+            if (actual_mana > mana) actual_mana = mana;
         }
 
         public void IncrementAttack(int i)
