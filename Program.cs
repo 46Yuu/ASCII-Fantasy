@@ -9,15 +9,15 @@ class Program
     static void Main()
     {
         Console.CursorVisible = false;
-        MapArray mapArray = new MapArray();
+        MapArray.CreateInstance();
         Player.CreateInstance();
-        MapArray.maps[99, 99] = new Map(width, height);
-        MapArray.activeMap =MapArray.maps[99, 99];
+        MapArray.instance.maps[99, 99] = new Map(width, height);
+        MapArray.instance.activeMap =MapArray.instance.maps[99, 99];
         Menu mainMenu = new Menu(new string[] { "NEW GAME", "LOAD GAME", "EXIT" });
 
         while (true)
         {
-            if (!MapArray.activeMap.InDialogue)
+            if (!MapArray.instance.activeMap.InDialogue)
             {
                 mainMenu.Display();
 
@@ -30,7 +30,7 @@ class Program
 
                     if (selectedOption == "NEW GAME")
                     {
-                        RunGame( MapArray.activeMap);
+                        RunGame();
                     }
                     else if (selectedOption == "LOAD GAME")
                     {
@@ -57,17 +57,17 @@ class Program
             }
             else
             {
-                MapArray.activeMap.DisplayDialog();
+                MapArray.instance.activeMap.DisplayDialog();
             }
         }
     }
 
-    static void RunGame(Map map)
+    static void RunGame()
     {
 
         while (true)
         {
-            map.DisplayMap();
+            MapArray.instance.activeMap.DisplayMap();
 
             ConsoleKeyInfo keyInfo = Console.ReadKey();
             Console.Clear();
@@ -75,21 +75,21 @@ class Program
             switch (keyInfo.Key)
             {
                 case ConsoleKey.UpArrow:
-                    map.MovePlayer(0, -1);
+                    MapArray.instance.activeMap.MovePlayer(0, -1);
                     break;
                 case ConsoleKey.DownArrow:
-                    map.MovePlayer(0, 1);
+                    MapArray.instance.activeMap.MovePlayer(0, 1);
                     break;
                 case ConsoleKey.LeftArrow:
-                    map.MovePlayer( -1, 0);
+                    MapArray.instance.activeMap.MovePlayer( -1, 0);
                     break;
                 case ConsoleKey.RightArrow:
-                    map.MovePlayer( 1, 0);
+                    MapArray.instance.activeMap.MovePlayer( 1, 0);
                     break;
                 case ConsoleKey.E:
-                    if (map.InteractWithNPC())
+                    if (MapArray.instance.activeMap.InteractWithNPC())
                     {
-                        map.DisplayDialog();
+                        MapArray.instance.activeMap.DisplayDialog();
                     }
                     break;
             }

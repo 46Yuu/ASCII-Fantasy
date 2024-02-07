@@ -1,6 +1,7 @@
 ﻿using ASCIIFantasy;
 using System;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 
 public class Map
 {
@@ -37,60 +38,68 @@ public class Map
         inDialogue = false;
         currentDialogueIndex = 0;
     }
+  
+    private void InitializeNextMap()
+    {
+        nextCell = ' ';
 
+        if (MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]] != null)
+        {
+            MapArray.instance.activeMap = MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]];
+            MapArray.instance.activeMap.SetPlayer(Player.instance.positionX, Player.instance.positionY);
+        }
+        else
+        {
+            Map newMap = new Map(Program.width, Program.height);
+
+        }
+    }
     private void InitializeMap()
     {
         positionX = Player.instance.positionX;
         positionY = Player.instance.positionY;
-        Debug.WriteLine($"index X : {Player.instance.mapIndexX}\nindex Y : {Player.instance.mapIndexY}");
         nextCell = ' ';
-        
-        if (MapArray.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]] != null)
-        {
-            MapArray.activeMap = MapArray.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]];
-        }
-        else
-        {
-            for (int i = 0; i < width; i++)
-            {
-                for (int j = 0; j < height; j++)
-                {
-                    mapTile[i, j] = ' ';
-                }
-            }
 
-            // Borders
-            for (int i = 0; i < width; i++)
-            {
-                if (i < (width / 2) - widthGap || i > (width / 2) + widthGap)
-                {
-
-                    mapTile[i, 0] = '-';
-                    mapTile[i, height - 1] = '-';
-                }
-                else
-                {
-                    mapTile[i, 0] = ' ';
-                    mapTile[i, height - 1] = ' ';
-                }
-            }
+        for (int i = 0; i < width; i++)
+        {
             for (int j = 0; j < height; j++)
             {
-                if (j < (height / 2) - heightGap || j > (height / 2) + heightGap)
-                {
-                    mapTile[0, j] = '|';
-                    mapTile[width - 1, j] = '|';
-                }
-                else
-                {
-                    mapTile[0, j] = ' ';
-                    mapTile[width - 1, j] = ' ';
-                }
+                mapTile[i, j] = ' ';
             }
-            mapTile[positionX, positionY] = 'P'; // Player
-            GenerateBuilding();
-            MapArray.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]] = this;
         }
+
+        // Borders
+        for (int i = 0; i < width; i++)
+        {
+            if (i < (width / 2) - widthGap || i > (width / 2) + widthGap)
+            {
+
+                mapTile[i, 0] = '-';
+                mapTile[i, height - 1] = '-';
+            }
+            else
+            {
+                mapTile[i, 0] = ' ';
+                mapTile[i, height - 1] = ' ';
+            }
+        }
+        for (int j = 0; j < height; j++)
+        {
+            if (j < (height / 2) - heightGap || j > (height / 2) + heightGap)
+            {
+                mapTile[0, j] = '|';
+                mapTile[width - 1, j] = '|';
+            }
+            else
+            {
+                mapTile[0, j] = ' ';
+                mapTile[width - 1, j] = ' ';
+            }
+        }
+        mapTile[positionX, positionY] = 'P'; // Player
+        GenerateBuilding();
+        MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]] = this;
+        MapArray.instance.activeMap = this;
     }
 
     public void DisplayMap()
@@ -232,11 +241,18 @@ public class Map
 
     }
 
+    public void SetPlayer(int posX, int posY)
+    {
+        mapTile[positionX, positionY] = nextCell;
+        positionX = posX;
+        positionY = posY;
+        nextCell = mapTile[positionX, positionY];
+        mapTile[positionX, positionY] = 'P';
+    }
     public void MovePlayer( int moveX, int moveY)
     {
         int nextPosX = positionX + moveX;
         int nextPosY = positionY + moveY;
-
         if (nextPosX != 0 && nextPosX != width && nextPosY != 0 && nextPosY != height)
         {
             if (mapTile[nextPosX, nextPosY] == ' ' || mapTile[nextPosX, nextPosY] == '#')
@@ -245,6 +261,8 @@ public class Map
                 nextCell = mapTile[nextPosX, nextPosY];
                 positionX = nextPosX;
                 positionY = nextPosY;
+                Player.instance.positionX = positionX;
+                Player.instance.positionY = positionY;
                 mapTile[positionX, positionY] = 'P';
             }
         }
@@ -253,7 +271,6 @@ public class Map
             if (nextPosY <= height / 2 + heightGap && nextPosY >= height / 2 - heightGap)
             {
                 SwapZone();
-                Debug.WriteLine("Changement de map");
             }
         }
         else if (nextPosY == 0 || nextPosY == height)
@@ -261,9 +278,10 @@ public class Map
             if (nextPosX <= width / 2 + widthGap && nextPosX >= width / 2 - widthGap)
             {
                 SwapZone();
-                Debug.WriteLine("Changement de map");
+
             }
         }
+
     }
 
     public void DisplayDialog()
@@ -415,31 +433,36 @@ public class Map
 
     public void SwapZone()
     {
-        if (positionX == 0)
+
+        if (positionX == 1)
         {
             Player.instance.positionX = width - 1;
             Player.instance.mapGlobalIndex[0] = Player.instance.mapIndexX - 1;
             Player.instance.mapIndexX--;
+
         }
-        else if (positionX == width)
+        else if (positionX == width-1)
         {
             Player.instance.positionX = 1;
             Player.instance.mapGlobalIndex[0] = Player.instance.mapIndexX + 1;
             Player.instance.mapIndexX++;
+
         }
-        else if (positionY == 0)
+        else if (positionY == 1)
         {
             Player.instance.positionY = height - 1;
             Player.instance.mapGlobalIndex[1] = Player.instance.mapIndexY - 1;
             Player.instance.mapIndexY--;
+
         }
-        else if (positionY == height)
+        else if (positionY == height-1)
         {
             Player.instance.positionY = 1;
             Player.instance.mapGlobalIndex[1] = Player.instance.mapIndexY + 1;
             Player.instance.mapIndexY++;
+
         }
-        InitializeMap();
+        InitializeNextMap();
     }
 
 }

@@ -6,9 +6,20 @@ using System.Threading.Tasks;
 
 namespace ASCIIFantasy
 {
-    internal class MapArray
+    public class MapArray
     {
-        public static Map activeMap;
-        public static Map[,] maps = new Map[198,198];
+        public Map activeMap { get; set; }
+        public Map[,] maps = new Map[198,198];
+
+        public static MapArray instance;
+
+        public static MapArray CreateInstance()
+        {
+            if (instance == null)
+            {
+                instance = new MapArray();
+            }
+            return instance;
+        }
     }
 }
