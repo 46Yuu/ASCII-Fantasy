@@ -17,15 +17,15 @@ namespace ASCIIFantasy
 
         public override void BuffStats(Character attacker, Character receiver)
         {
-            int ptsOfBuff = (attacker.GetStats().attack * power) / 100;
+            int ptsOfBuff = (attacker.stats.attack * power) / 100;
             Console.WriteLine($" {attacker.name} buffed by "+ptsOfBuff+" points his attack stat!");
-            attacker.GetStats().IncrementAttack(ptsOfBuff);
+            attacker.stats.IncrementAttack(ptsOfBuff);
         }
     }
 
     public class RyuMonsho : Buff
     {
-        public RyuMonsho() : base("Ryu Monsho", Element.Neutral, 30, 10) { }
+        public RyuMonsho() : base("Ryu Monsho", Element.Neutral, 30, 50) { }
 
         public override void Use(Character attacker, Character receiver)
         {
@@ -36,7 +36,7 @@ namespace ASCIIFantasy
         {
             int ptsOfBuff = power;
             Console.WriteLine($" {attacker.name} buffed by " + ptsOfBuff + " points his attack stat!");
-            attacker.GetStats().IncrementAttack(ptsOfBuff);
+            attacker.stats.IncrementAttack(ptsOfBuff);
         }
     }
 
@@ -51,9 +51,9 @@ namespace ASCIIFantasy
 
         public override void BuffStats(Character attacker, Character receiver)
         {
-            int ptsOfBuff = (attacker.GetStats().intelligence * power) / 100;
+            int ptsOfBuff = (attacker.stats.intelligence * power) / 100;
             Console.WriteLine($" {attacker.name} buffed by " + ptsOfBuff + " points his intelligence stat!");
-            attacker.GetStats().IncrementAttack(ptsOfBuff);
+            attacker.stats.IncrementAttack(ptsOfBuff);
         }
     }
 
@@ -68,9 +68,9 @@ namespace ASCIIFantasy
 
         public override void BuffStats(Character attacker, Character receiver)
         {
-            int ptsOfBuff = (attacker.GetStats().agility * power) / 100;
+            int ptsOfBuff = (attacker.stats.agility * power) / 100;
             Console.WriteLine($" {attacker.name} buffed by " + ptsOfBuff + " points his agility stat!");
-            attacker.GetStats().IncrementAttack(ptsOfBuff);
+            attacker.stats.IncrementAttack(ptsOfBuff);
         }
     }
 
@@ -85,9 +85,9 @@ namespace ASCIIFantasy
 
         public override void BuffStats(Character attacker, Character receiver)
         {
-            int ptsOfBuff = (attacker.GetStats().luck * power) / 100;
+            int ptsOfBuff = (attacker.stats.luck * power) / 100;
             Console.WriteLine($" {attacker.name} buffed by " + ptsOfBuff + " points his luck stat!");
-            attacker.GetStats().IncrementAttack(ptsOfBuff);
+            attacker.stats.IncrementAttack(ptsOfBuff);
         }
     }
 

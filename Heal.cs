@@ -15,7 +15,7 @@ namespace ASCIIFantasy
 
         public int UseHeal(int turn, Character attacker, List<Character> listCharacters)
         {
-            int mana = attacker.GetStats().actual_mana;
+            int mana = attacker.stats.actual_mana;
             if ((mana - cost) >= 0)
             {
                 string[] options = new string[listCharacters.Count+1];
@@ -69,7 +69,7 @@ namespace ASCIIFantasy
             else if (selectedIndex > 0 && selectedIndex <= listCharacters.Count)
             {
                 int value = GetHealValue(listCharacters);
-                bool crit = IsCriticalHit(listCharacters[0].GetStats().luck);
+                bool crit = IsCriticalHit(listCharacters[0].stats.luck);
                 Console.Clear();
                 Console.WriteLine($" {listCharacters[0].name} used {attack_name}");
                 if (crit)
@@ -81,8 +81,8 @@ namespace ASCIIFantasy
                 {
                     Console.WriteLine($" {listCharacters[0].name} healed {value} hp to {listCharacters[selectedIndex].name}");
                 }
-                listCharacters[0].GetStats().IncrementMana(-cost);
-                listCharacters[selectedIndex].GetStats().IncrementHealth(value);
+                listCharacters[0].stats.IncrementMana(-cost);
+                listCharacters[selectedIndex].stats.IncrementHealth(value);
                 return (turn == 1 ? 0 : 1, selectedIndex);
             }
             else
@@ -109,15 +109,15 @@ namespace ASCIIFantasy
                 }
                 if (i > 0 && i <= listCharacters.Count)
                 {
-                    listCharacters[i-1].GetStats().ShowHealth();
-                    listCharacters[i-1].GetStats().ShowMana();
+                    listCharacters[i-1].stats.ShowHealth();
+                    listCharacters[i-1].stats.ShowMana();
                 }
             }
         }
 
         public int GetHealValue(List<Character> listCharacters)
         {
-            return rnd.Next(listCharacters[0].GetStats().intelligence + 1) + power;
+            return rnd.Next(listCharacters[0].stats.intelligence + 1) + power;
         }
         
     }

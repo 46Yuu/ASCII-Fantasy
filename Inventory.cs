@@ -1,8 +1,10 @@
 ﻿using ASCIIFantasy;
 using System;
 
-class Inventory
+namespace ASCIIFantasy
 {
+    public class Inventory
+    {
     public List<GearPiece> listGearInventory;
     public List<Item> listItemInventory;
 
@@ -23,9 +25,9 @@ class Inventory
         listGearInventory.Remove(c);
     }
 
-    public void AddItem(Item _item,int _number)
+    public void AddItem(Item _item, int _number)
     {
-        if(listItemInventory.Contains(_item))
+        if (listItemInventory.Contains(_item))
         {
             listItemInventory[listItemInventory.IndexOf(_item)].numberItem += _number;
         }
@@ -107,18 +109,18 @@ class Inventory
 
     public void DisplayGearStats(GearPiece _selectedGear)
     {
-       
-                Console.WriteLine(
-                    $"\t{_selectedGear.gearName.ToUpper()}\n\n" +
-                    $"\t\t{_selectedGear.type}\n" +
-                    $"\tBonus Health : {_selectedGear.bonusHealth}\n" +
-                    $"\tBonus Mana : {_selectedGear.bonusMana}\n" +
-                    $"\tBonus Attack : {_selectedGear.bonusAttack}\n" +
-                    $"\tBonus Defense : {_selectedGear.bonusDefense}\n" +
-                    $"\tBonus Intelligence : {_selectedGear.bonusIntelligence}\n" +
-                    $"\tBonus Agility : {_selectedGear.bonusAgility}\n" +
-                    $"\tBonus Luck : {_selectedGear.bonusLuck} \n");
-  
+
+        Console.WriteLine(
+            $"\t{_selectedGear.gearName.ToUpper()}\n\n" +
+            $"\t\t{_selectedGear.type}\n" +
+            $"\tBonus Health : {_selectedGear.bonusHealth}\n" +
+            $"\tBonus Mana : {_selectedGear.bonusMana}\n" +
+            $"\tBonus Attack : {_selectedGear.bonusAttack}\n" +
+            $"\tBonus Defense : {_selectedGear.bonusDefense}\n" +
+            $"\tBonus Intelligence : {_selectedGear.bonusIntelligence}\n" +
+            $"\tBonus Agility : {_selectedGear.bonusAgility}\n" +
+            $"\tBonus Luck : {_selectedGear.bonusLuck} \n");
+
     }
 
 
@@ -141,17 +143,19 @@ class Inventory
         }
     }
 
-/*    static void Main(string[] args)
-    {
-        Character player1 = new Character("Player1", 100, 100, 10, 10, 10, 10, 10);
-        Character player2 = new Character("Player2", 100, 100, 10, 10, 10, 10, 10);
-        Player player = new Player();
-        player.listCharacters.Add(player1);
-        player.listCharacters.Add(player2);
-        player1.AddAttack("Fireball");
-        player1.AddAttack("Bulk_up");
-        player2.AddAttack("Fireball");
-        player.SelectCharacter();
-    }*/
+    /*    static void Main(string[] args)
+        {
+            Character player1 = new Character("Player1", 100, 100, 10, 10, 10, 10, 10);
+            Character player2 = new Character("Player2", 100, 100, 10, 10, 10, 10, 10);
+            Player player = new Player();
+            player.listCharacters.Add(player1);
+            player.listCharacters.Add(player2);
+            player1.AddAttack("Fireball");
+            player1.AddAttack("Bulk_up");
+            player2.AddAttack("Fireball");
+            player.SelectCharacter();
+        }*/
 
+}
+ 
 }

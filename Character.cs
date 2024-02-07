@@ -8,13 +8,13 @@ namespace ASCIIFantasy
 {
 
 
-    public class Character 
+    public class Character
     {
-        public string name { get; set;}
+        public string name { get; set; }
         protected Element element;
-        protected StatsCharacter stats { get; set; }
+        public StatsCharacter stats { get; set; }
         protected List<Attack> listAttack = new List<Attack>();
-        protected Gear CharacterGear { get;}
+        public Gear characterGear { get; }
         public bool isDead { get; set; } = false;
 
         public Character()
@@ -26,10 +26,10 @@ namespace ASCIIFantasy
             AddGearStats();
         }
 
-        public Character(string n,Element _element, int hp, int man, int atk, int def, int intel, int agi, int luc)
+        public Character(string n, Element _element, int hp, int man, int atk, int def, int intel, int agi, int luc)
         {
             name = n;
-            stats = new StatsCharacter(hp,man,atk,def,intel,agi,luc);
+            stats = new StatsCharacter(hp, man, atk, def, intel, agi, luc);
             element = _element;
             Physical melee = new Physical("Melee", Element.Neutral, 0, 0);
             listAttack.Add(melee);
@@ -52,10 +52,6 @@ namespace ASCIIFantasy
             throw new Exception("Attack not found");
         }
 
-        public StatsCharacter GetStats()
-        {
-            return stats;
-        }
 
         public List<string> GetListSpells()
         {
@@ -98,8 +94,6 @@ namespace ASCIIFantasy
 
         public Element GetElement() { return element; }
 
-        //Main for testing
-        /*static void Main()
         public void AddGearStats()
         {
             if (characterGear != null)

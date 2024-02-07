@@ -13,9 +13,9 @@ namespace ASCIIFantasy
 
         public override void Use(Character attacker, Character receiver)
         {
-            int damage = rnd.Next(attacker.GetStats().attack + 1);
-            bool crit = IsCriticalHit(attacker.GetStats().luck);
-            bool dodged = IsDodged(receiver.GetStats().agility);
+            int damage = rnd.Next(attacker.stats.attack + 1);
+            bool crit = IsCriticalHit(attacker.stats.luck);
+            bool dodged = IsDodged(receiver.stats.agility);
             Console.WriteLine($" {attacker.name} used {attack_name}");
 
             if (dodged)
@@ -25,12 +25,12 @@ namespace ASCIIFantasy
             else if (crit)
             {
                 damage = damage * 2;
-                receiver.GetStats().IncrementHealth(-damage);
+                receiver.stats.IncrementHealth(-damage);
                 Console.WriteLine($" Critical hit ! {receiver.name} received {damage} damage!");
             }
             else
             {
-                receiver.GetStats().IncrementHealth(-damage);
+                receiver.stats.IncrementHealth(-damage);
                 Console.WriteLine($" {receiver.name} received {damage} damage!");
             }
             IsCharacterDead(receiver);

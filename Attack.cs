@@ -38,9 +38,9 @@ namespace ASCIIFantasy
 
         public void IsCharacterDead(Character character)
         {
-            if (character.GetStats().actual_hp <= 0)
+            if (character.stats.actual_hp <= 0)
             {
-                character.GetStats().actual_hp = 0;
+                character.stats.actual_hp = 0;
                 character.isDead = true;
             }
         }   

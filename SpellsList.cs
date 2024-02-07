@@ -18,7 +18,7 @@ namespace ASCIIFantasy
         public override int DamageCalculation(Character attacker, Character receiver)
         {
 
-            int tmpDamage = rnd.Next(attacker.GetStats().intelligence+1) + power;
+            int tmpDamage = rnd.Next(attacker.stats.intelligence+1) + power;
             if(receiver.GetElement() == Element.Grass )
             {
                 Console.ForegroundColor = ConsoleColor.Red;

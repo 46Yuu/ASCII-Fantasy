@@ -13,14 +13,14 @@ namespace ASCIIFantasy
         public override void Use(Character attacker, Character receiver)
         {
             
-            int mana = attacker.GetStats().actual_mana;
+            int mana = attacker.stats.actual_mana;
             if ((mana - cost) >= 0)
             {
-                bool crit = IsCriticalHit(attacker.GetStats().luck);
-                bool dodged = IsDodged(receiver.GetStats().agility);
+                bool crit = IsCriticalHit(attacker.stats.luck);
+                bool dodged = IsDodged(receiver.stats.agility);
                 Console.WriteLine($" {attacker.name} used {attack_name}");
                 int damage = DamageCalculation(attacker, receiver);
-                attacker.GetStats().IncrementMana(-cost);
+                attacker.stats.IncrementMana(-cost);
                 if (dodged)
                 {
                     Console.WriteLine($" But {receiver.name} dodged !");
@@ -28,14 +28,14 @@ namespace ASCIIFantasy
                 else if (crit)
                 {
                     damage *= 2;
-                    receiver.GetStats().IncrementHealth(-damage);
+                    receiver.stats.IncrementHealth(-damage);
                     Console.BackgroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($" Critical hit ! {receiver.name} received {damage} damage!");
                     Console.ResetColor();
                 }
                 else
                 {
-                    receiver.GetStats().IncrementHealth(-damage);
+                    receiver.stats.IncrementHealth(-damage);
                     Console.WriteLine($" {receiver.name} received {damage} damage!");
                 }
             }
@@ -49,7 +49,7 @@ namespace ASCIIFantasy
 
         public virtual int DamageCalculation(Character attacker, Character receiver)
         {
-            return rnd.Next(attacker.GetStats().intelligence+1) + power;
+            return rnd.Next(attacker.stats.intelligence+1) + power;
         }
     }
 }

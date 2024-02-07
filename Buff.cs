@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using ASCIIFantasy;
 
 namespace ASCIIFantasy
 {
@@ -16,11 +17,11 @@ namespace ASCIIFantasy
         //power = buff power in percentage
         public override void Use(Character attacker, Character receiver)
         {
-            int mana = attacker.GetStats().actual_mana;
+            int mana = attacker.stats.actual_mana;
             if ((mana - cost) >= 0)
             {
                 Console.WriteLine($" {attacker.name} used {attack_name}");
-                attacker.GetStats().IncrementMana(-cost);
+                attacker.stats.IncrementMana(-cost);
                 BuffStats(attacker, receiver);
             }
             else
