@@ -80,7 +80,7 @@ class Program
 
     static void RunGame(Map map, Player player)
     {
-        AltMenu altMenu = new AltMenu(new string[] { "RESUME GAME", "INVENTORY", "TEAM", "MAIN MENU", "EXIT GAME" });
+        AltMenu altMenu = new AltMenu(new string[] { "RESUME GAME", "INVENTORY", "TEAM", "SAVE GAME", "MAIN MENU", "EXIT GAME" });
 
         while (true)
         {
@@ -146,6 +146,10 @@ class Program
                 else if (selectedAltOption == "TEAM")
                 {
                     player.SelectCharacter();
+                }
+                else if (selectedAltOption == "SAVE GAME")
+                {
+                    // Sauvegarde ici
                 }
                 else if (selectedAltOption == "MAIN MENU")
                 {
