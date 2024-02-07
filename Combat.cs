@@ -450,7 +450,7 @@ namespace ASCIIFantasy
         }
 
 
-        static void Main(string[] args)
+       /* static void Main(string[] args)
         {
             Player player = new Player();
             Character char1 = new Character("Player",Element.Neutral, 100, 100, 1, 10, 5, 10, 10);
@@ -507,7 +507,7 @@ namespace ASCIIFantasy
             {
                 Console.WriteLine(" You lost !");
             }
-        }
+        }*/
 
     }
 
