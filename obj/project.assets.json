@@ -8,21 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\vlopez\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\VICTOR0323\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\vlopez\\Documents\\GitHub\\ASCII-Fantasy\\ASCIIFantasy.csproj",
+      "projectUniqueName": "C:\\Users\\VICTOR0323\\source\\repos\\46Yuu\\ASCII-Fantasy\\ASCIIFantasy.csproj",
       "projectName": "ASCIIFantasy",
-      "projectPath": "C:\\Users\\vlopez\\Documents\\GitHub\\ASCII-Fantasy\\ASCIIFantasy.csproj",
-      "packagesPath": "C:\\Users\\vlopez\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\vlopez\\Documents\\GitHub\\ASCII-Fantasy\\obj\\",
+      "projectPath": "C:\\Users\\VICTOR0323\\source\\repos\\46Yuu\\ASCII-Fantasy\\ASCIIFantasy.csproj",
+      "packagesPath": "C:\\Users\\VICTOR0323\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\VICTOR0323\\source\\repos\\46Yuu\\ASCII-Fantasy\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\vlopez\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\VICTOR0323\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -84,16 +82,8 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.417\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problème de lecture du fichier cache C:\\Users\\vlopez\\Documents\\GitHub\\ASCII-Fantasy\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }
