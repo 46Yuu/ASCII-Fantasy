@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace ASCIIFantasy
@@ -7,7 +8,7 @@ namespace ASCIIFantasy
     public class Character
     {
         protected string name;
-        protected StatsCharacter stats { get; set; }
+        public StatsCharacter stats { get; set; }
         protected Dictionary<string, Attack> listAttack = new Dictionary<string, Attack>();
         public Gear characterGear { get; }
 
@@ -134,15 +135,42 @@ namespace ASCIIFantasy
             }
         }
 
-        //Main for testing
-        /*static void Main()
+        public void Equip(GearPiece piece)
         {
-            Character player = new Character("Player", 100, 100, 10, 10, 10, 10, 10);
-            Console.WriteLine(player.ToString());
-            Console.WriteLine(player.GetListSpells()[0]);
-            player.AddAttack("Fireball");
-            Console.WriteLine(player.GetListSpells()[1]);
-
-        }*/
+            if (characterGear.pieces[(int)piece.type] != null)
+            {
+                characterGear.pieces[(int)piece.type].isEquiped = false;
+            }
+            switch (piece.type)
+            {
+                case GearPiece.GearType.Head:
+                    characterGear.head = piece;
+                    characterGear.pieces[0] = characterGear.head;
+                    Debug.WriteLine("Equipped " + characterGear.head.gearName);
+                    break;
+                case GearPiece.GearType.Chest:
+                    characterGear.chest = piece;
+                    characterGear.pieces[1] = characterGear.chest;
+                    Debug.WriteLine("Equipped " + characterGear.chest.gearName);
+                    break;
+                case GearPiece.GearType.Legs:
+                    characterGear.legs = piece;
+                    characterGear.pieces[2] = characterGear.legs;
+                    Debug.WriteLine("Equipped " + characterGear.legs.gearName);
+                    break;
+                case GearPiece.GearType.Feet:
+                    characterGear.feet = piece;
+                    characterGear. pieces[3] = characterGear.feet;
+                    Debug.WriteLine("Equipped " + characterGear.feet.gearName);
+                    break;
+                case GearPiece.GearType.Weapon:
+                    characterGear.weapon = piece;
+                    characterGear.pieces[4] = characterGear.weapon;
+                    Debug.WriteLine("Equipped " + characterGear.weapon.gearName);
+                    break;
+            }
+            piece.isEquiped = true;
+            AddGearStats();
+        }
     }
 }

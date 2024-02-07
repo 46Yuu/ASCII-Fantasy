@@ -1,13 +1,18 @@
 ﻿using ASCIIFantasy;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 class Player : Character
 {
     List<Character> listCharacters;
+    Inventory inventory;
+    int selectedCharacterIndex;
 
     public Player()
     {
-        listCharacters = new List<Character>();
+        listCharacters = new();
+        inventory = new();
     }
 
     public void AddCharacter(Character c)
@@ -26,6 +31,7 @@ class Player : Character
         string[] options = new string[this.listCharacters.Count + 1];
         options[0] = "Return";
         int selectedIndex = 0;
+        selectedCharacterIndex = 0;
         bool isChoiceDone = false;
         for (int i = 0; i < listCharacters.Count; i++)
         {
@@ -46,6 +52,7 @@ class Player : Character
                 }
                 else
                 {
+                    selectedCharacterIndex = selectedIndex-1;
                     SelectCharacterMenu(listCharacters[selectedIndex-1]);
                 }
             }
@@ -76,13 +83,13 @@ class Player : Character
         {
             if (i < _selected.GetGear().pieces.Count)
             {
-                if (_selected.GetGear().pieces[i] != null)
+                if (_selected.GetGear().pieces[i].isNull == false)
                 {
                     options[i + 1] = $"{_selected.GetGear().pieces[i].type.ToString()} : {_selected.GetGear().pieces[i].gearName}";
                 }
                 else
                 {
-                    options[i + 1] = "No Gear Equiped";
+                    options[i + 1] =$"{_selected.GetGear().pieces[i].type.ToString()} : {_selected.GetGear().pieces[i].gearName} No Gear Equiped";
                 }
             }
             else
@@ -123,25 +130,14 @@ class Player : Character
 
             if (keyInfo.Key == ConsoleKey.Enter)
             {
+                if(selectedIndex <= 6 && selectedIndex  >  0 )
+                {
+                        SelectGearToEquip(_selected.GetGear().pieces[selectedIndex - 1].type);
+                }
                 switch (selectedIndex)
                 {
                     case 0:
                         SelectCharacter();
-                        break;
-                    case 1:
-                        SelectGearToEquip(GearPiece.GearType.Head);
-                        break;
-                    case 2:
-                        SelectGearToEquip(GearPiece.GearType.Chest);
-                        break;
-                    case 3:
-                        SelectGearToEquip(GearPiece.GearType.Legs);
-                        break;
-                    case 4:
-                        SelectGearToEquip(GearPiece.GearType.Feet);
-                        break;
-                    case 5:
-                        SelectGearToEquip(GearPiece.GearType.Weapon);
                         break;
                     case 6:
                         break;
@@ -164,14 +160,22 @@ class Player : Character
 
     private void SelectGearToEquip(GearPiece.GearType _selectedGear)
     {
-        GearList list = GearList.instance;
-        string[] options = new string[list.listGear.Count + 1];
-        options[0] = "Return";
+        List<GearPiece> list = inventory.listGearInventory;
+        List<string> options = new();
+        List<int> indexes = new();
+        indexes.Add(-1);
+        options.Add("Return\n");
         int selectedIndex = 0;
         bool isChoiceDone = false;
-        for (int i = 0; i < list.listGear.Count; i++)
+        int temp = 1;
+        for (int i = 0; i < list.Count; i++)
         {
-            options[i + 1] = list.listGear[i].gearName;
+            if (list[i].type == _selectedGear && list[i].isEquiped == false)
+            {
+                options.Add( list[i].gearName);
+                indexes.Add(i);
+                temp++;
+            }
         }
         while (!isChoiceDone)
         {
@@ -189,6 +193,8 @@ class Player : Character
                 }
                 else
                 {
+                    listCharacters[selectedCharacterIndex].Equip(list[indexes[selectedIndex]]);
+                    SelectCharacterMenu(listCharacters[selectedCharacterIndex]);
                 }
             }
             else
@@ -196,10 +202,10 @@ class Player : Character
                 switch (keyInfo.Key)
                 {
                     case ConsoleKey.UpArrow:
-                        selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
+                        selectedIndex = (selectedIndex - 1 + options.Count) % options.Count;
                         break;
                     case ConsoleKey.DownArrow:
-                        selectedIndex = (selectedIndex + 1) % options.Length;
+                        selectedIndex = (selectedIndex + 1) % options.Count;
                         break;
                 }
             }
@@ -253,9 +259,9 @@ class Player : Character
             }
         }
     }
-    public void DisplayGearChoice(GearList listGear, string[] options, int selectedIndex)
+    public void DisplayGearChoice(List<GearPiece> listGear, List<string> options, int selectedIndex)
     {
-        for (int i = 0; i < options.Length; i++)
+        for (int i = 0; i < options.Count; i++)
         {
             if (i == selectedIndex)
             {
@@ -280,11 +286,11 @@ class Player : Character
         GearList.CreateInstance();
         player.listCharacters.Add(player1);
         player.listCharacters.Add(player2);
-        player2.GetGear().Equip(GearList.instance.listGear[0]);
-        player2.GetGear().Equip(GearList.instance.listGear[1]);
-        player2.GetGear().Equip(GearList.instance.listGear[2]);
-        player1.GetGear().Equip(GearList.instance.listGear[3]);
-        player1.GetGear().Equip(GearList.instance.listGear[4]);
+        player2.Equip(GearList.instance.listGear[0]);
+        player2.Equip(GearList.instance.listGear[1]);
+        player2.Equip(GearList.instance.listGear[2]);
+        player1.Equip(GearList.instance.listGear[3]);
+        player1.Equip(GearList.instance.listGear[4]);
         
         player.SelectCharacter();
     }

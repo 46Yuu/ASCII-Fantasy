@@ -46,6 +46,16 @@ class GearList
    _bonusAttack: 2
    );
 
+    GearPiece tapionegide = GearPiece.instance.CreateNewGear(
+    GearPiece.GearType.Weapon,
+    "Tapionegide",
+    _bonusAttack: 50,
+    _bonusIntelligence:30,
+    _bonusAgility: 10,
+    _bonusLuck: 20
+);
+
+
 
     public GearList()
     {
@@ -55,6 +65,7 @@ class GearList
         listGear.Add(startBoots);
         listGear.Add(startWeaponSword);
         listGear.Add(startWeaponStaff);
+        listGear.Add(tapionegide);
     }
 
     public static GearList CreateInstance()

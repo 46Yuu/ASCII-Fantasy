@@ -10,7 +10,8 @@ namespace ASCIIFantasy
     public class GearPiece
     {
         public static GearPiece instance;
-        
+        public bool isNull = false;
+        public bool isEquiped = false;
 
         public string gearName { get; set; }
         public enum GearType
@@ -32,20 +33,22 @@ namespace ASCIIFantasy
         public int bonusLuck { get; set; }
 
 
-        public GearPiece CreateNewGear(GearType type, string _name, int _bonusHealth = 0, int _bonusMana = 0, int _bonusAttack = 0, int _bonusDefense = 0, int _bonusIntelligence = 0, int _bonusAgility = 0, int _bonusLuck = 0)
+        public GearPiece CreateNewGear(GearType type, string _name, bool _isNull = false , int _bonusHealth = 0, int _bonusMana = 0, int _bonusAttack = 0, int _bonusDefense = 0, int _bonusIntelligence = 0, int _bonusAgility = 0, int _bonusLuck = 0)
         {
-            this.type = type;
-            this.gearName = _name;
-            this.bonusHealth = _bonusHealth;
-            this.bonusMana = _bonusMana;
-            this.bonusAttack = _bonusAttack;
-            this.bonusDefense = _bonusDefense;
-            this.bonusIntelligence = _bonusIntelligence;
-            this.bonusAgility = _bonusAgility;
-            this.bonusLuck = _bonusLuck;
-
-            return this;
+           GearPiece gear =  new GearPiece();
+            gear.type = type;
+            gear.gearName = _name;
+            gear.bonusHealth = _bonusHealth;
+            gear.bonusMana = _bonusMana;
+            gear.bonusAttack = _bonusAttack;
+            gear.bonusDefense = _bonusDefense;
+            gear.bonusIntelligence = _bonusIntelligence;
+            gear.bonusAgility = _bonusAgility;
+            gear.bonusLuck = _bonusLuck;
+            gear.isNull = _isNull;
+            return gear;
         }
+
 
         public static GearPiece CreateInstance()
         {
