@@ -3,7 +3,7 @@ using System;
 
 class ItemList
 {
-    public static Item  instance;
+    public static ItemList  instance;
 
     public List<Item> listItem = new();
 
@@ -20,7 +20,7 @@ class ItemList
         listItem.Add(ultimatePotion);
     }
 
-    public static Item CreateInstance()
+    public static ItemList CreateInstance()
     {
         if (instance == null)
         {

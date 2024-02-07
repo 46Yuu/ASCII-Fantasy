@@ -30,9 +30,9 @@ public class Map
 
         dialogues = new List<string>
         {
-            "NPC: Bonjour, aventurier !",
-            "NPC: Comment puis-je vous aider ?",
-            "NPC: N'hésitez pas à me poser des questions !"
+            "NPC: Hello, adventurer!",
+            "NPC: How can I assist you?",
+            "NPC: Feel free to ask me any questions!"
         };
 
         inDialogue = false;

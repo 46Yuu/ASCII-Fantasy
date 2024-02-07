@@ -1,5 +1,7 @@
 ﻿using ASCIIFantasy;
 using System;
+using System.Numerics;
+using System.Xml.Linq;
 
 class Program
 {
@@ -64,6 +66,7 @@ class Program
 
     static void RunGame()
     {
+        AltMenu altMenu = new AltMenu(new string[] { "RESUME GAME", "INVENTORY", "TEAM", "SAVE GAME", "MAIN MENU", "EXIT GAME" });
 
         while (true)
         {
@@ -92,7 +95,71 @@ class Program
                         MapArray.instance.activeMap.DisplayDialog();
                     }
                     break;
+                case ConsoleKey.Escape:
+                    bool returnToMainMenu = ShowAltMenu(altMenu, player);
+                    if (returnToMainMenu)
+                    {
+                        return;
+                    }
+                    break;
             }
         }
+    }
+
+    static bool ShowAltMenu(AltMenu altMenu, Player player)
+    {
+        bool altMenuActive = true;
+
+        while (altMenuActive)
+        {
+            altMenu.Display();
+
+            ConsoleKeyInfo altKeyInfo = Console.ReadKey();
+            Console.Clear();
+
+            if (altKeyInfo.Key == ConsoleKey.Enter)
+            {
+                string selectedAltOption = altMenu.GetSelectedOption();
+
+                if (selectedAltOption == "RESUME GAME")
+                {
+                    altMenuActive = false;
+                }
+                else if (selectedAltOption == "INVENTORY")
+                {
+                    player.inventory.SelectGearToDisplay();
+                }
+                else if (selectedAltOption == "TEAM")
+                {
+                    player.SelectCharacter();
+                }
+                else if (selectedAltOption == "SAVE GAME")
+                {
+                    // Sauvegarde ici
+                }
+                else if (selectedAltOption == "MAIN MENU")
+                {
+                    return true;
+                }
+                else if (selectedAltOption == "EXIT GAME")
+                {
+                    Environment.Exit(0);
+                }
+            }
+            else
+            {
+                switch (altKeyInfo.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        altMenu.MoveUp();
+                        break;
+                    case ConsoleKey.DownArrow:
+                        altMenu.MoveDown();
+                        break;
+                }
+            }
+        }
+
+        return false;
     }
 }
