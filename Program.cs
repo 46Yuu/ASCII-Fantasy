@@ -1,9 +1,30 @@
-﻿using System;
+﻿using ASCIIFantasy;
+using System;
 
 class Program
 {
     static void Main()
     {
+        Character player1 = new Character("Player1", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
+        Character player2 = new Character("Player2", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
+        Player player = new Player();
+        GearList.CreateInstance();
+        player.listCharacters.Add(player1);
+        player.listCharacters.Add(player2);
+        player2.Equip(GearList.instance.listGear[0]);
+        player2.Equip(GearList.instance.listGear[1]);
+        player2.Equip(GearList.instance.listGear[2]);
+        player1.Equip(GearList.instance.listGear[3]);
+        player1.Equip(GearList.instance.listGear[4]);
+        player.inventory.AddGear(GearList.instance.listGear[6]);
+        //player.inventory.AddItem(ItemList.instance.listItem[0], 5);
+
+        /*player.SelectCharacter();*/ //ouvrir menu selection personnage
+        //player.inventory.SelectGearToDisplay(); //ouvrir menu selection objet
+        
+
+        /*CreateCharacter();*/
+
         Console.CursorVisible = false;
 
         Map map = new Map(120, 28);
@@ -95,4 +116,23 @@ class Program
             }
         }
     }
+
+/*    static void CreateCharacter()
+    {
+        Character player1 = new Character("Player1", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
+        Character player2 = new Character("Player2", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
+        Player player = new Player();
+        GearList.CreateInstance();
+        player.listCharacters.Add(player1);
+        player.listCharacters.Add(player2);
+        player2.Equip(GearList.instance.listGear[0]);
+        player2.Equip(GearList.instance.listGear[1]);
+        player2.Equip(GearList.instance.listGear[2]);
+        player1.Equip(GearList.instance.listGear[3]);
+        player1.Equip(GearList.instance.listGear[4]);
+        player.inventory.AddGear(GearList.instance.listGear[6]);
+        player.inventory.AddItem(ItemList.instance.listItem[0], 5);
+
+        player.SelectCharacter();
+    }*/
 }
