@@ -405,3 +405,6 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/csharp
 obj/project.assets.json
 obj/project.nuget.cache
+obj/project.assets.json
+obj/project.nuget.cache
+obj/project.assets.json

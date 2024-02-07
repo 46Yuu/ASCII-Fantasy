@@ -7,10 +7,10 @@ class ItemList
 
     public List<Item> listItem = new();
 
-   Item starterPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.Potion, "Starter Potion",5);
-   Item smallPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.Potion, "Small Potion",10);
-   Item advencedPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.Potion, "Advanced Potion",15);
-   Item ultimatePotion = Item.CreateInstance().CreateNewItem(Item.ItemType.Potion, "Ultimate Potion",30);
+   Item starterPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Starter Potion",5);
+   Item smallPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Small Potion",10);
+   Item advencedPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Advanced Potion",15);
+   Item ultimatePotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Ultimate Potion",30);
 
 
     public ItemList()
