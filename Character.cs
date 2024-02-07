@@ -167,5 +167,7 @@ namespace ASCIIFantasy
             piece.isEquiped = true;
             AddGearStats();
         }
+
+
     }
 }

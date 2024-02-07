@@ -449,6 +449,10 @@ namespace ASCIIFantasy
             return turn == 1 ? 0 : 1;
         }
 
+        public void GiveExp()
+        {
+            
+        }
 
        /* static void Main(string[] args)
         {

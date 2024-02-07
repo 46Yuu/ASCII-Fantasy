@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "+va4ToUa0f6tnNME6ggMhuba2MErheJK+TJtZgtrDHpio5p4AFIzA1eDbkNlLeQ3yCuMHOJSifssAQ7DsB3QgA==",
+  "dgSpecHash": "X8oyr4U5P/aLCXiCxPl3Dgz+KY5R9FR9Rd/9oA73tN2WNAUmim3BdGwc2gymWNVVcu9jdZjyRWLu7NukwfnsfQ==",
   "success": true,
   "projectFilePath": "D:\\Godot\\Projects\\ASCII-Fantasy\\ASCIIFantasy.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Tran Henri\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
     "C:\\Users\\Tran Henri\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\Tran Henri\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
     "C:\\Users\\Tran Henri\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512",
     "C:\\Users\\Tran Henri\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.25\\microsoft.netcore.app.host.win-x64.6.0.25.nupkg.sha512"
   ],

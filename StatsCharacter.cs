@@ -33,9 +33,10 @@ namespace ASCIIFantasy
 
 
 
-        /*private int level = 1;
-        private int xp = 0;
-        private int xp_needed = 100;*/
+        public int level { get; set; } = 1;
+        public int experience { get; set; } = 0;
+        public int experienceToNextLevel { get; set; } = 100;
+        public int competencePointsAvailable { get; set; } = 0;
 
         public StatsCharacter()
         {
@@ -244,6 +245,18 @@ namespace ASCIIFantasy
             intelligence = initialStats["intelligence"];
             agility = initialStats["agility"];
             luck = initialStats["luck"];
+        }
+
+        public void GetExp(int exp)
+        {
+            experience += exp;
+            if (experience >= experienceToNextLevel)
+            {
+                level++;
+                experience -= experienceToNextLevel;
+                int newExperienceToNextLevel = level * 200;
+                experienceToNextLevel = newExperienceToNextLevel;
+            }
         }
     }
 }
