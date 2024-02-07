@@ -14,12 +14,64 @@ namespace ASCIIFantasy
         Player player;
         Character enemy;
         List<Character> listCharacters = new();
+        int baseExp = 10;
+
+        public Combat(Player _player,int levelCircle)
+        {
+            player = _player;
+            listCharacters = player.listCharacters;
+            enemy = CreateNewEnemy(levelCircle);
+
+        }
 
         public Combat(Player _player, Character _enemy)
         {
             player = _player;
             enemy = _enemy;
             listCharacters = player.listCharacters;
+        }
+
+        public Character CreateNewEnemy(int levelCircle)
+        {
+            //faire une liste d'enemies possible
+            Random rnd = new Random();
+            int level = 0;
+            switch (levelCircle)
+            {
+                case 0:
+                    level = rnd.Next(1, 11);
+                    break;
+                case 1:
+                    level = rnd.Next(11, 21);
+                    break;
+                case 2:
+                    level = rnd.Next(21, 31);
+                    break;
+                case 3:
+                    level = rnd.Next(31, 41);
+                    break;
+                case 4:
+                    level = rnd.Next(41, 51);
+                    break;
+                case 5:
+                    level = rnd.Next(51, 61);
+                    break;
+                case 6:
+                    level = rnd.Next(61, 71);
+                    break;
+                case 7:
+                    level = rnd.Next(71, 81);
+                    break;
+                case 8:
+                    level = rnd.Next(81, 91);
+                    break;
+                case 9:
+                    level = rnd.Next(91, 101);
+                    break;
+            }
+            Character enemy = new Character("Enemy", Element.Grass, 50, 50, 30, 5, 5, 5, 5);
+            enemy.stats.level = level;
+            return enemy;
         }
 
         public void FieldGame()
@@ -451,7 +503,16 @@ namespace ASCIIFantasy
 
         public void GiveExp()
         {
-            
+            int expToGive = baseExp * enemy.stats.level;
+            foreach (Character c in listCharacters)
+            {
+                c.stats.GetExp(expToGive);
+            }
+        }
+
+        public void StartCombat()
+        {
+
         }
 
        /* static void Main(string[] args)
