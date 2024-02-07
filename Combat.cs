@@ -147,9 +147,10 @@ namespace ASCIIFantasy
                 return (turn, selectedIndex);
             }
         }
-        public (int,int) ChangeCharacterChoice(int turn, List<Character> listCharacters, int selectedIndex)
+
+        public (int,int) ChangeCharacterChoice(int turn, List<Character> listCharacters, int selectedIndex, bool forceChange)
         {
-            if (selectedIndex == 0)
+            if ((selectedIndex == 0) && !forceChange)
             {
                 Console.WriteLine(" " + listCharacters[0].name + " return to action choice");
                 return (turn,selectedIndex);
@@ -158,6 +159,8 @@ namespace ASCIIFantasy
             {
                 Console.Clear();
                 FieldGame();
+                if(forceChange)
+                    selectedIndex = GetIndexCharacterAliveToChange(turn, listCharacters, selectedIndex);
                 Console.WriteLine(" " + listCharacters[0].name + " changed to " + listCharacters[selectedIndex].name);
                 Character temp = listCharacters[0];
                 listCharacters[0] = listCharacters[selectedIndex];
@@ -172,31 +175,56 @@ namespace ASCIIFantasy
                 return (turn, selectedIndex);
             }
         }
-        public int ChangeCharacter(int turn, List<Character> listCharacters, Character enemy,bool forceChange = false)
+
+        public int GetIndexCharacterAliveToChange(int turn, List<Character> listCharacters, int selectedIndex)
         {
-            List<string> options = new List<string>();
-            if (!forceChange)
-            {
-                options.Add("Return");
-            }
-            int selectedIndex = 0;
-            for (int i = 1; i < listCharacters.Count; i++)
+            List<int> indexCharacterAlive = new List<int>();
+            for (int i = 0; i < listCharacters.Count; i++)
             {
                 if (!listCharacters[i].isDead)
                 {
-                    options.Add(listCharacters[i].name);
+                    indexCharacterAlive.Add(i);
                 }
             }
+            return indexCharacterAlive[selectedIndex];
+        }
+
+        public int ChangeCharacter(int turn, List<Character> listCharacters, Character enemy,bool forceChange = false)
+        {
+            List<string> options = new List<string>();
+            int selectedIndex = 0;
+            if (!forceChange)
+            {
+                options.Add("Return");
+                for (int i = 1; i < listCharacters.Count; i++)
+                {
+                    if (!listCharacters[i].isDead)
+                    {
+                        options.Add(listCharacters[i].name);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < listCharacters.Count; i++)
+                {
+                    if (!listCharacters[i].isDead)
+                    {
+                        options.Add(listCharacters[i].name);
+                    }
+                }
+            }
+            
             while (turn == 0 )
             {
-                DisplayPlayerChoiceWithHealth(turn, listCharacters, enemy, options, selectedIndex);
+                DisplayPlayerChoiceWithHealth(turn, listCharacters, enemy, options, selectedIndex, forceChange);
 
                 ConsoleKeyInfo keyInfo = Console.ReadKey();
                 Console.Clear();
 
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    (turn, selectedIndex) = ChangeCharacterChoice(turn, listCharacters, selectedIndex);
+                    (turn, selectedIndex) = ChangeCharacterChoice(turn, listCharacters, selectedIndex, forceChange);
                     if (selectedIndex == 0)
                         break;
                 }
@@ -216,7 +244,7 @@ namespace ASCIIFantasy
             return turn;
         }
 
-        public void DisplayPlayerChoiceWithHealth(int turn, List<Character> listCharacters, Character enemy, List<string> options, int selectedIndex)
+        public void DisplayPlayerChoiceWithHealth(int turn, List<Character> listCharacters, Character enemy, List<string> options, int selectedIndex,bool forceChange)
         {
             this.FieldSetup(turn, listCharacters, enemy);
             for (int i = 0; i < options.Count; i++)
@@ -233,10 +261,19 @@ namespace ASCIIFantasy
                     Console.Write("  ");
                     Console.WriteLine(options[i]);
                 }
-                if (i > 0 && i < listCharacters.Count)
+                if(forceChange)
                 {
-                    listCharacters[i].GetStats().ShowHealth();
-                    listCharacters[i].GetStats().ShowMana();
+                    selectedIndex = GetIndexCharacterAliveToChange(turn, listCharacters, selectedIndex);
+                    listCharacters[selectedIndex].GetStats().ShowHealth();
+                    listCharacters[selectedIndex].GetStats().ShowMana();
+                }
+                else
+                {
+                    if (i > 0 && i < listCharacters.Count)
+                    {
+                        listCharacters[i].GetStats().ShowHealth();
+                        listCharacters[i].GetStats().ShowMana();
+                    }
                 }
             }
         }
@@ -358,8 +395,8 @@ namespace ASCIIFantasy
         {
             Combat combat = new Combat();
             Character player = new Character("Player",Element.Neutral, 100, 100, 1, 10, 5, 10, 10);
-            Character player2 = new Character("VICTROR",Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
-            Character enemy = new Character("Enemy",Element.Grass, 50, 50, 20, 5, 5, 5, 5);
+            Character player2 = new Character("VICTROR",Element.Neutral, 100, 100, 1, 10, 10, 10, 10);
+            Character enemy = new Character("Enemy",Element.Grass, 50, 50, 30, 5, 5, 5, 5);
             List<Character> listCharacters = new List<Character>();
             Spell fireball = new Fireball();
             Buff ryuMonsho = new RyuMonsho();
@@ -396,13 +433,13 @@ namespace ASCIIFantasy
                         break;
                     }
                 }
-                if (listCharacters[0].isDead)
+                if (listCharacters[0].isDead && stillCharactersAlive)
                 {
                     combat.ChangeCharacter(turn, listCharacters, enemy, true);
                 }
 
             } while (stillCharactersAlive && (enemy.GetStats().actual_hp > 0));
-            winner = (enemy.GetStats().actual_hp > 0 ? 0 : 1);
+            winner = (enemy.GetStats().actual_hp > 0 ? 1 : 0);
             if(winner == 0)
             {
                 Console.WriteLine($" {enemy.name} has been defeated !");
