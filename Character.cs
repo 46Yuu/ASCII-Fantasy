@@ -1,66 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Numerics;
 
 namespace ASCIIFantasy
 {
+
+
     public class Character
     {
-        protected string name;
+        public string name { get; set; }
+        protected Element element;
         public StatsCharacter stats { get; set; }
-        protected Dictionary<string, Attack> listAttack = new Dictionary<string, Attack>();
+        protected List<Attack> listAttack = new List<Attack>();
         public Gear characterGear { get; }
-
+        public bool isDead { get; set; } = false;
 
         public Character()
         {
-            name = "Jean-mi";
+            name = "Jean-Michel";
+            element = Element.Neutral;
             stats = new StatsCharacter();
             characterGear = new Gear();
             AddGearStats();
         }
 
-        public Character(string n, int hp, int man, int atk, int def, int intel, int agi, int luc)
+        public Character(string n, Element _element, int hp, int man, int atk, int def, int intel, int agi, int luc)
         {
             name = n;
             stats = new StatsCharacter(hp, man, atk, def, intel, agi, luc);
-            AddAttack("Melee");
+            element = _element;
+            Physical melee = new Physical("Melee", Element.Neutral, 0, 0);
+            listAttack.Add(melee);
             characterGear = new Gear();
             AddGearStats();
         }
 
-        public void AddAttack(string name)
+        public void AddAttack(Attack atk)
         {
-            Attack attack = new Attack(name);
-            listAttack.Add(name, attack);
+            listAttack.Add(atk);
         }
 
         public Attack GetAttack(string name)
         {
-            if (listAttack.ContainsKey(name))
+            foreach (Attack attack in listAttack)
             {
-                return listAttack[name];
+                if (attack.attack_name == name)
+                    return attack;
             }
-            else
-            {
-                throw new Exception("Attack not found");
-            }
+            throw new Exception("Attack not found");
         }
 
-        public StatsCharacter GetStats()
-        {
-            return stats;
-        }
 
         public List<string> GetListSpells()
         {
             List<string> ret = new List<string>();
-            foreach (var p in listAttack)
+            foreach (Attack p in listAttack)
             {
-                if (p.Key != "Melee")
+                if (p.attack_name != "Melee")
                 {
-                    ret.Add(p.Key);
+                    ret.Add(p.attack_name);
                 }
             }
             return ret;
@@ -69,35 +69,30 @@ namespace ASCIIFantasy
         public List<int> GetListCost()
         {
             List<int> ret = new List<int>();
-            foreach (var p in listAttack)
+            foreach (Attack p in listAttack)
             {
-                if (p.Key != "Melee")
+                if (p.attack_name != "Melee")
                 {
-                    ret.Add(p.Value.GetCost());
+                    ret.Add(p.cost);
                 }
             }
             return ret;
-        }
-
-        public string GetName()
-        {
-            return name;
         }
 
         public Gear GetGear()
         {
             return characterGear;
         }
-        public void SetName(string n)
-        {
-            name = n;
-        }
-
 
         public override string ToString()
         {
-            return $"Name: {name}\nHealth: {stats.GetActualHealth()} / {stats.GetMaxHealth()}\nMana: {stats.GetActualMana()} / {stats.GetMaxMana()}\nAttack: {stats.GetAttack()}\nDefense: {stats.GetDefense()}\nAgility: {stats.GetAgility()}\nIntelligence: {stats.GetIntel()}\nLuck: {stats.GetLuck()}\n";
+            return $"Name: {name}\nHealth: {stats.actual_hp} / {stats.health}\nMana: {stats.actual_mana} / {stats.mana}\n" +
+                $"Attack: {stats.attack}\nDefense: {stats.defense}\nAgility: {stats.agility}\nIntelligence: {stats.intelligence}\n" +
+                $"Luck: {stats.luck}\n";
+
         }
+
+        public Element GetElement() { return element; }
 
         public void AddGearStats()
         {
