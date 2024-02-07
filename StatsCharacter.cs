@@ -8,16 +8,18 @@ namespace ASCIIFantasy
 {
     public class StatsCharacter
     {
-        private int health;
-        private int mana;
-        private int attack;
-        private int defense;
-        private int intelligence;
-        private int agility;
+        public int health { get; set; }
+        public int mana{ get; set; }
+        public int attack{ get; set; }
+        public int defense{ get; set; }
+        public int intelligence{ get; set; }
+        public int agility { get; set; }
         private int speed;
-        private int luck;
-        private int actual_hp;
-        private int actual_mana;
+        public int luck { get; set; }
+        public int actual_hp { get; set; }
+        public int actual_mana { get; set; }
+
+        private Dictionary<string, int> initialStats = new Dictionary<string, int>();
         /*private int level = 1;
         private int xp = 0;
         private int xp_needed = 100;*/
@@ -98,51 +100,7 @@ namespace ASCIIFantasy
         {
             luck += i;
         }
-
-        public int GetMaxHealth()
-        {
-            return health;
-        }
-
-        public int GetMaxMana()
-        {
-            return mana;
-        }
-
-        public int GetAttack()
-        {
-            return attack;
-        }
-
-        public int GetDefense()
-        {
-            return defense;
-        }
-
-        public int GetActualMana()
-        {
-            return actual_mana;
-        }
-
-        public int GetIntel()
-        {
-            return intelligence;
-        }
-
-        public int GetAgility()
-        {
-            return agility;
-        }
-
-        public int GetLuck()
-        {
-            return luck;
-        }
-
-        public int GetActualHealth()
-        {
-            return actual_hp;
-        }
+ 
 
         public void ShowHealth()
         {
@@ -177,6 +135,24 @@ namespace ASCIIFantasy
             for (int i = filledSegments; i < totalSegments; i++)
                 Console.Write("_");
             Console.WriteLine(" " + actual_mana + "/" + mana);
+        }
+
+        public void StoreInitialStats()
+        {
+            initialStats["attack"] = attack;
+            initialStats["defense"] = defense;
+            initialStats["intelligence"] = intelligence;
+            initialStats["agility"] = agility;
+            initialStats["luck"] = luck;
+        }
+
+        public void RestoreInitialStats()
+        {
+            attack = initialStats["attack"];
+            defense = initialStats["defense"];
+            intelligence = initialStats["intelligence"];
+            agility = initialStats["agility"];
+            luck = initialStats["luck"];
         }
     }
 }

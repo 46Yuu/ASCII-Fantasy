@@ -25,7 +25,7 @@ namespace ASCIIFantasy
             {
                 Console.WriteLine();
             }
-            Console.WriteLine("\t\t\t\t" + c1.GetName() + "\n\t");
+            Console.WriteLine("\t\t\t\t" + c1.name + "\n\t");
             c1.GetStats().ShowHealth();
             Console.Write("\t");
             c1.GetStats().ShowMana();
@@ -35,7 +35,7 @@ namespace ASCIIFantasy
         public void FieldPlayer2(Character c2)
         {
             Console.WriteLine();
-            Console.WriteLine("\t\t\t\t" + c2.GetName() + "\n\t");
+            Console.WriteLine("\t\t\t\t" + c2.name + "\n\t");
             c2.GetStats().ShowHealth();
             Console.Write("\t");
             c2.GetStats().ShowMana();
@@ -61,12 +61,12 @@ namespace ASCIIFantasy
                 Console.Clear();
                 FieldGame();
                 listCharacters[0].GetAttack("Melee").Use(listCharacters[0], enemy);
-                Console.WriteLine(" End of " + listCharacters[0].GetName() + "'s turn");
+                Console.WriteLine(" End of " + listCharacters[0].name + "'s turn");
             }
             else
             {
                 enemy.GetAttack("Melee").Use(enemy, listCharacters[0]);
-                Console.WriteLine(" End of " + listCharacters[0].GetName() + "'s turn");
+                Console.WriteLine(" End of " + listCharacters[0].name + "'s turn");
             }
             return turn == 1 ? 0 : 1;
         }
@@ -117,7 +117,7 @@ namespace ASCIIFantasy
         {
             if (selectedIndex == 0)
             {
-                Console.WriteLine(" " + listCharacters[0].GetName() + " return to action choice");
+                Console.WriteLine(" " + listCharacters[0].name + " return to action choice");
                 return (turn, selectedIndex);
             }
             else if (selectedIndex-1 < spells.Count)
@@ -126,15 +126,19 @@ namespace ASCIIFantasy
                 //execution du sort;
                 Console.Clear();
                 FieldGame();
-                if (spellTmp == "Heal")
+                AttackType attackType = listCharacters[0].GetAttack(spellTmp).type;
+                if (attackType == AttackType.Heal)
                 {
-                    listCharacters[0].GetAttack(spellTmp).HealToString(turn, listCharacters[0], listCharacters, enemy);
+                    if (listCharacters[0].GetAttack(spellTmp) is Heal healAttack)
+                    {
+                        healAttack.UseHeal(turn, listCharacters[0], listCharacters);
+                    }
                 }
                 else
                 {
                     listCharacters[0].GetAttack(spellTmp).Use(listCharacters[0], enemy);
                 }
-                Console.WriteLine(" End of " + listCharacters[turn].GetName() + "'s turn");
+                Console.WriteLine(" End of " + listCharacters[turn].name + "'s turn");
                 return (turn == 1 ? 0 : 1, selectedIndex);
             }
             else
@@ -147,17 +151,19 @@ namespace ASCIIFantasy
         {
             if (selectedIndex == 0)
             {
-                Console.WriteLine(" " + listCharacters[0].GetName() + " return to action choice");
+                Console.WriteLine(" " + listCharacters[0].name + " return to action choice");
                 return (turn,selectedIndex);
             }
             else if (selectedIndex < listCharacters.Count)
             {
                 Console.Clear();
                 FieldGame();
-                Console.WriteLine(" " + listCharacters[0].GetName() + " changed to " + listCharacters[selectedIndex].GetName());
+                Console.WriteLine(" " + listCharacters[0].name + " changed to " + listCharacters[selectedIndex].name);
                 Character temp = listCharacters[0];
                 listCharacters[0] = listCharacters[selectedIndex];
                 listCharacters[selectedIndex] = temp;
+                listCharacters[0].GetStats().StoreInitialStats();
+                listCharacters[selectedIndex].GetStats().RestoreInitialStats();
                 return (turn == 1 ? 0 : 1, selectedIndex);
             }
             else
@@ -166,14 +172,20 @@ namespace ASCIIFantasy
                 return (turn, selectedIndex);
             }
         }
-        public int ChangeCharacter(int turn, List<Character> listCharacters, Character enemy)
+        public int ChangeCharacter(int turn, List<Character> listCharacters, Character enemy,bool forceChange = false)
         {
-            string[] options = new string[listCharacters.Count];
-            options[0] = "Return";
+            List<string> options = new List<string>();
+            if (!forceChange)
+            {
+                options.Add("Return");
+            }
             int selectedIndex = 0;
             for (int i = 1; i < listCharacters.Count; i++)
             {
-                options[i] = listCharacters[i].GetName();
+                if (!listCharacters[i].isDead)
+                {
+                    options.Add(listCharacters[i].name);
+                }
             }
             while (turn == 0 )
             {
@@ -193,10 +205,10 @@ namespace ASCIIFantasy
                     switch (keyInfo.Key)
                     {
                         case ConsoleKey.UpArrow:
-                            selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
+                            selectedIndex = (selectedIndex - 1 + options.Count) % options.Count;
                             break;
                         case ConsoleKey.DownArrow:
-                            selectedIndex = (selectedIndex + 1) % options.Length;
+                            selectedIndex = (selectedIndex + 1) % options.Count;
                             break;
                     }
                 }
@@ -204,10 +216,10 @@ namespace ASCIIFantasy
             return turn;
         }
 
-        public void DisplayPlayerChoiceWithHealth(int turn, List<Character> listCharacters, Character enemy, string[] options, int selectedIndex)
+        public void DisplayPlayerChoiceWithHealth(int turn, List<Character> listCharacters, Character enemy, List<string> options, int selectedIndex)
         {
             this.FieldSetup(turn, listCharacters, enemy);
-            for (int i = 0; i < options.Count(); i++)
+            for (int i = 0; i < options.Count; i++)
             {
                 if (i == selectedIndex)
                 {
@@ -337,7 +349,7 @@ namespace ASCIIFantasy
             spellTmp = spells[choixspell];
             //execution du sort;
             enemy.GetAttack(spellTmp).Use(enemy, listCharacters[0]);
-            Console.WriteLine(" End of " + enemy.GetName() + "'s turn");
+            Console.WriteLine(" End of " + enemy.name + "'s turn");
             return turn == 1 ? 0 : 1;
         }
 
@@ -345,17 +357,23 @@ namespace ASCIIFantasy
         static void Main(string[] args)
         {
             Combat combat = new Combat();
-            Character player = new Character("Player", 100, 100, 10, 10, 10, 10, 10);
-            Character player2 = new Character("VICTROR", 100, 100, 10, 10, 10, 10, 10);
-            Character enemy = new Character("Enemy", 50, 50, 5, 5, 5, 5, 5);
+            Character player = new Character("Player",Element.Neutral, 100, 100, 1, 10, 5, 10, 10);
+            Character player2 = new Character("VICTROR",Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
+            Character enemy = new Character("Enemy",Element.Grass, 50, 50, 20, 5, 5, 5, 5);
             List<Character> listCharacters = new List<Character>();
-            Fireball fireball = new Fireball();
+            Spell fireball = new Fireball();
+            Buff ryuMonsho = new RyuMonsho();
+            Heal heal = new SmallHeal();
             listCharacters.Add(player);
             listCharacters.Add(player2);
             player.AddAttack(fireball);
+            player.AddAttack(ryuMonsho);
+            player2.AddAttack(heal);
             enemy.AddAttack(fireball);
+            player.GetStats().StoreInitialStats();
             int turn = 0;
-            int winner = 0;
+            int winner;
+            bool stillCharactersAlive = true;
             do
             {
                 if (turn == 0)
@@ -369,11 +387,30 @@ namespace ASCIIFantasy
                     Console.WriteLine();
                     turn = combat.ChoiceEnemy(turn, listCharacters, enemy);
                 }
+                stillCharactersAlive = false;
+                foreach (Character p in listCharacters)
+                {
+                    if (!p.isDead)
+                    {
+                        stillCharactersAlive = true;
+                        break;
+                    }
+                }
+                if (listCharacters[0].isDead)
+                {
+                    combat.ChangeCharacter(turn, listCharacters, enemy, true);
+                }
 
-            } while ((listCharacters[0].GetStats().GetActualHealth() > 0) && (enemy.GetStats().GetActualHealth() > 0));
-
-            winner = (listCharacters[0].GetStats().GetActualHealth() == 0 ? 2 : 1);
-            Console.WriteLine(" Player " + winner + " won !");
+            } while (stillCharactersAlive && (enemy.GetStats().actual_hp > 0));
+            winner = (enemy.GetStats().actual_hp > 0 ? 0 : 1);
+            if(winner == 0)
+            {
+                Console.WriteLine($" {enemy.name} has been defeated !");
+            }
+            else
+            {
+                Console.WriteLine(" You lost !");
+            }
         }
 
     }

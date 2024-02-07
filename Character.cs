@@ -1,28 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace ASCIIFantasy
 {
+
+
     public class Character 
     {
-        protected string name;
+        public string name { get; set;}
+        protected Element element;
         protected StatsCharacter stats { get; set; }
         protected List<Attack> listAttack = new List<Attack>();
         protected Gear CharacterGear { get;}
+        public bool isDead { get; set; } = false;
 
         public Character()
         {
             name = "";
+            element = Element.Neutral;
             stats = new StatsCharacter();
         }
 
-        public Character(string n, int hp, int man, int atk, int def, int intel, int agi, int luc)
+        public Character(string n,Element _element, int hp, int man, int atk, int def, int intel, int agi, int luc)
         {
             name = n;
             stats = new StatsCharacter(hp,man,atk,def,intel,agi,luc);
-            Physical melee = new Physical();
+            element = _element;
+            Physical melee = new Physical("Melee", Element.Neutral, 0, 0);
             listAttack.Add(melee);
         }
 
@@ -33,9 +40,9 @@ namespace ASCIIFantasy
 
         public Attack GetAttack(string name)
         {
-            foreach(Attack attack in listAttack)
+            foreach (Attack attack in listAttack)
             {
-                if(attack.GetAttackName().Equals(name))
+                if (attack.attack_name == name)
                     return attack;
             }
             throw new Exception("Attack not found");
@@ -51,9 +58,9 @@ namespace ASCIIFantasy
             List<string> ret = new List<string>();
             foreach (Attack p in listAttack)
             {
-                if (p.GetAttackName() != "Melee")
+                if (p.attack_name != "Melee")
                 {
-                    ret.Add(p.GetAttackName());
+                    ret.Add(p.attack_name);
                 }
             }
             return ret;
@@ -64,29 +71,24 @@ namespace ASCIIFantasy
             List<int> ret = new List<int>();
             foreach (Attack p in listAttack)
             {
-                if (p.GetAttackName() != "Melee")
+                if (p.attack_name != "Melee")
                 {
-                    ret.Add(p.GetCost());
+                    ret.Add(p.cost);
                 }
             }
             return ret;
         }
        
-        public string GetName()
-        {
-            return name;
-        }
-
-        public void SetName(string n)
-        {
-            name = n;
-        }
-
 
         public override string ToString()
         {
-            return $"Name: {name}\nHealth: {stats.GetActualHealth()} / {stats.GetMaxHealth()}\nMana: {stats.GetActualMana()} / {stats.GetMaxMana()}\nAttack: {stats.GetAttack()}\nDefense: {stats.GetDefense()}\nAgility: {stats.GetAgility()}\nIntelligence: {stats.GetIntel()}\nLuck: {stats.GetLuck()}\n";
+            return $"Name: {name}\nHealth: {stats.actual_hp} / {stats.health}\nMana: {stats.actual_mana} / {stats.mana}\n" +
+                $"Attack: {stats.attack}\nDefense: {stats.defense}\nAgility: {stats.agility}\nIntelligence: {stats.intelligence}\n" +
+                $"Luck: {stats.luck}\n";
+
         }
+
+        public Element GetElement() { return element; }
 
         //Main for testing
         /*static void Main()
