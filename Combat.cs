@@ -12,7 +12,7 @@ namespace ASCIIFantasy
     public class Combat
     {
         Player player;
-        Character enemy;
+        EnemyList enemy;
         List<Character> listCharacters = new();
         int baseExp = 10;
 
@@ -21,14 +21,15 @@ namespace ASCIIFantasy
             player = _player;
             listCharacters = player.listCharacters;
             enemy = CreateNewEnemy(levelCircle);
-
+            StartCombat();
         }
 
-        public Combat(Player _player, Character _enemy)
+        public Combat(Player _player, EnemyList _enemy)
         {
             player = _player;
             enemy = _enemy;
             listCharacters = player.listCharacters;
+            StartCombat();
         }
 
         public Character CreateNewEnemy(int levelCircle)
@@ -69,7 +70,7 @@ namespace ASCIIFantasy
                     level = rnd.Next(91, 101);
                     break;
             }
-            Character enemy = new Character("Enemy", Element.Grass, 50, 50, 30, 5, 5, 5, 5);
+            Enemy enemy = new Character("Enemy", Element.Grass, 50, 50, 5, 5, 5, 5, 5);
             enemy.stats.level = level;
             return enemy;
         }
@@ -89,7 +90,7 @@ namespace ASCIIFantasy
             {
                 Console.WriteLine();
             }
-            Console.WriteLine("\t\t\t\t" + c1.name + "\n\t");
+            Console.WriteLine("\t\t\t\t" + c1.name + "  Level "+c1.stats.level + "\n\t");
             c1.stats.ShowHealth();
             Console.Write("\t");
             c1.stats.ShowMana();
@@ -99,7 +100,7 @@ namespace ASCIIFantasy
         public void FieldPlayer2(Character c2)
         {
             Console.WriteLine();
-            Console.WriteLine("\t\t\t\t" + c2.name + "\n\t");
+            Console.WriteLine("\t\t\t\t"+c2.name +"  Level " + c2.stats.level + "\n\t");
             c2.stats.ShowHealth();
             Console.Write("\t");
             c2.stats.ShowMana();
@@ -469,6 +470,11 @@ namespace ASCIIFantasy
         {
             int choice = 0;
             Random rnd = new Random();
+            if (enemy.GetListSpells().Count == 0)
+            {
+                turn = MeleeAttack(turn);
+                return turn;
+            }
             choice = rnd.Next(1, 3);
             switch (choice)
             {
@@ -490,9 +496,9 @@ namespace ASCIIFantasy
             List<string> spells;
             List<int> spellsCost;
             string spellTmp = "";
-            Random rnd = new Random();
             spells = enemy.GetListSpells();
             spellsCost = enemy.GetListCost();
+            while (possibleChoice)
             choixspell = rnd.Next(0, spells.Count);
             spellTmp = spells[choixspell];
             //execution du sort;
@@ -512,7 +518,59 @@ namespace ASCIIFantasy
 
         public void StartCombat()
         {
+            Debug.Write("Combat started\n");
+            int turn = 0;
+            int winner;
+            bool stillCharactersAlive = true;
+            do
+            {
+                if (turn == 0)
+                {
+                    turn = this.ChoicePlayer(turn);
+                }
+                else
+                {
+                    for (int i = 0; i < 25; i++)
+                        Console.Write("-");
+                    Console.WriteLine();
+                    turn = this.ChoiceEnemy(turn);
+                }
+                stillCharactersAlive = false;
+                foreach (Character p in player.listCharacters)
+                {
+                    if (!p.isDead)
+                    {
+                        stillCharactersAlive = true;
+                        break;
+                    }
+                }
+                if (player.listCharacters[0].isDead && stillCharactersAlive)
+                {
+                    this.ChangeCharacter(turn, true);
+                }
 
+            } while (stillCharactersAlive && (enemy.stats.actual_hp > 0));
+            winner = (enemy.stats.actual_hp > 0 ? 1 : 0);
+            bool leave = false;
+            do
+            {
+                if (winner == 0)
+                {
+                    Console.WriteLine($" {enemy.name} has been defeated !");
+                    enemy.isDead = true;
+                    GiveExp();
+                }
+                else
+                {
+                    Console.WriteLine(" You lost !");
+                }
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    leave = true;
+                }
+            } while (!leave);
+           
         }
 
        /* static void Main(string[] args)

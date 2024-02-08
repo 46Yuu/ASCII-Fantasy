@@ -249,10 +249,12 @@ namespace ASCIIFantasy
 
         public void GetExp(int exp)
         {
+            Console.WriteLine(" You gained " + exp + " experience points!");
             experience += exp;
             if (experience >= experienceToNextLevel)
             {
                 level++;
+                Console.WriteLine($" You leveled up to level {level}!");
                 experience -= experienceToNextLevel;
                 int newExperienceToNextLevel = level * 200;
                 experienceToNextLevel = newExperienceToNextLevel;

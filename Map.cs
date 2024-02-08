@@ -98,6 +98,7 @@ public class Map
         }
         mapTile[positionX, positionY] = 'P'; // Player
         GenerateBuilding();
+        mapTile[positionX+1, positionY] = 'E';
         MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]] = this;
         MapArray.instance.activeMap = this;
     }
@@ -255,7 +256,7 @@ public class Map
         int nextPosY = positionY + moveY;
         if (nextPosX != 0 && nextPosX != width && nextPosY != 0 && nextPosY != height)
         {
-            if (mapTile[nextPosX, nextPosY] == ' ' || mapTile[nextPosX, nextPosY] == '#')
+            if (mapTile[nextPosX, nextPosY] == ' ' || mapTile[nextPosX, nextPosY] == '#' || mapTile[nextPosX, nextPosY] == 'E')
             {
                 mapTile[positionX, positionY] = nextCell;
                 nextCell = mapTile[nextPosX, nextPosY];
@@ -264,6 +265,13 @@ public class Map
                 Player.instance.positionX = positionX;
                 Player.instance.positionY = positionY;
                 mapTile[positionX, positionY] = 'P';
+                Debug.WriteLine($"E pos {61}  {14}\n");
+                Debug.WriteLine($"Player pos {Player.instance.positionX}  {Player.instance.positionY}\n");
+                if ((Player.instance.positionX == 61) && (Player.instance.positionY == 14))
+                {
+                    Debug.WriteLine("Combat\n");
+                    Combat newCombat = new Combat(Player.instance, 0);
+                }
             }
         }
         else if (nextPosX == 0 || nextPosX == width)

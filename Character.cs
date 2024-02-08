@@ -79,6 +79,20 @@ namespace ASCIIFantasy
             return ret;
         }
 
+        public int GetLowestSpellCost()
+        {
+            int ret;
+            foreach(Attack p in listAttack)
+            {
+                if (p.attack_name != "Melee")
+                {
+                    ret = Math.Min(ret,p.cost);
+                    break;
+                }
+            }
+            return ret;
+        }
+
         public Gear GetGear()
         {
             return characterGear;

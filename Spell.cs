@@ -28,6 +28,7 @@ namespace ASCIIFantasy
                 else if (crit)
                 {
                     damage *= 2;
+                    damage -= receiver.stats.defense;
                     receiver.stats.IncrementHealth(-damage);
                     Console.BackgroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($" Critical hit ! {receiver.name} received {damage} damage!");
@@ -35,6 +36,7 @@ namespace ASCIIFantasy
                 }
                 else
                 {
+                    damage -= receiver.stats.defense;
                     receiver.stats.IncrementHealth(-damage);
                     Console.WriteLine($" {receiver.name} received {damage} damage!");
                 }
