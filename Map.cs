@@ -7,7 +7,7 @@ public class Map
 {
     public const char TALL_GRASS = '#';
 
-    private char[,] mapTile;
+    public char[,] mapTile;
     private int width; // largeur
     private int height; // hauteur
     private int positionX;
@@ -15,10 +15,9 @@ public class Map
     private int widthGap = 4;
     private int heightGap = 2;
 
-    private bool inDialogue;
-    private List<string> dialogues;
-    private int currentDialogueIndex;
     private char nextCell;
+
+    public NPC CurrentNPC { get; set; }
 
     public Map( int width, int height)
     {
@@ -27,18 +26,16 @@ public class Map
         mapTile = new char[width, height];
 
         InitializeMap();
-
-        dialogues = new List<string>
-        {
-            "NPC: Hello, adventurer!",
-            "NPC: How can I assist you?",
-            "NPC: Feel free to ask me any questions!"
-        };
-
-        inDialogue = false;
-        currentDialogueIndex = 0;
     }
-  
+    public bool IsNPCInDialogue()
+    {
+        if (CurrentNPC != null)
+        {
+            return CurrentNPC.InDialogue;
+        }
+        return false;
+    }
+
     private void InitializeNextMap()
     {
         nextCell = ' ';
@@ -210,11 +207,6 @@ public class Map
         mapTile[x + 2, y + 4] = TALL_GRASS;
     }
 
-    public void DrawNPC(int x, int y)
-    {
-        mapTile[x, y] = '8';
-    }
-
     public void DrawTree(int x, int y)
     {
         mapTile[x, y + 4] = '|';
@@ -282,87 +274,6 @@ public class Map
             }
         }
 
-    }
-
-    public void DisplayDialog()
-    {
-        while (InDialogue && HasMoreDialogues())
-        {
-            string currentDialogue = GetCurrentDialogue();
-            Console.WriteLine(currentDialogue);
-            Console.WriteLine("\n");
-            Console.WriteLine("Appuyez sur Entrée pour continuer...");
-
-            ConsoleKeyInfo keyInfo;
-            do
-            {
-                keyInfo = Console.ReadKey(true);
-            } while (keyInfo.Key != ConsoleKey.Enter);
-
-            NextDialogue();
-        }
-
-        InDialogue = false;
-        Console.Clear();
-    }
-
-    public bool InDialogue
-    {
-        get { return inDialogue; }
-        set { inDialogue = value; }
-    }
-
-    public string GetCurrentDialogue()
-    {
-        return dialogues[currentDialogueIndex];
-    }
-
-    public void NextDialogue()
-    {
-        Console.Clear();
-        currentDialogueIndex++;
-
-        if (currentDialogueIndex >= dialogues.Count)
-        {
-            inDialogue = false;
-            currentDialogueIndex = 0;
-        }
-    }
-
-    public bool HasMoreDialogues()
-    {
-        return currentDialogueIndex <= dialogues.Count;
-    }
-
-    public int CurrentDialogueIndex
-    {
-        get { return currentDialogueIndex; }
-    }
-
-    public int PlayerPositionX { get { return positionX; } }
-    public int PlayerPositionY { get { return positionY; } }
-
-    public bool IsNPCNearby(int x, int y)
-    {
-        return x >= 0 && x < width && y >= 0 && y < height && mapTile[x, y] == '8';
-    }
-
-    public bool InteractWithNPC()
-    {
-        int playerX = PlayerPositionX;
-        int playerY = PlayerPositionY;
-
-        if ((IsNPCNearby(playerX - 1, playerY) ||
-             IsNPCNearby(playerX + 1, playerY) ||
-             IsNPCNearby(playerX, playerY - 1) ||
-             IsNPCNearby(playerX, playerY + 1)) && InDialogue == false)
-        {
-            InDialogue = true;
-            currentDialogueIndex = 0;
-            return true;
-        }
-
-        return false;
     }
 
     public void GenerateBuilding()

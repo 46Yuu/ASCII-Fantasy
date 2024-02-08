@@ -17,9 +17,11 @@ class Program
         MapArray.instance.activeMap =MapArray.instance.maps[99, 99];
         Menu mainMenu = new Menu(new string[] { "NEW GAME", "LOAD GAME", "EXIT" });
 
+        NPC npc = new NPC("NPC"); // Création d'une instance de NPC
+
         while (true)
         {
-            if (!MapArray.instance.activeMap.InDialogue)
+            if (!npc.InDialogue)
             {
                 mainMenu.Display();
 
@@ -59,13 +61,14 @@ class Program
             }
             else
             {
-                MapArray.instance.activeMap.DisplayDialog();
+                npc.DisplayDialog();
             }
         }
     }
 
     static void RunGame()
     {
+
         AltMenu altMenu = new AltMenu(new string[] { "RESUME GAME", "INVENTORY", "TEAM", "SAVE GAME", "MAIN MENU", "EXIT GAME" });
 
         while (true)
@@ -90,9 +93,10 @@ class Program
                     MapArray.instance.activeMap.MovePlayer( 1, 0);
                     break;
                 case ConsoleKey.E:
-                    if (MapArray.instance.activeMap.InteractWithNPC())
+                    // Ici
+                    if (npc.Interact(player))
                     {
-                        MapArray.instance.activeMap.DisplayDialog();
+                        npc.DisplayDialog();
                     }
                     break;
                 case ConsoleKey.Escape:
