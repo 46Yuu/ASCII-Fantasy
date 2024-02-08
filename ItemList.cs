@@ -3,7 +3,7 @@ using System;
 
 class ItemList
 {
-    public static Item  instance;
+    public static ItemList  instance;
 
     public List<Item> listItem = new();
 
@@ -11,7 +11,6 @@ class ItemList
    Item smallPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Small Potion",10);
    Item advencedPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Advanced Potion",15);
    Item ultimatePotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Ultimate Potion",30);
-
 
     public ItemList()
     {
@@ -21,7 +20,7 @@ class ItemList
         listItem.Add(ultimatePotion);
     }
 
-    public static Item CreateInstance()
+    public static ItemList CreateInstance()
     {
         if (instance == null)
         {

@@ -7,7 +7,14 @@ namespace ASCIIFantasy
 {
     public class Player : Character
     {
+        public static Player instance;
         public List<Character> listCharacters { get; set; }
+        public  int positionX;
+        public  int positionY;
+
+        public int mapIndexX = 0;
+        public int mapIndexY = 0;
+        public int[] mapGlobalIndex  = new int[2];
         public Inventory inventory { get; set; }
         int selectedCharacterIndex;
 
@@ -15,6 +22,8 @@ namespace ASCIIFantasy
         {
             listCharacters = new();
             inventory = new();
+            positionX = Program.width / 2;
+            positionY = Program.height / 2;
         }
 
         public void AddCharacter(Character c)
@@ -50,7 +59,8 @@ namespace ASCIIFantasy
                 {
                     if (selectedIndex == 0)
                     {
-                        isChoiceDone = true;
+                        // isChoiceDone = true;
+                        break;
                     }
                     else
                     {
@@ -71,7 +81,7 @@ namespace ASCIIFantasy
                     }
                 }
             }
-            //renvoie au menu précédent
+            // renvoie au menu précédent
         }
 
         public void SelectCharacterMenu(Character _selected)
@@ -192,6 +202,7 @@ namespace ASCIIFantasy
                     {
                         isChoiceDone = true;
                         SelectCharacterMenu(listCharacters[selectedIndex]);
+                        break;
                     }
                     else
                     {
@@ -280,10 +291,19 @@ namespace ASCIIFantasy
             }
         }
 
+        public static Player CreateInstance()
+        {
+            if (instance == null)
+            {
+                instance = new();
+            }
+            return instance;
+        }
+
         /*  static void Main(string[] args)
           {
-              Character player1 = new Character("Player1", 100, 100, 10, 10, 10, 10, 10);
-              Character player2 = new Character("Player2", 100, 100, 10, 10, 10, 10, 10);
+              Character player1 = new Character("Player1", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
+              Character player2 = new Character("Player2", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
               Player player = new Player();
               GearList.CreateInstance();
               player.listCharacters.Add(player1);
@@ -293,8 +313,8 @@ namespace ASCIIFantasy
               player2.Equip(GearList.instance.listGear[2]);
               player1.Equip(GearList.instance.listGear[3]);
               player1.Equip(GearList.instance.listGear[4]);
-              player.inventory.listGearInventory.AddGear(GearList.instance.listGear[6]);
-              player.inventory.listItemInventory.AddItem(ItemList.instance.listItem[0],5);
+              player.inventory.AddGear(GearList.instance.listGear[6]);
+              player.inventory.AddItem(ItemList.instance.listItem[0],5);
 
               player.SelectCharacter();
           }*/

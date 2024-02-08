@@ -1,23 +1,25 @@
-﻿using System;
+﻿using ASCIIFantasy;
+using System;
+using System.Numerics;
+using System.Xml.Linq;
 
 class Program
 {
+    public static int width = 120;
+    public static int height = 28;
+
     static void Main()
     {
         Console.CursorVisible = false;
-
-        Map map = new Map(120, 28);
-        map.DrawHouse1(10, 10);
-        map.DrawHouse2(20, 10);
-        map.DrawRoundTallGrass(10, 2);
-        map.DrawNPC(55, 12);
-        map.DrawTree(40, 15);
-
+        MapArray.CreateInstance();
+        Player.CreateInstance();
+        MapArray.instance.maps[99, 99] = new Map(width, height);
+        MapArray.instance.activeMap =MapArray.instance.maps[99, 99];
         Menu mainMenu = new Menu(new string[] { "NEW GAME", "LOAD GAME", "EXIT" });
 
         while (true)
         {
-            if (!map.InDialogue)
+            if (!MapArray.instance.activeMap.InDialogue)
             {
                 mainMenu.Display();
 
@@ -30,7 +32,7 @@ class Program
 
                     if (selectedOption == "NEW GAME")
                     {
-                        RunGame(map);
+                        RunGame();
                     }
                     else if (selectedOption == "LOAD GAME")
                     {
@@ -57,17 +59,18 @@ class Program
             }
             else
             {
-                map.DisplayDialog();
+                MapArray.instance.activeMap.DisplayDialog();
             }
         }
     }
 
-    static void RunGame(Map map)
+    static void RunGame()
     {
+        AltMenu altMenu = new AltMenu(new string[] { "RESUME GAME", "INVENTORY", "TEAM", "SAVE GAME", "MAIN MENU", "EXIT GAME" });
 
         while (true)
         {
-            map.DisplayMap();
+            MapArray.instance.activeMap.DisplayMap();
 
             ConsoleKeyInfo keyInfo = Console.ReadKey();
             Console.Clear();
@@ -75,24 +78,88 @@ class Program
             switch (keyInfo.Key)
             {
                 case ConsoleKey.UpArrow:
-                    map.MovePlayer(0, -1);
+                    MapArray.instance.activeMap.MovePlayer(0, -1);
                     break;
                 case ConsoleKey.DownArrow:
-                    map.MovePlayer(0, 1);
+                    MapArray.instance.activeMap.MovePlayer(0, 1);
                     break;
                 case ConsoleKey.LeftArrow:
-                    map.MovePlayer(-1, 0);
+                    MapArray.instance.activeMap.MovePlayer( -1, 0);
                     break;
                 case ConsoleKey.RightArrow:
-                    map.MovePlayer(1, 0);
+                    MapArray.instance.activeMap.MovePlayer( 1, 0);
                     break;
                 case ConsoleKey.E:
-                    if (map.InteractWithNPC())
+                    if (MapArray.instance.activeMap.InteractWithNPC())
                     {
-                        map.DisplayDialog();
+                        MapArray.instance.activeMap.DisplayDialog();
+                    }
+                    break;
+                case ConsoleKey.Escape:
+                    bool returnToMainMenu = ShowAltMenu(altMenu, Player.instance);
+                    if (returnToMainMenu)
+                    {
+                        return;
                     }
                     break;
             }
         }
+    }
+
+    static bool ShowAltMenu(AltMenu altMenu, Player player)
+    {
+        bool altMenuActive = true;
+
+        while (altMenuActive)
+        {
+            altMenu.Display();
+
+            ConsoleKeyInfo altKeyInfo = Console.ReadKey();
+            Console.Clear();
+
+            if (altKeyInfo.Key == ConsoleKey.Enter)
+            {
+                string selectedAltOption = altMenu.GetSelectedOption();
+
+                if (selectedAltOption == "RESUME GAME")
+                {
+                    altMenuActive = false;
+                }
+                else if (selectedAltOption == "INVENTORY")
+                {
+                    player.inventory.SelectGearToDisplay();
+                }
+                else if (selectedAltOption == "TEAM")
+                {
+                    player.SelectCharacter();
+                }
+                else if (selectedAltOption == "SAVE GAME")
+                {
+                    // Sauvegarde ici
+                }
+                else if (selectedAltOption == "MAIN MENU")
+                {
+                    return true;
+                }
+                else if (selectedAltOption == "EXIT GAME")
+                {
+                    Environment.Exit(0);
+                }
+            }
+            else
+            {
+                switch (altKeyInfo.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        altMenu.MoveUp();
+                        break;
+                    case ConsoleKey.DownArrow:
+                        altMenu.MoveDown();
+                        break;
+                }
+            }
+        }
+
+        return false;
     }
 }
