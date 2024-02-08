@@ -7,7 +7,7 @@ namespace ASCIIFantasy
 {
     public class Save
     {
-        static Save instance;
+        //static Save instance;
         Player player;
         MapArray map;
         public static Save Data() 
@@ -18,18 +18,17 @@ namespace ASCIIFantasy
             return data;
         }
 
-        public static Save CreateInstance()
+/*        public static Save CreateInstance()
         {
             if(Save.instance == null)
             {
                 instance = Save.Data();
             }
             return instance;
-        }
+        }*/
         public static void LoadData(string file)
         {
             string fileName = file + ".json";
-            Debug.Write(fileName + "\n");
             string jsonFile = System.IO.File.ReadAllText(fileName);
             if(jsonFile == null)
             {
@@ -42,21 +41,21 @@ namespace ASCIIFantasy
 
         public static void SaveData(Save data, string file)
         {
-            string jsonFile = JsonSerializer.Serialize<Save>(data);
+            string jsonFile = JsonSerializer.Serialize(Player.instance.listCharacters[0].name);
             string fileName = file + ".json";
             System.IO.File.WriteAllText(fileName, jsonFile);
         }
 
-        public static Save GetData()
+/*        public static Save GetData()
         {
             return instance;
-        }
+        }*/
 
 
         public static void SaveGame(int slot)
         {
-            SaveList.saveList[slot] = Save.Data();
-            Save.SaveData(SaveList.saveList[slot], "save" + (slot +1).ToString());
+            SaveList.saveList[slot] = Data();
+            SaveData(SaveList.saveList[slot], "Save" + (slot +1).ToString());
         }
     }
 }

@@ -19,6 +19,11 @@ public class Map
     private List<string> dialogues;
     private int currentDialogueIndex;
     private char nextCell;
+        public bool InDialogue
+    {
+        get { return inDialogue; }
+        set { inDialogue = value; }
+    }
 
     public Map( int width, int height)
     {
@@ -306,11 +311,7 @@ public class Map
         Console.Clear();
     }
 
-    public bool InDialogue
-    {
-        get { return inDialogue; }
-        set { inDialogue = value; }
-    }
+
 
     public string GetCurrentDialogue()
     {

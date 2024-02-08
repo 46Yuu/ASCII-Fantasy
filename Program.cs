@@ -14,8 +14,9 @@ class Program
         Console.CursorVisible = false;
         MapArray.CreateInstance();
         Player.CreateInstance();
+        Player.instance.AddCharacter(new Character("Player",Element.Neutral, 100, 100, 10, 10, 10, 10,10));
         MapArray.instance.maps[99, 99] = new Map(width, height);
-        MapArray.instance.activeMap =MapArray.instance.maps[99, 99];
+        MapArray.instance.activeMap = MapArray.instance.maps[99, 99];
         Menu mainMenu = new Menu(new string[] { "NEW GAME", "LOAD GAME", "EXIT" });
 
         while (true)
@@ -85,10 +86,10 @@ class Program
                     MapArray.instance.activeMap.MovePlayer(0, 1);
                     break;
                 case ConsoleKey.LeftArrow:
-                    MapArray.instance.activeMap.MovePlayer( -1, 0);
+                    MapArray.instance.activeMap.MovePlayer(-1, 0);
                     break;
                 case ConsoleKey.RightArrow:
-                    MapArray.instance.activeMap.MovePlayer( 1, 0);
+                    MapArray.instance.activeMap.MovePlayer(1, 0);
                     break;
                 case ConsoleKey.E:
                     if (MapArray.instance.activeMap.InteractWithNPC())
@@ -115,7 +116,7 @@ class Program
         bool isChoiceDone = false;
         for (int i = 1; i < 4; i++)
         {
-            if (SaveList.saveList[i-1] != null)
+            if (SaveList.saveList[i - 1] != null)
             {
                 options[i] = "Save " + (i).ToString();
             }
@@ -198,7 +199,7 @@ class Program
                 }
                 else if (selectedAltOption == "SAVE GAME")
                 {
-                    // Sauvegarde ici
+                    Save.SaveGame(0);
                 }
                 else if (selectedAltOption == "MAIN MENU")
                 {
