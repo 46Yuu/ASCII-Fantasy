@@ -41,7 +41,7 @@ namespace ASCIIFantasy
 
         public static void SaveData(Save data, string file)
         {
-            string jsonFile = JsonSerializer.Serialize(Player.instance.listCharacters[0].name);
+            string jsonFile = JsonSerializer.Serialize(data.player)+ "\n" + JsonSerializer.Serialize(data.map);
             string fileName = file + ".json";
             System.IO.File.WriteAllText(fileName, jsonFile);
         }

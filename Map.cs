@@ -48,9 +48,9 @@ public class Map
     {
         nextCell = ' ';
 
-        if (MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]] != null)
+        if (MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0]][99 + Player.instance.mapGlobalIndex[1]] != null)
         {
-            MapArray.instance.activeMap = MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]];
+            MapArray.instance.activeMap = MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0]][99 + Player.instance.mapGlobalIndex[1]];
             MapArray.instance.activeMap.SetPlayer(Player.instance.positionX, Player.instance.positionY);
         }
         else
@@ -103,7 +103,7 @@ public class Map
         }
         mapTile[positionX, positionY] = 'P'; // Player
         GenerateBuilding();
-        MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]] = this;
+        MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0]][ 99 + Player.instance.mapGlobalIndex[1]] = this;
         MapArray.instance.activeMap = this;
     }
 

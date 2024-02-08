@@ -15,8 +15,8 @@ class Program
         MapArray.CreateInstance();
         Player.CreateInstance();
         Player.instance.AddCharacter(new Character("Player",Element.Neutral, 100, 100, 10, 10, 10, 10,10));
-        MapArray.instance.maps[99, 99] = new Map(width, height);
-        MapArray.instance.activeMap = MapArray.instance.maps[99, 99];
+        MapArray.instance.maps[99][99] = new Map(width, height);
+        MapArray.instance.activeMap = MapArray.instance.maps[99][99];
         Menu mainMenu = new Menu(new string[] { "NEW GAME", "LOAD GAME", "EXIT" });
 
         while (true)
