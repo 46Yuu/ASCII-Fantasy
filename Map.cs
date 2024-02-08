@@ -27,15 +27,7 @@ public class Map
 
         InitializeMap();
     }
-    public bool IsNPCInDialogue()
-    {
-        if (CurrentNPC != null)
-        {
-            return CurrentNPC.InDialogue;
-        }
-        return false;
-    }
-
+  
     private void InitializeNextMap()
     {
         nextCell = ' ';

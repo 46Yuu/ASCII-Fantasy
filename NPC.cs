@@ -13,15 +13,13 @@ namespace ASCIIFantasy
         public int PositionX { get; private set; }
         public int PositionY { get; private set; }
 
-        private List<List<string>> dialogueSets;
-        private int currentDialogueIndex;
+        private Dialogue dialogue;
         private bool inDialogue;
 
-        public NPC(string name)
+        public NPC(string name, List<List<string>> dialogues)
         {
             Name = name;
-            dialogueSets = new List<List<string>>();
-            currentDialogueIndex = 0;
+            dialogue = new Dialogue(dialogues);
             inDialogue = false;
         }
 
@@ -32,70 +30,27 @@ namespace ASCIIFantasy
 
         public void DisplayDialog()
         {
-            while (inDialogue && HasMoreDialogues())
+            while (inDialogue && dialogue.HasMoreDialogues())
             {
-                string currentDialogue = GetRandomDialogue();
+                string currentDialogue = dialogue.GetRandomDialogue();
                 Console.WriteLine(currentDialogue);
                 Console.WriteLine("\n");
                 Console.WriteLine("Press Enter to continue...");
 
                 while (Console.ReadKey(true).Key != ConsoleKey.Enter) ;
 
-                NextDialogue();
+                dialogue.NextDialogue();
             }
 
             inDialogue = false;
             Console.Clear();
         }
 
-        public void AddDialogueSet(List<string> dialogueSet)
-        {
-            dialogueSets.Add(dialogueSet);
-        }
-
-        public string GetRandomDialogue()
-        {
-            if (dialogueSets.Count == 0)
-            {
-                return "No dialogue available.";
-            }
-
-            Random random = new Random();
-            int setIndex = random.Next(dialogueSets.Count);
-            List<string> selectedSet = dialogueSets[setIndex];
-
-            int dialogueIndex = random.Next(selectedSet.Count);
-            return selectedSet[dialogueIndex];
-        }
-
-        public bool InDialogue
-        {
-            get { return inDialogue; }
-            set { inDialogue = value; }
-        }
-
-        public void NextDialogue()
-        {
-            Console.Clear();
-            currentDialogueIndex++;
-
-            if (currentDialogueIndex >= dialogueSets.Count)
-            {
-                inDialogue = false;
-                currentDialogueIndex = 0;
-            }
-        }
-
-        public bool HasMoreDialogues()
-        {
-            return currentDialogueIndex < dialogueSets.Count;
-        }
-
         public bool Interact(Player player)
         {
-            if (IsPlayerNearby(player) && !InDialogue)
+            if (IsPlayerNearby(player) && !inDialogue)
             {
-                InDialogue = true; // Démarre le dialogue
+                inDialogue = true;
                 return true;
             }
 

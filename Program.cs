@@ -17,8 +17,6 @@ class Program
         MapArray.instance.activeMap =MapArray.instance.maps[99, 99];
         Menu mainMenu = new Menu(new string[] { "NEW GAME", "LOAD GAME", "EXIT" });
 
-        NPC npc = new NPC("NPC"); // Création d'une instance de NPC
-
         while (true)
         {
             if (!npc.InDialogue)
