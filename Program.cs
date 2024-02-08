@@ -1,5 +1,6 @@
 ﻿using ASCIIFantasy;
 using System;
+using System.Diagnostics;
 using System.Numerics;
 using System.Xml.Linq;
 
@@ -36,7 +37,7 @@ class Program
                     }
                     else if (selectedOption == "LOAD GAME")
                     {
-                        // Faudra implémenter le chargement de partie ici
+                        ShowSaves();
                     }
                     else if (selectedOption == "EXIT")
                     {
@@ -106,6 +107,68 @@ class Program
         }
     }
 
+    static void ShowSaves()
+    {
+        string[] options = new string[4];
+        int selectedIndex = 0;
+        options[0] = "Return";
+        bool isChoiceDone = false;
+        for (int i = 1; i < 4; i++)
+        {
+            if (SaveList.saveList[i-1] != null)
+            {
+                options[i] = "Save " + (i).ToString();
+            }
+            else
+            {
+                options[i] = "Empty Save";
+            }
+        }
+        while (!isChoiceDone)
+        {
+            Console.Clear();
+            for (int i = 0; i < 4; i++)
+            {
+                if (i == selectedIndex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(options[i]);
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine(options[i]);
+                }
+            }
+            ConsoleKeyInfo keyInfo = Console.ReadKey();
+            switch (keyInfo.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    if (selectedIndex > 0)
+                    {
+                        selectedIndex--;
+                    }
+                    break;
+                case ConsoleKey.DownArrow:
+                    if (selectedIndex < 3)
+                    {
+                        selectedIndex++;
+                    }
+                    break;
+                case ConsoleKey.Enter:
+                    if (selectedIndex == 0)
+                    {
+                        isChoiceDone = true;
+                    }
+                    else
+                    {
+                        Save.LoadData("Save" + (selectedIndex).ToString());
+                        isChoiceDone = true;
+                    }
+                    break;
+            }
+        }
+    }
     static bool ShowAltMenu(AltMenu altMenu, Player player)
     {
         bool altMenuActive = true;
