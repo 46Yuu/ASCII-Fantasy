@@ -8,8 +8,8 @@ public class Map
     public const char TALL_GRASS = '#';
     public const int RATE_COMBAT = 10;
 
-    public char[][] mapTile{get; set;}
-    public int width{ get; set; }// largeur
+    public char[][] mapTile { get; set; }
+    public int width { get; set; }// largeur
     public int height { get; set; } // hauteur
     public int positionX { get; set; }
     public int positionY { get; set; }
@@ -50,7 +50,7 @@ public class Map
         inDialogue = false;
         currentDialogueIndex = 0;
     }
-  
+
     private void InitializeNextMap()
     {
         nextCell = ' ';
@@ -108,11 +108,13 @@ public class Map
             }
         }
 
-        GenerateTallGrass();
         GenerateBuilding();
+        GenerateTallGrass();
+        GenerateChest();
+        GenerateNPC();
         nextCell = mapTile[positionX][positionY];
         mapTile[positionX][positionY] = 'P'; // Player
-        MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0]][ 99 + Player.instance.mapGlobalIndex[1]] = this;
+        MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0]][99 + Player.instance.mapGlobalIndex[1]] = this;
         MapArray.instance.activeMap = this;
     }
 
@@ -130,7 +132,7 @@ public class Map
     }
     public void DrawHouse1(int x, int y)
     {
-        mapTile[x + 2][ y] = '_';
+        mapTile[x + 2][y] = '_';
         mapTile[x + 3][y] = 'm';
         mapTile[x + 4][y] = '_';
 
@@ -194,7 +196,7 @@ public class Map
         mapTile[x - 1][y] = TALL_GRASS;
         mapTile[x + 2][y] = TALL_GRASS;
 
-        mapTile[x][ y + 1] = TALL_GRASS;
+        mapTile[x][y + 1] = TALL_GRASS;
         mapTile[x - 1][y + 1] = TALL_GRASS;
         mapTile[x - 2][y + 1] = TALL_GRASS;
         mapTile[x + 1][y + 1] = TALL_GRASS;
@@ -264,7 +266,7 @@ public class Map
         nextCell = mapTile[positionX][positionY];
         mapTile[positionX][positionY] = 'P';
     }
-    public void MovePlayer( int moveX, int moveY)
+    public void MovePlayer(int moveX, int moveY)
     {
         int nextPosX = positionX + moveX;
         int nextPosY = positionY + moveY;
@@ -283,21 +285,21 @@ public class Map
                 {
                     Random rnd = new Random();
                     int rollCombat = rnd.Next(0, 100);
-                    if(rollCombat <= RATE_COMBAT)
+                    if (rollCombat <= RATE_COMBAT)
                     {
                         int levelCircle = 0;
                         MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0]][99 + Player.instance.mapGlobalIndex[1]] = this;
                         (int x, int y) normalized = NormalizePoint(99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]);
                         int distanceFromCenter = (int)Math.Sqrt(normalized.x * normalized.x + normalized.y * normalized.y);
-                        if(distanceFromCenter >10)
+                        if (distanceFromCenter > 10)
                         {
                             levelCircle = 1;
                         }
-                        else if(distanceFromCenter > 20)
+                        else if (distanceFromCenter > 20)
                         {
                             levelCircle = 2;
                         }
-                        else if(distanceFromCenter > 30)
+                        else if (distanceFromCenter > 30)
                         {
                             levelCircle = 3;
                         }
@@ -305,26 +307,26 @@ public class Map
                         {
                             levelCircle = 4;
                         }
-                        else if(distanceFromCenter >50)
+                        else if (distanceFromCenter > 50)
                         {
                             levelCircle = 5;
                         }
-                        else if(distanceFromCenter > 60)
+                        else if (distanceFromCenter > 60)
                         {
                             levelCircle = 6;
                         }
-                        else if(distanceFromCenter > 70)
+                        else if (distanceFromCenter > 70)
                         {
                             levelCircle = 7;
                         }
-                        else if(distanceFromCenter > 80)
+                        else if (distanceFromCenter > 80)
                         {
                             levelCircle = 8;
                         }
-                        else if(distanceFromCenter > 90)
+                        else if (distanceFromCenter > 90)
                         {
                             levelCircle = 9;
-                        } 
+                        }
                         Combat newCombat = new Combat(Player.instance, levelCircle);
                     }
                 }
@@ -406,6 +408,17 @@ public class Map
     {
         return x >= 0 && x < width && y >= 0 && y < height && mapTile[x][y] == '8';
     }
+    public bool IsChestNearby(int x, int y)
+    {
+        bool check = x >= 0 && x < width && y >= 0 && y < height && mapTile[x][y] == '=';
+        if(check)
+        {
+            mapTile[x][y] = ' ';
+            return check; 
+        }
+        return check;
+    }
+
 
     public bool InteractWithNPC()
     {
@@ -419,6 +432,22 @@ public class Map
         {
             InDialogue = true;
             currentDialogueIndex = 0;
+            return true;
+        }
+
+        return false;
+    }
+    public bool InteractWithChest()
+    {
+        int playerX = PlayerPositionX;
+        int playerY = PlayerPositionY;
+
+        if ((IsChestNearby(playerX - 1, playerY) ||
+             IsChestNearby(playerX + 1, playerY) ||
+             IsChestNearby(playerX, playerY - 1) ||
+             IsChestNearby(playerX, playerY + 1)))
+        {
+
             return true;
         }
 
@@ -518,6 +547,57 @@ public class Map
         }
     }
 
+    public void GenerateChest()
+    {
+        Random random = new Random();
+
+        int chestNbr = random.Next(0, 3);
+        for (int o = 0; o < chestNbr; o++)
+        {
+            bool canBuild = false;
+            int x = 0;
+            int y = 0;
+            while (!canBuild)
+            {
+                x = random.Next(1, width);
+                y = random.Next(1, height);
+                if (x  <= 1 || y  >= height - 1 || x >= width - 1 || y <= 1 || mapTile[x][y] != ' ')
+                {
+                    canBuild = false;
+                }
+                else
+                {
+                    canBuild = true;
+                }
+            }
+            mapTile[x][y] = '=';
+        }
+    }
+    public void GenerateNPC() {         Random random = new Random();
+    
+           int npcNbr = random.Next(0, 3);
+           for (int o = 0; o < npcNbr; o++)
+        {
+            bool canBuild = false;
+            int x = 0;
+            int y = 0;
+            while (!canBuild)
+            {
+                x = random.Next(1, width);
+                y = random.Next(1, height);
+                if (x  <= 1 || y  >= height - 1 || x >= width - 1 || y <= 1 || mapTile[x][y] != ' ')
+                {
+                    canBuild = false;
+                }
+                else
+                {
+                    canBuild = true;
+                }
+            }
+            DrawNPC(x, y);
+        }
+    }
+
     public void SwapZone()
     {
 
@@ -528,7 +608,7 @@ public class Map
             Player.instance.mapIndexX--;
 
         }
-        else if (positionX == width-1)
+        else if (positionX == width - 1)
         {
             Player.instance.positionX = 1;
             Player.instance.mapGlobalIndex[0] = Player.instance.mapIndexX + 1;
@@ -542,7 +622,7 @@ public class Map
             Player.instance.mapIndexY--;
 
         }
-        else if (positionY == height-1)
+        else if (positionY == height - 1)
         {
             Player.instance.positionY = 1;
             Player.instance.mapGlobalIndex[1] = Player.instance.mapIndexY + 1;
@@ -558,10 +638,10 @@ public class Map
             return a;
         return GCD(b, a % b);
     }
-    public static (int,int) NormalizePoint(int x, int y)
+    public static (int, int) NormalizePoint(int x, int y)
     {
         int gcd = GCD(Math.Abs(x), Math.Abs(y));
-        int newX = 0,newY = 0;
+        int newX = 0, newY = 0;
         if (gcd != 0)
         {
             newX /= gcd;

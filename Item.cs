@@ -4,9 +4,10 @@
     {
         public static Item instance;
 
-        public string itemName;
-        public int numberItem;
-        public int power;
+        public string itemName { get; set;}
+        public int numberItem { get; set; }
+        public int power { get; set; }
+        public string description { get; set; }
         public enum ItemType
         {
             HealthPotion,
@@ -35,13 +36,14 @@
             }
         }
 
-        public Item CreateNewItem(ItemType type, string _name, int _power, int number = 0)
+        public Item CreateNewItem(ItemType type, string _name, int _power, string _description, int number = 0)
         {
             Item item = new();
             item.type = type;
             item.itemName = _name;
             item.numberItem = number;
             item.power = _power;
+            item.description = _description;
             return item;
         }
 

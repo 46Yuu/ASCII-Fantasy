@@ -7,10 +7,10 @@ class ItemList
 
     public List<Item> listItem = new();
 
-   Item starterPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Starter Potion",5);
-   Item smallPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Small Potion",10);
-   Item advencedPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Advanced Potion",15);
-   Item ultimatePotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Ultimate Potion",30);
+   Item starterPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Starter Potion",5,"A potion given to new adventurers");
+   Item smallPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Small Potion",10, "A small potion created by Miguel the mage");
+   Item advencedPotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Advanced Potion",15, "An advanced potion created by a master");
+   Item ultimatePotion = Item.CreateInstance().CreateNewItem(Item.ItemType.HealthPotion, "Ultimate Potion",30, "The Ultimate potion created by the GOAT himself The Sorcerer King.\nFew are the people who layed their hands on it");
 
     public ItemList()
     {

@@ -21,6 +21,7 @@ namespace ASCIIFantasy
         public Player()
         {
             ItemList.CreateInstance();
+            GearList.CreateInstance();
             listCharacters = new();
             mapIndexX = 0;
             mapIndexY = 0;
