@@ -93,6 +93,10 @@ class Program
                     {
                         MapArray.instance.activeMap.DisplayDialog();
                     }
+                    else if(MapArray.instance.activeMap.InteractWithChest())
+                    {
+                        Chest.LootChest();
+                    }
                     break;
                 case ConsoleKey.Escape:
                     bool returnToMainMenu = ShowAltMenu(altMenu, Player.instance);
@@ -189,7 +193,7 @@ class Program
                 }
                 else if (selectedAltOption == "INVENTORY")
                 {
-                    player.inventory.SelectGearToDisplay();
+                    player.inventory.SelectBagToOpen();
                 }
                 else if (selectedAltOption == "TEAM")
                 {

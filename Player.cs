@@ -21,6 +21,7 @@ namespace ASCIIFantasy
         public Player()
         {
             ItemList.CreateInstance();
+            GearList.CreateInstance();
             listCharacters = new();
             mapIndexX = 0;
             mapIndexY = 0;
@@ -86,7 +87,6 @@ namespace ASCIIFantasy
                     }
                 }
             }
-            Program.ShowAltMenu(Program.altMenu, instance);
         }
 
         public void SelectCharacterMenu(Character _selected)
@@ -155,7 +155,7 @@ namespace ASCIIFantasy
                     {
                         case 0:
                             isChoiceDone = true;
-                            SelectCharacter();
+                            //SelectCharacter();
                             break;
                     }
                 }
@@ -205,13 +205,14 @@ namespace ASCIIFantasy
                     if (selectedIndex == 0)
                     {
                         isChoiceDone = true;
-                        SelectCharacterMenu(listCharacters[selectedIndex]);
+                        //SelectCharacterMenu(listCharacters[selectedIndex]);
                         break;
                     }
                     else
                     {
                         listCharacters[selectedCharacterIndex].Equip(list[indexes[selectedIndex]]);
-                        SelectCharacterMenu(listCharacters[selectedCharacterIndex]);
+                        isChoiceDone = true;
+                        //SelectCharacterMenu(listCharacters[selectedCharacterIndex]);
                     }
                 }
                 else

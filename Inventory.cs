@@ -39,6 +39,64 @@ namespace ASCIIFantasy
             }
         }
 
+        public void SelectBagToOpen()
+        {
+            string[] options = new string[3];
+            options[0] = "Return";
+            int selectedIndex = 0;
+            bool isChoiceDone = false;
+            for (int i = 0; i <3; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        options[i] = "Return";                        
+                        break;
+                    case 1:
+                        options[i] = "Gear";
+                        break;
+                    case 2:
+                        options[i] = "Item";
+                        break;
+                }
+            }
+            while (!isChoiceDone)
+            {
+                DisplayBag(options, selectedIndex);
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                Console.Clear();
+
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    if (selectedIndex == 0)
+                    {
+                        isChoiceDone = true;
+                    }
+                    else if(selectedIndex == 1)
+                    {
+                        SelectGearToDisplay();
+                    }
+                    else
+                    {
+                        SelectItemToDisplay();
+                    }
+                }
+                else
+                {
+                    switch (keyInfo.Key)
+                    {
+                        case ConsoleKey.UpArrow:
+                            selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
+                            break;
+                        case ConsoleKey.DownArrow:
+                            selectedIndex = (selectedIndex + 1) % options.Length;
+                            break;
+                    }
+                }
+            }
+            //renvoie au menu précédent
+        }
 
         public void SelectGearToDisplay()
         {
@@ -81,7 +139,49 @@ namespace ASCIIFantasy
                     }
                 }
             }
-            //renvoie au menu précédent
+        }
+
+        public void SelectItemToDisplay()
+        {
+            string[] options = new string[this.listItemInventory.Count + 1];
+            options[0] = "Return";
+            int selectedIndex = 0;
+            bool isChoiceDone = false;
+            for (int i = 0; i < listItemInventory.Count; i++)
+            {
+                options[i + 1] = listItemInventory[i].itemName;
+            }
+            while (!isChoiceDone)
+            {
+                DisplayGearInventory(options, selectedIndex);
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                Console.Clear();
+
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    if (selectedIndex == 0)
+                    {
+                        isChoiceDone = true;
+                    }
+                    else
+                    {
+                        ShowItemDescription(listItemInventory[selectedIndex - 1]);
+                    }
+                }
+                else
+                {
+                    switch (keyInfo.Key)
+                    {
+                        case ConsoleKey.UpArrow:
+                            selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
+                            break;
+                        case ConsoleKey.DownArrow:
+                            selectedIndex = (selectedIndex + 1) % options.Length;
+                            break;
+                    }
+                }
+            }
         }
 
         public void ShowGearStats(GearPiece _gearSelected)
@@ -91,8 +191,8 @@ namespace ASCIIFantasy
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(" > ");
             Console.WriteLine(options[0] + "\n");
-
-            while (true)
+            bool isChoiceDone = false;
+            while (!isChoiceDone)
             {
                 DisplayGearStats(_gearSelected);
 
@@ -101,19 +201,57 @@ namespace ASCIIFantasy
 
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    SelectGearToDisplay();
+                    isChoiceDone = true;
+                }
+            }
+        }
+        public void ShowItemDescription(Item _itemSelected)
+        {
+            string[] options = new string[1];
+            options[0] = "Return";
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(" > ");
+            Console.WriteLine(options[0] + "\n");
+            bool isChoiceDone = false;
+            while (!isChoiceDone)
+            {
+                DisplayItemDesc(_itemSelected);
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                Console.Clear();
+
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    isChoiceDone = true;
                 }
             }
         }
 
-
+        public void DisplayBag(string[] options, int selectedIndex)
+        {
+            for (int i = 0; i < options.Length; i++)
+            {
+                if (i == selectedIndex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write(" > ");
+                    Console.WriteLine(options[i]);
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.Write("   ");
+                    Console.WriteLine(options[i]);
+                }
+            }
+        }
 
         public void DisplayGearStats(GearPiece _selectedGear)
         {
 
             Console.WriteLine(
                 $"\t{_selectedGear.gearName.ToUpper()}\n\n" +
-                $"\t\t{_selectedGear.type}\n" +
+                $"\t\tType : {_selectedGear.type}\n\n" +
                 $"\tBonus Health : {_selectedGear.bonusHealth}\n" +
                 $"\tBonus Mana : {_selectedGear.bonusMana}\n" +
                 $"\tBonus Attack : {_selectedGear.bonusAttack}\n" +
@@ -121,6 +259,15 @@ namespace ASCIIFantasy
                 $"\tBonus Intelligence : {_selectedGear.bonusIntelligence}\n" +
                 $"\tBonus Agility : {_selectedGear.bonusAgility}\n" +
                 $"\tBonus Luck : {_selectedGear.bonusLuck} \n");
+
+        }
+        public void DisplayItemDesc(Item _itemSelected)
+        {
+
+            Console.WriteLine(
+                $"\t{_itemSelected.itemName.ToUpper()}\n\n" +
+                $"\t{_itemSelected.type}\n" +
+                $"\t{_itemSelected.description}");
 
         }
 
