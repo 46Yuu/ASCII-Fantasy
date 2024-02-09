@@ -235,9 +235,15 @@ class Program
         MapArray.CreateInstance();
         Player.CreateInstance();
         EnemyList.CreateInstance();
+
         Character character = new Character("Jean-Michel", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
         Player.instance.AddCharacter(character);
         character.AddAttack(ListAttackGlobal.instance.GetAttack(AttackType.Spell, "Fireball"));
-        Player.instance.inventory.AddItem(ItemList.instance.listItem[0],10);
+        
+        Character character2 = new Character("Bernard", Element.Neutral, 80, 120, 6, 10, 14, 10, 10);
+        Player.instance.AddCharacter(character2);
+        character2.AddAttack(ListAttackGlobal.instance.GetAttack(AttackType.Heal, "Small heal"));
+
+        Player.instance.inventory.AddItem(ItemList.instance.listItem[0], 10);
     }
 }
