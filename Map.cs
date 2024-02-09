@@ -7,29 +7,35 @@ public class Map
 {
     public const char TALL_GRASS = '#';
 
-    private char[,] mapTile;
-    private int width; // largeur
-    private int height; // hauteur
-    private int positionX;
-    private int positionY;
-    private int widthGap = 4;
-    private int heightGap = 2;
+    public char[][] mapTile{get; set;}
+    public int width{ get; set; }// largeur
+    public int height { get; set; } // hauteur
+    public int positionX { get; set; }
+    public int positionY { get; set; }
+    public int widthGap { get; set; } = 4;
+    public int heightGap { get; set; } = 2;
 
-    private bool inDialogue;
-    private List<string> dialogues;
-    private int currentDialogueIndex;
-    private char nextCell;
-        public bool InDialogue
+    public bool inDialogue { get; set; }
+    public List<string> dialogues { get; set; }
+    public int currentDialogueIndex { get; set; }
+    public char nextCell { get; set; }
+    public bool InDialogue
     {
         get { return inDialogue; }
         set { inDialogue = value; }
     }
-
-    public Map( int width, int height)
+    public Map()
+    {
+    }
+    public Map(int width, int height)
     {
         this.width = width;
         this.height = height;
-        mapTile = new char[width, height];
+        mapTile = new char[width][];
+        for (int i = 0; i < width; i++)
+        {
+            mapTile[i] = new char[height];
+        }
 
         InitializeMap();
 
@@ -69,7 +75,7 @@ public class Map
         {
             for (int j = 0; j < height; j++)
             {
-                mapTile[i, j] = ' ';
+                mapTile[i][j] = ' ';
             }
         }
 
@@ -79,29 +85,29 @@ public class Map
             if (i < (width / 2) - widthGap || i > (width / 2) + widthGap)
             {
 
-                mapTile[i, 0] = '-';
-                mapTile[i, height - 1] = '-';
+                mapTile[i][0] = '-';
+                mapTile[i][height - 1] = '-';
             }
             else
             {
-                mapTile[i, 0] = ' ';
-                mapTile[i, height - 1] = ' ';
+                mapTile[i][0] = ' ';
+                mapTile[i][height - 1] = ' ';
             }
         }
         for (int j = 0; j < height; j++)
         {
             if (j < (height / 2) - heightGap || j > (height / 2) + heightGap)
             {
-                mapTile[0, j] = '|';
-                mapTile[width - 1, j] = '|';
+                mapTile[0][j] = '|';
+                mapTile[width - 1][j] = '|';
             }
             else
             {
-                mapTile[0, j] = ' ';
-                mapTile[width - 1, j] = ' ';
+                mapTile[0][j] = ' ';
+                mapTile[width - 1][j] = ' ';
             }
         }
-        mapTile[positionX, positionY] = 'P'; // Player
+        mapTile[positionX][positionY] = 'P'; // Player
         GenerateBuilding();
         MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0]][ 99 + Player.instance.mapGlobalIndex[1]] = this;
         MapArray.instance.activeMap = this;
@@ -114,7 +120,7 @@ public class Map
         {
             for (int i = 0; i < width; i++)
             {
-                Console.Write(mapTile[i, j]);
+                Console.Write(mapTile[i][j]);
             }
             Console.WriteLine();
         }
@@ -122,137 +128,139 @@ public class Map
 
     public void DrawHouse1(int x, int y)
     {
-        mapTile[x + 2, y] = '_';
-        mapTile[x + 3, y] = 'm';
-        mapTile[x + 4, y] = '_';
+        mapTile[x + 2][ y] = '_';
+        mapTile[x + 3][y] = 'm';
+        mapTile[x + 4][y] = '_';
 
-        mapTile[x, y + 1] = '/';
-        mapTile[x + 1, y + 1] = '\\';
-        mapTile[x + 2, y + 1] = '_';
-        mapTile[x + 3, y + 1] = '_';
-        mapTile[x + 4, y + 1] = '_';
-        mapTile[x + 5, y + 1] = '\\';
+        mapTile[x][y + 1] = '/';
+        mapTile[x + 1][y + 1] = '\\';
+        mapTile[x + 2][y + 1] = '_';
+        mapTile[x + 3][y + 1] = '_';
+        mapTile[x + 4][y + 1] = '_';
+        mapTile[x + 5][y + 1] = '\\';
 
-        mapTile[x, y + 2] = '|';
-        mapTile[x + 1, y + 2] = '_';
-        mapTile[x + 2, y + 2] = '|';
-        mapTile[x + 3, y + 2] = '"';
-        mapTile[x + 4, y + 2] = '"';
-        mapTile[x + 5, y + 2] = '|';
+        mapTile[x][y + 2] = '|';
+        mapTile[x + 1][y + 2] = '_';
+        mapTile[x + 2][y + 2] = '|';
+        mapTile[x + 3][y + 2] = '"';
+        mapTile[x + 4][y + 2] = '"';
+        mapTile[x + 5][y + 2] = '|';
     }
 
     public void DrawHouse2(int x, int y)
     {
-        mapTile[x + 2, y] = '[';
-        mapTile[x + 3, y] = ']';
-        mapTile[x + 4, y] = '_';
-        mapTile[x + 5, y] = '_';
-        mapTile[x + 6, y] = '_';
+        mapTile[x + 2][y] = '[';
+        mapTile[x + 3][y] = ']';
+        mapTile[x + 4][y] = '_';
+        mapTile[x + 5][y] = '_';
+        mapTile[x + 6][y] = '_';
 
-        mapTile[x + 1, y + 1] = '/';
-        mapTile[x + 6, y + 1] = '/';
-        mapTile[x + 7, y + 1] = '\\';
+        mapTile[x + 1][y + 1] = '/';
+        mapTile[x + 6][y + 1] = '/';
+        mapTile[x + 7][y + 1] = '\\';
 
-        mapTile[x, y + 2] = '/';
-        mapTile[x + 1, y + 2] = '_';
-        mapTile[x + 2, y + 2] = '_';
-        mapTile[x + 3, y + 2] = '_';
-        mapTile[x + 4, y + 2] = '_';
-        mapTile[x + 5, y + 2] = '/';
-        mapTile[x + 6, y + 2] = '_';
-        mapTile[x + 7, y + 2] = '_';
-        mapTile[x + 8, y + 2] = '\\';
+        mapTile[x][y + 2] = '/';
+        mapTile[x + 1][y + 2] = '_';
+        mapTile[x + 2][y + 2] = '_';
+        mapTile[x + 3][y + 2] = '_';
+        mapTile[x + 4][y + 2] = '_';
+        mapTile[x + 5][y + 2] = '/';
+        mapTile[x + 6][y + 2] = '_';
+        mapTile[x + 7][y + 2] = '_';
+        mapTile[x + 8][y + 2] = '\\';
 
-        mapTile[x, y + 3] = '|';
-        mapTile[x + 1, y + 3] = '[';
-        mapTile[x + 2, y + 3] = ']';
-        mapTile[x + 3, y + 3] = '[';
-        mapTile[x + 4, y + 3] = ']';
-        mapTile[x + 5, y + 3] = '|';
-        mapTile[x + 6, y + 3] = '|';
-        mapTile[x + 7, y + 3] = '|';
-        mapTile[x + 8, y + 3] = '|';
+        mapTile[x][y + 3] = '|';
+        mapTile[x + 1][y + 3] = '[';
+        mapTile[x + 2][y + 3] = ']';
+        mapTile[x + 3][y + 3] = '[';
+        mapTile[x + 4][y + 3] = ']';
+        mapTile[x + 5][y + 3] = '|';
+        mapTile[x + 6][y + 3] = '|';
+        mapTile[x + 7][y + 3] = '|';
+        mapTile[x + 8][y + 3] = '|';
     }
 
     public void Draw1TallGrass(int x, int y)
     {
-        mapTile[x, y] = TALL_GRASS;
+        mapTile[x][y] = TALL_GRASS;
     }
 
     public void DrawRoundTallGrass(int x, int y)
     {
-        mapTile[x, y] = TALL_GRASS;
-        mapTile[x + 1, y] = TALL_GRASS;
-        mapTile[x - 1, y] = TALL_GRASS;
-        mapTile[x + 2, y] = TALL_GRASS;
+        mapTile[x][y] = TALL_GRASS;
+        mapTile[x + 1][y] = TALL_GRASS;
+        mapTile[x - 1][y] = TALL_GRASS;
+        mapTile[x + 2][y] = TALL_GRASS;
 
-        mapTile[x, y + 1] = TALL_GRASS;
-        mapTile[x - 1, y + 1] = TALL_GRASS;
-        mapTile[x - 2, y + 1] = TALL_GRASS;
-        mapTile[x + 1, y + 1] = TALL_GRASS;
-        mapTile[x + 2, y + 1] = TALL_GRASS;
-        mapTile[x + 3, y + 1] = TALL_GRASS;
+        mapTile[x][ y + 1] = TALL_GRASS;
+        mapTile[x - 1][y + 1] = TALL_GRASS;
+        mapTile[x - 2][y + 1] = TALL_GRASS;
+        mapTile[x + 1][y + 1] = TALL_GRASS;
+        mapTile[x + 2][y + 1] = TALL_GRASS;
+        mapTile[x + 3][y + 1] = TALL_GRASS;
 
-        mapTile[x, y + 2] = TALL_GRASS;
-        mapTile[x - 1, y + 2] = TALL_GRASS;
-        mapTile[x - 2, y + 2] = TALL_GRASS;
-        mapTile[x - 3, y + 2] = TALL_GRASS;
-        mapTile[x + 1, y + 2] = TALL_GRASS;
-        mapTile[x + 2, y + 2] = TALL_GRASS;
-        mapTile[x + 3, y + 2] = TALL_GRASS;
-        mapTile[x + 4, y + 2] = TALL_GRASS;
+        mapTile[x][y + 2] = TALL_GRASS;
+        mapTile[x - 1][y + 2] = TALL_GRASS;
+        mapTile[x - 2][y + 2] = TALL_GRASS;
+        mapTile[x - 3][y + 2] = TALL_GRASS;
+        mapTile[x + 1][y + 2] = TALL_GRASS;
+        mapTile[x + 2][y + 2] = TALL_GRASS;
+        mapTile[x + 3][y + 2] = TALL_GRASS;
+        mapTile[x + 4][y + 2] = TALL_GRASS;
 
-        mapTile[x, y + 3] = TALL_GRASS;
-        mapTile[x - 1, y + 3] = TALL_GRASS;
-        mapTile[x - 2, y + 3] = TALL_GRASS;
-        mapTile[x + 1, y + 3] = TALL_GRASS;
-        mapTile[x + 2, y + 3] = TALL_GRASS;
-        mapTile[x + 3, y + 3] = TALL_GRASS;
+        mapTile[x][y + 3] = TALL_GRASS;
+        mapTile[x - 1][y + 3] = TALL_GRASS;
+        mapTile[x - 2][y + 3] = TALL_GRASS;
+        mapTile[x + 1][y + 3] = TALL_GRASS;
+        mapTile[x + 2][y + 3] = TALL_GRASS;
+        mapTile[x + 3][y + 3] = TALL_GRASS;
 
-        mapTile[x, y + 4] = TALL_GRASS;
-        mapTile[x + 1, y + 4] = TALL_GRASS;
-        mapTile[x - 1, y + 4] = TALL_GRASS;
-        mapTile[x + 2, y + 4] = TALL_GRASS;
+        mapTile[x][y + 4] = TALL_GRASS;
+        mapTile[x + 1][y + 4] = TALL_GRASS;
+        mapTile[x - 1][y + 4] = TALL_GRASS;
+        mapTile[x + 2][y + 4] = TALL_GRASS;
     }
 
     public void DrawNPC(int x, int y)
     {
-        mapTile[x, y] = '8';
+        mapTile[x][y] = '8';
     }
 
     public void DrawTree(int x, int y)
     {
-        mapTile[x, y + 4] = '|';
+        mapTile[x][y + 4] = '|';
 
-        mapTile[x, y] = '^';
+        mapTile[x][y] = '^';
 
-        mapTile[x, y + 1] = '^';
-        mapTile[x - 1, y + 1] = '^';
-        mapTile[x + 1, y + 1] = '^';
+        mapTile[x][y + 1] = '^';
+        mapTile[x - 1][y + 1] = '^';
+        mapTile[x + 1][y + 1] = '^';
 
-        mapTile[x, y + 2] = '^';
-        mapTile[x - 1, y + 2] = '^';
-        mapTile[x - 2, y + 2] = '^';
-        mapTile[x + 1, y + 2] = '^';
-        mapTile[x + 2, y + 2] = '^';
+        mapTile[x][y + 2] = '^';
+        mapTile[x - 1][y + 2] = '^';
+        mapTile[x - 2][y + 2] = '^';
+        mapTile[x + 1][y + 2] = '^';
+        mapTile[x + 2][y + 2] = '^';
 
-        mapTile[x, y + 3] = '^';
-        mapTile[x - 1, y + 3] = '^';
-        mapTile[x - 2, y + 3] = '^';
-        mapTile[x - 3, y + 3] = '^';
-        mapTile[x + 1, y + 3] = '^';
-        mapTile[x + 2, y + 3] = '^';
-        mapTile[x + 3, y + 3] = '^';
+        mapTile[x][y + 3] = '^';
+        mapTile[x - 1][y + 3] = '^';
+        mapTile[x - 2][y + 3] = '^';
+        mapTile[x - 3][y + 3] = '^';
+        mapTile[x + 1][y + 3] = '^';
+        mapTile[x + 2][y + 3] = '^';
+        mapTile[x + 3][y + 3] = '^';
 
     }
 
     public void SetPlayer(int posX, int posY)
     {
-        mapTile[positionX, positionY] = nextCell;
+        Debug.WriteLine(posX + "\n");
+        Debug.WriteLine(posY + "\n");
+        mapTile[positionX][positionY] = nextCell;
         positionX = posX;
         positionY = posY;
-        nextCell = mapTile[positionX, positionY];
-        mapTile[positionX, positionY] = 'P';
+        nextCell = mapTile[positionX][positionY];
+        mapTile[positionX][positionY] = 'P';
     }
     public void MovePlayer( int moveX, int moveY)
     {
@@ -260,15 +268,15 @@ public class Map
         int nextPosY = positionY + moveY;
         if (nextPosX != 0 && nextPosX != width && nextPosY != 0 && nextPosY != height)
         {
-            if (mapTile[nextPosX, nextPosY] == ' ' || mapTile[nextPosX, nextPosY] == '#')
+            if (mapTile[nextPosX][nextPosY] == ' ' || mapTile[nextPosX][nextPosY] == '#')
             {
-                mapTile[positionX, positionY] = nextCell;
-                nextCell = mapTile[nextPosX, nextPosY];
+                mapTile[positionX][positionY] = nextCell;
+                nextCell = mapTile[nextPosX][nextPosY];
                 positionX = nextPosX;
                 positionY = nextPosY;
                 Player.instance.positionX = positionX;
                 Player.instance.positionY = positionY;
-                mapTile[positionX, positionY] = 'P';
+                mapTile[positionX][positionY] = 'P';
             }
         }
         else if (nextPosX == 0 || nextPosX == width)
@@ -345,7 +353,7 @@ public class Map
 
     public bool IsNPCNearby(int x, int y)
     {
-        return x >= 0 && x < width && y >= 0 && y < height && mapTile[x, y] == '8';
+        return x >= 0 && x < width && y >= 0 && y < height && mapTile[x][y] == '8';
     }
 
     public bool InteractWithNPC()
@@ -392,7 +400,7 @@ public class Map
                     {
                         for (int k = y; k < y + 3; k++)
                         {
-                            if (mapTile[j, k] == ' ')
+                            if (mapTile[j][k] == ' ')
                             {
                                 canBuild = true;
                             }
@@ -409,7 +417,7 @@ public class Map
                     {
                         for (int k = y; k < y + 5; k++)
                         {
-                            if (mapTile[j, k] == ' ')
+                            if (mapTile[j][k] == ' ')
                             {
                                 canBuild = true;
                             }

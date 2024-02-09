@@ -9,12 +9,12 @@ namespace ASCIIFantasy
     {
         public static Player instance { get; set; }
         public List<Character> listCharacters { get; set; }
-        public  int positionX { get; set; }
-        public  int positionY { get; set; }
+        public int positionX { get; set; }
+        public int positionY { get; set; }
 
-        public int mapIndexX{ get; set; }
-        public int mapIndexY{ get; set; }
-        public int[] mapGlobalIndex{ get; set; }
+        public int mapIndexX { get; set; }
+        public int mapIndexY { get; set; }
+        public int[] mapGlobalIndex { get; set; }
         public Inventory inventory { get; set; }
         int selectedCharacterIndex;
 
@@ -62,11 +62,12 @@ namespace ASCIIFantasy
                 {
                     if (selectedIndex == 0)
                     {
-                        // isChoiceDone = true;
+                        isChoiceDone = true;
                         break;
                     }
                     else
                     {
+                        isChoiceDone = true;
                         selectedCharacterIndex = selectedIndex - 1;
                         SelectCharacterMenu(listCharacters[selectedIndex - 1]);
                     }
@@ -84,7 +85,7 @@ namespace ASCIIFantasy
                     }
                 }
             }
-            // renvoie au menu précédent
+            Program.ShowAltMenu(Program.altMenu, instance);
         }
 
         public void SelectCharacterMenu(Character _selected)
@@ -152,9 +153,8 @@ namespace ASCIIFantasy
                     switch (selectedIndex)
                     {
                         case 0:
+                            isChoiceDone = true;
                             SelectCharacter();
-                            break;
-                        case 6:
                             break;
                     }
                 }

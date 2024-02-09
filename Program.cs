@@ -8,6 +8,7 @@ class Program
 {
     public static int width = 120;
     public static int height = 28;
+    public static AltMenu altMenu = new AltMenu(new string[] { "RESUME GAME", "INVENTORY", "TEAM", "SAVE GAME", "MAIN MENU", "EXIT GAME" });
 
     static void Main()
     {
@@ -18,7 +19,6 @@ class Program
         MapArray.instance.maps[99][99] = new Map(width, height);
         MapArray.instance.activeMap = MapArray.instance.maps[99][99];
         Menu mainMenu = new Menu(new string[] { "NEW GAME", "LOAD GAME", "EXIT" });
-
         while (true)
         {
             if (!MapArray.instance.activeMap.InDialogue)
@@ -68,8 +68,6 @@ class Program
 
     static void RunGame()
     {
-        AltMenu altMenu = new AltMenu(new string[] { "RESUME GAME", "INVENTORY", "TEAM", "SAVE GAME", "MAIN MENU", "EXIT GAME" });
-
         while (true)
         {
             MapArray.instance.activeMap.DisplayMap();
@@ -165,12 +163,13 @@ class Program
                     {
                         Save.LoadData("Save" + (selectedIndex).ToString());
                         isChoiceDone = true;
+                        RunGame();
                     }
                     break;
             }
         }
     }
-    static bool ShowAltMenu(AltMenu altMenu, Player player)
+    public static bool ShowAltMenu(AltMenu altMenu, Player player)
     {
         bool altMenuActive = true;
 
