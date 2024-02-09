@@ -251,7 +251,7 @@ namespace ASCIIFantasy
 
         public void RegenMana()
         {
-            IncrementMana(mana / 30);
+            IncrementMana(mana / 20);
         }
         public void StoreInitialStats()
         {

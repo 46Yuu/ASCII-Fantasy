@@ -14,13 +14,7 @@ class Program
     {
         Console.CursorVisible = false;
         Console.SetWindowSize(width, height*2);
-        ListAttackGlobal.CreateInstance();
-        MapArray.CreateInstance();
-        Player.CreateInstance();
-        EnemyList.CreateInstance();
-        Character character = new Character("Jean-Michel", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
-        Player.instance.AddCharacter(character);
-        character.AddAttack(ListAttackGlobal.instance.GetAttack(AttackType.Spell,"Fireball"));
+        init();
         MapArray.instance.maps[99][99] = new Map(width, height);
         MapArray.instance.activeMap =MapArray.instance.maps[99][99];
         Menu mainMenu = new Menu(new string[] { "NEW GAME", "LOAD GAME", "EXIT" });
@@ -229,5 +223,17 @@ class Program
         }
 
         return false;
+    }
+
+    public static void init()
+    {
+        ListAttackGlobal.CreateInstance();
+        MapArray.CreateInstance();
+        Player.CreateInstance();
+        EnemyList.CreateInstance();
+        Character character = new Character("Jean-Michel", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
+        Player.instance.AddCharacter(character);
+        character.AddAttack(ListAttackGlobal.instance.GetAttack(AttackType.Spell, "Fireball"));
+        Player.instance.inventory.AddItem(ItemList.instance.listItem[0],10);
     }
 }
