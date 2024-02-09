@@ -30,8 +30,9 @@ namespace ASCIIFantasy
 
         public int level { get; set; }
 
-        protected static Random rnd = new Random();
+        public static Random rnd { get; set; } = rnd = new Random();
 
+        public Attack(){}
         public Attack(string _name, Element _element, int _power, int _cost, int _level)
         {
             attack_name = _name;
@@ -121,6 +122,11 @@ namespace ASCIIFantasy
             listAttackSpell = new List<Attack>
             {
                 new Fireball(), 
+                new VineWhip(),
+                new WaterGun(),
+                new LightBeam(),
+                new DarkBeam(),
+                new Earthquake(),
             };
 
             listAttackHeal = new List<Attack>

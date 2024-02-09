@@ -13,10 +13,11 @@ class Program
     static void Main()
     {
         Console.CursorVisible = false;
+        Console.SetWindowSize(width, height*2);
+        ListAttackGlobal.CreateInstance();
         MapArray.CreateInstance();
         Player.CreateInstance();
         EnemyList.CreateInstance();
-        ListAttackGlobal.CreateInstance();
         Character character = new Character("Jean-Michel", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
         Player.instance.AddCharacter(character);
         character.AddAttack(ListAttackGlobal.instance.GetAttack(AttackType.Spell,"Fireball"));

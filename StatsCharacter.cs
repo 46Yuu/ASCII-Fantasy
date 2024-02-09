@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -132,6 +133,11 @@ namespace ASCIIFantasy
             luck += i;
         }
  
+        public void SetActualHealthAndMana()
+        {
+            actual_hp = health;
+            actual_mana = mana;
+        }
 
         public int GetBonusHealth()
         {
@@ -219,15 +225,27 @@ namespace ASCIIFantasy
         public void ShowMana()
         {
             Console.Write(" Mana: ");
-            int manaPercentage = (int)((double)actual_mana / mana * 100);
+            int manaPercentage;
+            if (mana > 0)
+            {
+                manaPercentage = (int)((double)actual_mana / mana * 100);
+            }
+            else
+            {
+                manaPercentage = 0;
+            }
             int totalSegments = 20;
             int filledSegments = manaPercentage / 5;
             Console.ForegroundColor = ConsoleColor.Blue;
             for (int i = 0; i < filledSegments; i++)
+            {
                 Console.Write("█");
+            }
             Console.ResetColor();
             for (int i = filledSegments; i < totalSegments; i++)
+            {
                 Console.Write("_");
+            }
             Console.WriteLine(" " + actual_mana + "/" + mana);
         }
 

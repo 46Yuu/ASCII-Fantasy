@@ -278,16 +278,15 @@ public class Map
                 positionY = nextPosY;
                 Player.instance.positionX = positionX;
                 Player.instance.positionY = positionY;
-                mapTile[positionX, positionY] = 'P';
+                mapTile[positionX][positionY] = 'P';
                 if (nextCell == '#')
                 {
                     Random rnd = new Random();
                     int rollCombat = rnd.Next(0, 100);
-                    Debug.Write(rollCombat);
                     if(rollCombat <= RATE_COMBAT)
                     {
                         int levelCircle = 0;
-                        MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]] = this;
+                        MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0]][99 + Player.instance.mapGlobalIndex[1]] = this;
                         (int x, int y) normalized = NormalizePoint(99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]);
                         int distanceFromCenter = (int)Math.Sqrt(normalized.x * normalized.x + normalized.y * normalized.y);
                         if(distanceFromCenter >10)

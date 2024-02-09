@@ -61,9 +61,9 @@ namespace ASCIIFantasy
 
     }
 
-    public class EarthQuake : Spell
+    public class Earthquake : Spell
     {
-        public EarthQuake() : base("EarthQuake", Element.Ground, 5, 10, 10) { }
+        public Earthquake() : base("Earthquake", Element.Ground, 5, 10, 10) { }
 
         public override void Use(Character attacker, Character receiver)
         {

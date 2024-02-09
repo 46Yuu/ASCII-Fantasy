@@ -23,6 +23,7 @@ namespace ASCIIFantasy
             player = _player;
             listCharacters = player.listCharacters;
             enemy = CreateNewEnemy(levelCircle);
+            Debug.WriteLine(enemy.stats.health);
             StartCombat();
         }
 
@@ -53,35 +54,35 @@ namespace ASCIIFantasy
                     break;
                 case 2:
                     level = rnd.Next(21, 31);
-                    indexEnemy = rnd.Next(6, 11);
+                    indexEnemy = rnd.Next(5, 11);
                     break;
                 case 3:
                     level = rnd.Next(31, 41);
-                    indexEnemy = rnd.Next(6, 11);
+                    indexEnemy = rnd.Next(5, 11);
                     break;
                 case 4:
                     level = rnd.Next(41, 51);
-                    indexEnemy = rnd.Next(6, 11);
+                    indexEnemy = rnd.Next(5, 11);
                     break;
                 case 5:
                     level = rnd.Next(51, 61);
-                    indexEnemy = rnd.Next(6, 11);
+                    indexEnemy = rnd.Next(5, 11);
                     break;
                 case 6:
                     level = rnd.Next(61, 71);
-                    indexEnemy = rnd.Next(6, 11);
+                    indexEnemy = rnd.Next(5, 11);
                     break;
                 case 7:
                     level = rnd.Next(71, 81);
-                    indexEnemy = 12;
+                    indexEnemy = 11;
                     break;
                 case 8:
                     level = rnd.Next(81, 91);
-                    indexEnemy = 12;
+                    indexEnemy = 11;
                     break;
                 case 9:
                     level = rnd.Next(91, 101);
-                    indexEnemy = 12;
+                    indexEnemy = 11;
                     break;
             }
             Enemy enemy = EnemyList.instance.enemies.ElementAt(indexEnemy);

@@ -14,6 +14,10 @@ namespace ASCIIFantasy
         public static EnemyList instance { get; set; }
         public List<Enemy> enemies = new List<Enemy>();
 
+        public EnemyList()
+        {
+            CreateEnemies();
+        }
         public static EnemyList CreateInstance()
         {
             if (instance == null)
@@ -47,6 +51,7 @@ namespace ASCIIFantasy
 
         public void CreateEnemies()
         {
+
             enemies.Add(new Slime());
             enemies.Add(new Goblin());
             enemies.Add(new Skeleton());
@@ -87,6 +92,7 @@ namespace ASCIIFantasy
             stats.defense = rnd.Next(1, 10);
             stats.agility = rnd.Next(1, 10);
             stats.luck = rnd.Next(1, 10);
+            stats.SetActualHealthAndMana();
         }    
     }
 
@@ -102,6 +108,7 @@ namespace ASCIIFantasy
             stats.defense = rnd.Next(3, 10);
             stats.agility = rnd.Next(5, 15);
             stats.luck = rnd.Next(1, 5);
+            stats.SetActualHealthAndMana();
         }
     }
 
@@ -117,6 +124,7 @@ namespace ASCIIFantasy
             stats.defense = rnd.Next(1, 8);
             stats.agility = rnd.Next(5, 15);
             stats.luck = rnd.Next(1, 5);
+            stats.SetActualHealthAndMana();
         }
     }
 
@@ -132,6 +140,7 @@ namespace ASCIIFantasy
             stats.defense = rnd.Next(2, 6);
             stats.agility = rnd.Next(10, 20);
             stats.luck = rnd.Next(1, 10);
+            stats.SetActualHealthAndMana();
         }
     }
 
@@ -147,6 +156,7 @@ namespace ASCIIFantasy
             stats.defense = rnd.Next(1, 5);
             stats.agility = rnd.Next(10, 20);
             stats.luck = rnd.Next(1, 5);
+            stats.SetActualHealthAndMana();
         }
     }
 
@@ -164,6 +174,7 @@ namespace ASCIIFantasy
             stats.intelligence = rnd.Next(10, 30);
             stats.agility = rnd.Next(8, 20);
             stats.luck = rnd.Next(1, 5);
+            stats.SetActualHealthAndMana();
             listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Spell,"Fireball"));
             listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Buff,"BookWorm"));
         }
@@ -183,6 +194,7 @@ namespace ASCIIFantasy
             stats.intelligence = rnd.Next(10, 30);
             stats.agility = rnd.Next(8, 20);
             stats.luck = rnd.Next(1, 5);
+            stats.SetActualHealthAndMana();
             listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Spell, "Vine Whip"));
             listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Buff, "BookWorm"));
         }
@@ -202,6 +214,7 @@ namespace ASCIIFantasy
             stats.intelligence = rnd.Next(10, 30);
             stats.agility = rnd.Next(8, 20);
             stats.luck = rnd.Next(1, 5);
+            stats.SetActualHealthAndMana();
             listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Spell, "Water Gun"));
             listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Buff, "BookWorm"));
         }
@@ -221,6 +234,7 @@ namespace ASCIIFantasy
             stats.intelligence = rnd.Next(10, 30);
             stats.agility = rnd.Next(8, 20);
             stats.luck = rnd.Next(1, 5);
+            stats.SetActualHealthAndMana();
             listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Spell, "Earthquake"));
             listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Buff, "BookWorm"));
         }
@@ -240,6 +254,7 @@ namespace ASCIIFantasy
             stats.intelligence = rnd.Next(10, 30);
             stats.agility = rnd.Next(8, 20);
             stats.luck = rnd.Next(1, 5);
+            stats.SetActualHealthAndMana();
             listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Spell, "Light Beam"));
             listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Buff, "BookWorm"));
         }
@@ -259,6 +274,7 @@ namespace ASCIIFantasy
             stats.intelligence = rnd.Next(10, 30);
             stats.agility = rnd.Next(8, 20);
             stats.luck = rnd.Next(1, 5);
+            stats.SetActualHealthAndMana();
             listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Spell, "Dark Beam"));
             listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Buff, "BookWorm"));
         }
@@ -278,10 +294,11 @@ namespace ASCIIFantasy
             stats.intelligence = rnd.Next(20, 70);
             stats.agility = rnd.Next(5, 15);
             stats.luck = rnd.Next(1, 5);
+            stats.SetActualHealthAndMana();
             listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Spell, "Fireball"));
             listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Buff, "BookWorm"));
-            listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Buff, "BulkUp"));
-            listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Buff, "RyuMonsho"));
+            listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Buff, "Bulk Up"));
+            listAttack.Add(ListAttackGlobal.instance.GetAttack(AttackType.Buff, "Ryu Monsho"));
         }
     }   
 
