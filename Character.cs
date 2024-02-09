@@ -11,27 +11,31 @@ namespace ASCIIFantasy
     public class Character
     {
         public string name { get; set; }
-        protected Element element;
+        public Element element{get; set;}
         public StatsCharacter stats { get; set; }
-        protected List<Attack> listAttack = new List<Attack>();
+        public List<Attack> listAttack { get; set; }
         public Gear characterGear { get; }
         public bool isDead { get; set; } = false;
 
         public Character()
         {
+            listAttack = new List<Attack>();
             name = "Jean-Michel";
             element = Element.Neutral;
             stats = new StatsCharacter();
             characterGear = new Gear();
+            Physical melee = new Physical("Melee", Element.Neutral, 0, 0, 0);
+            listAttack.Add(melee);
             AddGearStats();
         }
 
         public Character(string n, Element _element, int hp, int man, int atk, int def, int intel, int agi, int luc)
         {
+            listAttack = new List<Attack>();
             name = n;
             stats = new StatsCharacter(hp, man, atk, def, intel, agi, luc);
             element = _element;
-            Physical melee = new Physical("Melee", Element.Neutral, 0, 0);
+            Physical melee = new Physical("Melee", Element.Neutral, 0, 0, 0);
             listAttack.Add(melee);
             characterGear = new Gear();
             AddGearStats();
@@ -81,13 +85,57 @@ namespace ASCIIFantasy
 
         public int GetLowestSpellCost()
         {
-            int ret;
+            int ret = 0;
             foreach(Attack p in listAttack)
             {
                 if (p.attack_name != "Melee")
                 {
+                    if(ret == 0)
+                        ret = p.cost;
                     ret = Math.Min(ret,p.cost);
                     break;
+                }
+            }
+            return ret;
+        }
+
+        public int GetLowestBuffCost()
+        {
+            int ret = 0;
+            foreach (Attack p in listAttack)
+            {
+                if (p.type == AttackType.Buff)
+                {
+                    if (ret == 0)
+                        ret = p.cost;
+                    ret = Math.Min(ret, p.cost);
+                    break;
+                }
+            }
+            return ret;
+        }
+        public bool HaveBuffAttacks()
+        {
+            foreach(Attack p in listAttack)
+            {
+                if (p.type == AttackType.Buff)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool HaveEffectiveSpell(Element receiverElement)
+        {
+            bool ret = false;
+            foreach (Attack p in listAttack)
+            {
+                if (p.type == AttackType.Spell)
+                {
+                    ret = Attack.IsElementalWeakness(p.element, receiverElement);
+                    if (ret)
+                        return ret;
                 }
             }
             return ret;
@@ -102,7 +150,7 @@ namespace ASCIIFantasy
         {
             return $"Name: {name}\nHealth: {stats.actual_hp} / {stats.health}\nMana: {stats.actual_mana} / {stats.mana}\n" +
                 $"Attack: {stats.attack}\nDefense: {stats.defense}\nAgility: {stats.agility}\nIntelligence: {stats.intelligence}\n" +
-                $"Luck: {stats.luck}\n";
+                $"Luck: {stats.luck}\n\nLevel: {stats.level}\nExp: {stats.experience}/{stats.experienceToNextLevel}\n";
 
         }
 

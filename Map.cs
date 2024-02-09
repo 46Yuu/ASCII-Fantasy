@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 public class Map
 {
     public const char TALL_GRASS = '#';
+    public const int RATE_COMBAT = 10;
 
     private char[,] mapTile;
     private int width; // largeur
@@ -58,7 +59,6 @@ public class Map
     {
         positionX = Player.instance.positionX;
         positionY = Player.instance.positionY;
-        nextCell = ' ';
 
         for (int i = 0; i < width; i++)
         {
@@ -96,9 +96,11 @@ public class Map
                 mapTile[width - 1, j] = ' ';
             }
         }
-        mapTile[positionX, positionY] = 'P'; // Player
+
+        GenerateTallGrass();
         GenerateBuilding();
-        mapTile[positionX+1, positionY] = 'E';
+        nextCell = mapTile[positionX,positionY];
+        mapTile[positionX, positionY] = 'P'; // Player
         MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]] = this;
         MapArray.instance.activeMap = this;
     }
@@ -115,7 +117,6 @@ public class Map
             Console.WriteLine();
         }
     }
-
     public void DrawHouse1(int x, int y)
     {
         mapTile[x + 2, y] = '_';
@@ -256,7 +257,7 @@ public class Map
         int nextPosY = positionY + moveY;
         if (nextPosX != 0 && nextPosX != width && nextPosY != 0 && nextPosY != height)
         {
-            if (mapTile[nextPosX, nextPosY] == ' ' || mapTile[nextPosX, nextPosY] == '#' || mapTile[nextPosX, nextPosY] == 'E')
+            if (mapTile[nextPosX, nextPosY] == ' ' || mapTile[nextPosX, nextPosY] == '#')
             {
                 mapTile[positionX, positionY] = nextCell;
                 nextCell = mapTile[nextPosX, nextPosY];
@@ -265,12 +266,55 @@ public class Map
                 Player.instance.positionX = positionX;
                 Player.instance.positionY = positionY;
                 mapTile[positionX, positionY] = 'P';
-                Debug.WriteLine($"E pos {61}  {14}\n");
-                Debug.WriteLine($"Player pos {Player.instance.positionX}  {Player.instance.positionY}\n");
-                if ((Player.instance.positionX == 61) && (Player.instance.positionY == 14))
+                if (nextCell == '#')
                 {
-                    Debug.WriteLine("Combat\n");
-                    Combat newCombat = new Combat(Player.instance, 0);
+                    Random rnd = new Random();
+                    int rollCombat = rnd.Next(0, 100);
+                    Debug.Write(rollCombat);
+                    if(rollCombat <= RATE_COMBAT)
+                    {
+                        int levelCircle = 0;
+                        MapArray.instance.maps[99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]] = this;
+                        (int x, int y) normalized = NormalizePoint(99 + Player.instance.mapGlobalIndex[0], 99 + Player.instance.mapGlobalIndex[1]);
+                        int distanceFromCenter = (int)Math.Sqrt(normalized.x * normalized.x + normalized.y * normalized.y);
+                        if(distanceFromCenter >10)
+                        {
+                            levelCircle = 1;
+                        }
+                        else if(distanceFromCenter > 20)
+                        {
+                            levelCircle = 2;
+                        }
+                        else if(distanceFromCenter > 30)
+                        {
+                            levelCircle = 3;
+                        }
+                        else if (distanceFromCenter > 40)
+                        {
+                            levelCircle = 4;
+                        }
+                        else if(distanceFromCenter >50)
+                        {
+                            levelCircle = 5;
+                        }
+                        else if(distanceFromCenter > 60)
+                        {
+                            levelCircle = 6;
+                        }
+                        else if(distanceFromCenter > 70)
+                        {
+                            levelCircle = 7;
+                        }
+                        else if(distanceFromCenter > 80)
+                        {
+                            levelCircle = 8;
+                        }
+                        else if(distanceFromCenter > 90)
+                        {
+                            levelCircle = 9;
+                        } 
+                        Combat newCombat = new Combat(Player.instance, levelCircle);
+                    }
                 }
             }
         }
@@ -399,7 +443,7 @@ public class Map
                     {
                         for (int k = y; k < y + 3; k++)
                         {
-                            if (mapTile[j, k] == ' ')
+                            if (mapTile[j, k] == ' ' || mapTile[j, k] == '#')
                             {
                                 canBuild = true;
                             }
@@ -416,7 +460,7 @@ public class Map
                     {
                         for (int k = y; k < y + 5; k++)
                         {
-                            if (mapTile[j, k] == ' ')
+                            if (mapTile[j, k] == ' ' || mapTile[j,k] == '#')
                             {
                                 canBuild = true;
                             }
@@ -436,6 +480,33 @@ public class Map
             {
                 DrawHouse2(x, y);
             }
+        }
+    }
+
+    public void GenerateTallGrass()
+    {
+        Random random = new Random();
+
+        int grassNbr = random.Next(5, 10);
+        for (int o = 0; o < grassNbr; o++)
+        {
+            bool canBuild = false;
+            int x = 0;
+            int y = 0;
+            while (!canBuild)
+            {
+                x = random.Next(1, width);
+                y = random.Next(1, height);
+                if (x - 3 <= 1 || y + 4 >= height - 1 || x + 3 >= width - 1 || y <= 1)
+                {
+                    canBuild = false;
+                }
+                else
+                {
+                    canBuild = true;
+                }
+            }
+            DrawRoundTallGrass(x, y);
         }
     }
 
@@ -473,4 +544,21 @@ public class Map
         InitializeNextMap();
     }
 
+    private static int GCD(int a, int b)
+    {
+        if (b == 0)
+            return a;
+        return GCD(b, a % b);
+    }
+    public static (int,int) NormalizePoint(int x, int y)
+    {
+        int gcd = GCD(Math.Abs(x), Math.Abs(y));
+        int newX = 0,newY = 0;
+        if (gcd != 0)
+        {
+            newX /= gcd;
+            newY /= gcd;
+        }
+        return (newX, newY);
+    }
 }

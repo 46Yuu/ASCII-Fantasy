@@ -10,9 +10,11 @@ namespace ASCIIFantasy
 {
     public class Buff : Attack
     {
-        public Buff(string name, Element element, int power, int cost) : base(name, element, power, cost) 
+        public string statToBuff { get; set; }
+        public Buff(string name, Element element, int power, int cost, int level, string _statToBuff) : base(name, element, power, cost, level) 
         {
             type = AttackType.Buff;
+            statToBuff = _statToBuff;
         }
         //power = buff power in percentage
         public override void Use(Character attacker, Character receiver)

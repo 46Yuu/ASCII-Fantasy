@@ -8,7 +8,7 @@ namespace ASCIIFantasy
 {
     public class BulkUp : Buff
     {
-        public BulkUp() : base("Bulk Up", Element.Neutral, 10, 20) { }
+        public BulkUp() : base("Bulk Up", Element.Neutral, 10, 20, 15,"attack") { }
 
         public override void Use(Character attacker, Character receiver)
         {
@@ -25,7 +25,7 @@ namespace ASCIIFantasy
 
     public class RyuMonsho : Buff
     {
-        public RyuMonsho() : base("Ryu Monsho", Element.Neutral, 30, 50) { }
+        public RyuMonsho() : base("Ryu Monsho", Element.Neutral, 30, 50, 40, "attack") { }
 
         public override void Use(Character attacker, Character receiver)
         {
@@ -42,7 +42,7 @@ namespace ASCIIFantasy
 
     public class BookWorm : Buff
     {
-        public BookWorm() : base("BookWorm", Element.Neutral, 10, 20) { }
+        public BookWorm() : base("BookWorm", Element.Neutral, 10, 20, 15,"intelligence") { }
 
         public override void Use(Character attacker, Character receiver)
         {
@@ -59,7 +59,7 @@ namespace ASCIIFantasy
 
     public class Evasion : Buff
     {
-        public Evasion() : base("Evasion", Element.Neutral, 10, 15) { }
+        public Evasion() : base("Evasion", Element.Neutral, 10, 15, 15, "agility") { }
 
         public override void Use(Character attacker, Character receiver)
         {
@@ -76,7 +76,7 @@ namespace ASCIIFantasy
 
     public class Luckier : Buff
     {
-        public Luckier() : base("Luckier", Element.Neutral, 5, 10) { }
+        public Luckier() : base("Luckier", Element.Neutral, 5, 10, 15, "luck") { }
 
         public override void Use(Character attacker, Character receiver)
         {

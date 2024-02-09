@@ -8,27 +8,68 @@ namespace ASCIIFantasy
 {
     public class Fireball : Spell
     { 
-        public Fireball() : base("Fireball",Element.Fire,5,7) { }
+        public Fireball() : base("Fireball",Element.Fire,5,10,10) { }
 
         public override void Use(Character attacker, Character receiver)
         {
             base.Use(attacker, receiver);
         }
 
-        public override int DamageCalculation(Character attacker, Character receiver)
-        {
-
-            int tmpDamage = rnd.Next(attacker.stats.intelligence+1) + power;
-            if(receiver.GetElement() == Element.Grass )
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(" It's super effective !");
-                Console.ResetColor();
-                tmpDamage *= 2;
-            }
-            return tmpDamage;
-        }
     }
 
+    public class VineWhip : Spell
+    {
+        public VineWhip() : base("Vine Whip", Element.Grass, 5, 10, 10) { }
+
+        public override void Use(Character attacker, Character receiver)
+        {
+            base.Use(attacker, receiver);
+        }
+
+    }
+
+    public class WaterGun : Spell
+    {
+        public WaterGun() : base("Water Gun", Element.Water, 5, 15, 10) { }
+
+        public override void Use(Character attacker, Character receiver)
+        {
+            base.Use(attacker, receiver);
+        }
+
+    }
+
+    public class LightBeam : Spell
+    {
+        public LightBeam() : base("Light Beam", Element.Light, 5, 10, 10) { }
+
+        public override void Use(Character attacker, Character receiver)
+        {
+            base.Use(attacker, receiver);
+        }
+
+    }
+
+    public class DarkBeam : Spell
+    {
+        public DarkBeam() : base("Dark Beam", Element.Dark, 5, 10, 10) { }
+
+        public override void Use(Character attacker, Character receiver)
+        {
+            base.Use(attacker, receiver);
+        }
+
+    }
+
+    public class EarthQuake : Spell
+    {
+        public EarthQuake() : base("EarthQuake", Element.Ground, 5, 10, 10) { }
+
+        public override void Use(Character attacker, Character receiver)
+        {
+            base.Use(attacker, receiver);
+        }
+
+    }
 
 }

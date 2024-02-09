@@ -21,9 +21,11 @@
             switch (type)
             {
                 case ItemType.HealthPotion:
+                    Console.WriteLine($" {character.name} used a Health Potion and recovered " + power + " points of health!");
                     character.stats.IncrementHealth(power);
                     break;
                 case ItemType.ManaPotion:
+                    Console.WriteLine($" {character.name} used a Mana Potion and recovered " + power + " points of mana!");
                     character.stats.IncrementMana(power);
                     break;
                 case ItemType.ItemBuff:

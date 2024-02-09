@@ -8,7 +8,7 @@ namespace ASCIIFantasy
 {
     public class Heal : Attack 
     {
-        public Heal(string name, Element element, int power, int cost) : base(name, element, power, cost)
+        public Heal(string name, Element element, int power, int cost, int level) : base(name, element, power, cost, level)
         {
             type = AttackType.Heal;
         }
@@ -124,22 +124,22 @@ namespace ASCIIFantasy
 
     public class SmallHeal : Heal
     {
-        public SmallHeal() : base("Small heal", Element.Neutral, 5, 5){}
+        public SmallHeal() : base("Small heal", Element.Neutral, 5, 5, 5){}
         
     }
 
     public class MediumHeal : Heal
     {
-        public MediumHeal() : base("Medium heal", Element.Neutral, 10, 10) { }
+        public MediumHeal() : base("Medium heal", Element.Neutral, 10, 10, 20) { }
     }
 
     public class BigHeal : Heal
     {
-        public BigHeal() : base("Big heal", Element.Neutral, 20, 20) { }
+        public BigHeal() : base("Big heal", Element.Neutral, 20, 20, 40) { }
     }
 
     public class MegaHeal : Heal
     {
-        public MegaHeal() : base("Mega heal", Element.Neutral, 40, 40) { }
+        public MegaHeal() : base("Mega heal", Element.Neutral, 40, 40, 65) { }
     }
 }

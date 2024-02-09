@@ -13,10 +13,11 @@ class Program
         Console.CursorVisible = false;
         MapArray.CreateInstance();
         Player.CreateInstance();
+        EnemyList.CreateInstance();
+        ListAttackGlobal.CreateInstance();
         Character character = new Character("Jean-Michel", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
-        Spell fireball = new Fireball();
         Player.instance.AddCharacter(character);
-        character.AddAttack(fireball);
+        character.AddAttack(ListAttackGlobal.instance.GetAttack(AttackType.Spell,"Fireball"));
         MapArray.instance.maps[99, 99] = new Map(width, height);
         MapArray.instance.activeMap =MapArray.instance.maps[99, 99];
         Menu mainMenu = new Menu(new string[] { "NEW GAME", "LOAD GAME", "EXIT" });

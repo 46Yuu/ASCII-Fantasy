@@ -6,14 +6,16 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace ASCIIFantasy
 {
     public class Combat
     {
         Player player;
-        EnemyList enemy;
+        Enemy enemy;
         List<Character> listCharacters = new();
+        Random rnd = new Random();
         int baseExp = 10;
 
         public Combat(Player _player,int levelCircle)
@@ -24,7 +26,7 @@ namespace ASCIIFantasy
             StartCombat();
         }
 
-        public Combat(Player _player, EnemyList _enemy)
+        public Combat(Player _player, Enemy _enemy)
         {
             player = _player;
             enemy = _enemy;
@@ -32,46 +34,72 @@ namespace ASCIIFantasy
             StartCombat();
         }
 
-        public Character CreateNewEnemy(int levelCircle)
+        public Enemy CreateNewEnemy(int levelCircle)
         {
             //faire une liste d'enemies possible
             Random rnd = new Random();
             int level = 0;
+            int indexEnemy = 0;
+            
             switch (levelCircle)
             {
                 case 0:
                     level = rnd.Next(1, 11);
+                    indexEnemy = rnd.Next(0, 5);
                     break;
                 case 1:
                     level = rnd.Next(11, 21);
+                    indexEnemy = rnd.Next(0, 5);
                     break;
                 case 2:
                     level = rnd.Next(21, 31);
+                    indexEnemy = rnd.Next(6, 11);
                     break;
                 case 3:
                     level = rnd.Next(31, 41);
+                    indexEnemy = rnd.Next(6, 11);
                     break;
                 case 4:
                     level = rnd.Next(41, 51);
+                    indexEnemy = rnd.Next(6, 11);
                     break;
                 case 5:
                     level = rnd.Next(51, 61);
+                    indexEnemy = rnd.Next(6, 11);
                     break;
                 case 6:
                     level = rnd.Next(61, 71);
+                    indexEnemy = rnd.Next(6, 11);
                     break;
                 case 7:
                     level = rnd.Next(71, 81);
+                    indexEnemy = 12;
                     break;
                 case 8:
                     level = rnd.Next(81, 91);
+                    indexEnemy = 12;
                     break;
                 case 9:
                     level = rnd.Next(91, 101);
+                    indexEnemy = 12;
                     break;
             }
-            Enemy enemy = new Character("Enemy", Element.Grass, 50, 50, 5, 5, 5, 5, 5);
+            Enemy enemy = EnemyList.instance.enemies.ElementAt(indexEnemy);
             enemy.stats.level = level;
+            int difficulty = 0;
+            if(enemy.stats.level>10 && enemy.stats.level<=31)
+            {
+                difficulty = 1;
+            }
+            else if(enemy.stats.level>35 && enemy.stats.level <= 80)
+            {
+                difficulty = 2;
+            }
+            else if(enemy.stats.level>81 && enemy.stats.level <= 100)
+            {
+                difficulty = 3;
+            }
+            enemy.difficultyLevel = difficulty;
             return enemy;
         }
 
@@ -344,48 +372,6 @@ namespace ASCIIFantasy
             }
         }
 
-        public int MenuItems(int turn)
-        {
-            List<string> spells = listCharacters[0].GetListSpells();
-            List<int> spellsCost = listCharacters[0].GetListCost();
-            int length = spells.Count;
-            string[] options = new string[length + 1];
-            options[0] = "Return";
-            int selectedIndex = 0;
-
-            for (int i = 0; i < length; i++)
-            {
-                options[i + 1] = (spells[i] + " , Cost : " + spellsCost[i] + "mana");
-            }
-            while (turn == 0)
-            {
-                DisplayPlayerChoice(turn, options, selectedIndex);
-
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
-                Console.Clear();
-
-                if (keyInfo.Key == ConsoleKey.Enter)
-                {
-                    (turn, selectedIndex) = SpellCharacterChoice(turn, selectedIndex, spells);
-                    if (selectedIndex == 0)
-                        break;
-                }
-                else
-                {
-                    switch (keyInfo.Key)
-                    {
-                        case ConsoleKey.UpArrow:
-                            selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
-                            break;
-                        case ConsoleKey.DownArrow:
-                            selectedIndex = (selectedIndex + 1) % options.Length;
-                            break;
-                    }
-                }
-            }
-            return turn;
-        }
-
         public void DisplayPlayerChoice(int turn, string[] options, int selectedIndex)
         {
             this.FieldSetup(turn);
@@ -425,7 +411,7 @@ namespace ASCIIFantasy
                     turn = ChangeCharacter(turn);
                     return turn;
                 case 4:
-                    //turn = Inventory(turn);
+                    turn = Player.instance.inventory.SelectInventoryItemToUse(turn,Player.instance);
                     return turn;
                 default:
                     Console.WriteLine(" Not a valid number");
@@ -470,24 +456,54 @@ namespace ASCIIFantasy
         {
             int choice = 0;
             Random rnd = new Random();
-            if (enemy.GetListSpells().Count == 0)
+            if (enemy.GetListSpells().Count == 0 || enemy.difficultyLevel == 0 || 
+                (enemy.stats.actual_mana < enemy.GetLowestSpellCost() && enemy.difficultyLevel >0))
             {
                 turn = MeleeAttack(turn);
                 return turn;
             }
-            choice = rnd.Next(1, 3);
-            switch (choice)
+            if (enemy.difficultyLevel >0) 
             {
-                case 1:
-                    turn = MeleeAttack(turn);
-                    return turn;
-                case 2:
-                    turn = SpellChoiceEnemy(turn);
-                    return turn;
-                default:
-                    Console.WriteLine(" Not a valid number");
-                    return turn;
+                choice = rnd.Next(1, 3);
+
+                if (enemy.difficultyLevel>2)
+                {
+                    if (Attack.IsElementalWeakness(enemy.GetAttack("Melee").element, listCharacters[0].element) &&
+                        enemy.stats.attack >= enemy.stats.intelligence)
+                    {
+                        if (enemy.HaveBuffAttacks() && enemy.GetLowestBuffCost() <= enemy.stats.actual_mana)
+                        {
+                            choice = 2;
+                        }
+                        else
+                        {
+                            choice = 1;
+                        }
+                    }
+                    else if (enemy.HaveEffectiveSpell(listCharacters[0].element) && enemy.GetLowestSpellCost() <= enemy.stats.actual_mana)
+                    {
+                        choice = 2;
+                    }
+                }
+
+                switch (choice)
+                {
+                    case 1:
+                        turn = MeleeAttack(turn);
+                        return turn;
+                    case 2:
+                        turn = SpellChoiceEnemy(turn);
+                        return turn;
+                    default:
+                        Console.WriteLine(" Not a valid number");
+                        return turn;
+                }
             }
+            else
+            {
+                return turn;
+            }
+            
         }
 
         public int SpellChoiceEnemy(int turn)
@@ -498,9 +514,58 @@ namespace ASCIIFantasy
             string spellTmp = "";
             spells = enemy.GetListSpells();
             spellsCost = enemy.GetListCost();
-            while (possibleChoice)
-            choixspell = rnd.Next(0, spells.Count);
-            spellTmp = spells[choixspell];
+            if(enemy.difficultyLevel >1)
+            {
+                bool goodChoice = false;
+                while (!goodChoice)
+                {
+                    choixspell = rnd.Next(0, spells.Count);
+                    spellTmp = spells[choixspell];
+                    Attack tmpToUse = enemy.GetAttack(spellTmp);
+
+                    if (tmpToUse.cost <= enemy.stats.actual_mana)
+                    {
+                        if (tmpToUse.type == AttackType.Buff)
+                        {
+                            if (enemy.difficultyLevel == 3)
+                            {
+                                Buff tmp = (Buff)tmpToUse;
+                                if ((tmp.statToBuff == "attack" && enemy.stats.attack >= enemy.stats.intelligence) ||
+                                    (tmp.statToBuff == "intelligence" && enemy.stats.attack < enemy.stats.intelligence))
+                                {
+                                    goodChoice = true;
+                                    break;
+                                }
+                                if (tmp.statToBuff != "attack" && tmp.statToBuff != "intelligence")
+                                {
+                                    goodChoice = true;
+                                    break;
+                                }
+                            }
+                            goodChoice = true;
+                            break;
+                        }
+
+                        else if (tmpToUse.type == AttackType.Spell && Attack.IsElementalWeakness(tmpToUse.element, listCharacters[0].element))
+                        {
+                            goodChoice = true;
+                            break;
+                        }
+                        else
+                        {
+                            if (tmpToUse.type == AttackType.Heal)
+                            {
+                                if (enemy.stats.actual_hp < enemy.stats.health / 2)
+                                {
+                                    goodChoice = true;
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
             //execution du sort;
             enemy.GetAttack(spellTmp).Use(enemy, listCharacters[0]);
             Console.WriteLine(" End of " + enemy.name + "'s turn");
@@ -548,6 +613,11 @@ namespace ASCIIFantasy
                 {
                     this.ChangeCharacter(turn, true);
                 }
+                foreach(Character p in player.listCharacters)
+                {
+                    p.stats.RegenMana();
+                }
+                enemy.stats.RegenMana();
 
             } while (stillCharactersAlive && (enemy.stats.actual_hp > 0));
             winner = (enemy.stats.actual_hp > 0 ? 1 : 0);

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -229,6 +231,10 @@ namespace ASCIIFantasy
             Console.WriteLine(" " + actual_mana + "/" + mana);
         }
 
+        public void RegenMana()
+        {
+            IncrementMana(mana / 30);
+        }
         public void StoreInitialStats()
         {
             initialStats["attack"] = attack;
@@ -253,12 +259,25 @@ namespace ASCIIFantasy
             experience += exp;
             if (experience >= experienceToNextLevel)
             {
-                level++;
-                Console.WriteLine($" You leveled up to level {level}!");
-                experience -= experienceToNextLevel;
-                int newExperienceToNextLevel = level * 200;
-                experienceToNextLevel = newExperienceToNextLevel;
+                LevelUp();
+               
             }
+        }
+
+        public void LevelUp()
+        {
+            level++;
+            Console.WriteLine($" You leveled up to level {level}!");
+            health += 50;
+            mana += 20;
+            attack += 5;
+            defense += 5;
+            intelligence += 5;
+            agility += 5;
+            luck += 5;
+            experience -= experienceToNextLevel;
+            int newExperienceToNextLevel = level * 200;
+            experienceToNextLevel = newExperienceToNextLevel;
         }
     }
 }
