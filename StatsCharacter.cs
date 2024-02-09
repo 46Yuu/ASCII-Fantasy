@@ -264,6 +264,7 @@ namespace ASCIIFantasy
 
         public void RestoreInitialStats()
         {
+            Debug.WriteLine($"{initialStats["attack"]}");
             attack = initialStats["attack"];
             defense = initialStats["defense"];
             intelligence = initialStats["intelligence"];

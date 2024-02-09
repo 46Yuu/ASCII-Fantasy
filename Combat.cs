@@ -24,6 +24,7 @@ namespace ASCIIFantasy
             listCharacters = player.listCharacters;
             enemy = CreateNewEnemy(levelCircle);
             Debug.WriteLine(enemy.stats.health);
+            listCharacters[0].stats.StoreInitialStats();
             StartCombat();
         }
 
@@ -32,6 +33,7 @@ namespace ASCIIFantasy
             player = _player;
             enemy = _enemy;
             listCharacters = player.listCharacters;
+            listCharacters[0].stats.StoreInitialStats();
             StartCombat();
         }
 
