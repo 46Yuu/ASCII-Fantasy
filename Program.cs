@@ -1,5 +1,6 @@
 ﻿using ASCIIFantasy;
 using System;
+using System.Diagnostics;
 using System.Numerics;
 using System.Xml.Linq;
 
@@ -7,6 +8,7 @@ class Program
 {
     public static int width = 120;
     public static int height = 28;
+    public static AltMenu altMenu = new AltMenu(new string[] { "RESUME GAME", "INVENTORY", "TEAM", "SAVE GAME", "MAIN MENU", "EXIT GAME" });
 
     static void Main()
     {
@@ -18,10 +20,9 @@ class Program
         Character character = new Character("Jean-Michel", Element.Neutral, 100, 100, 10, 10, 10, 10, 10);
         Player.instance.AddCharacter(character);
         character.AddAttack(ListAttackGlobal.instance.GetAttack(AttackType.Spell,"Fireball"));
-        MapArray.instance.maps[99, 99] = new Map(width, height);
-        MapArray.instance.activeMap =MapArray.instance.maps[99, 99];
+        MapArray.instance.maps[99][99] = new Map(width, height);
+        MapArray.instance.activeMap =MapArray.instance.maps[99][99];
         Menu mainMenu = new Menu(new string[] { "NEW GAME", "LOAD GAME", "EXIT" });
-
         while (true)
         {
             if (!MapArray.instance.activeMap.InDialogue)
@@ -41,7 +42,7 @@ class Program
                     }
                     else if (selectedOption == "LOAD GAME")
                     {
-                        // Faudra implémenter le chargement de partie ici
+                        ShowSaves();
                     }
                     else if (selectedOption == "EXIT")
                     {
@@ -71,8 +72,6 @@ class Program
 
     static void RunGame()
     {
-        AltMenu altMenu = new AltMenu(new string[] { "RESUME GAME", "INVENTORY", "TEAM", "SAVE GAME", "MAIN MENU", "EXIT GAME" });
-
         while (true)
         {
             MapArray.instance.activeMap.DisplayMap();
@@ -89,10 +88,10 @@ class Program
                     MapArray.instance.activeMap.MovePlayer(0, 1);
                     break;
                 case ConsoleKey.LeftArrow:
-                    MapArray.instance.activeMap.MovePlayer( -1, 0);
+                    MapArray.instance.activeMap.MovePlayer(-1, 0);
                     break;
                 case ConsoleKey.RightArrow:
-                    MapArray.instance.activeMap.MovePlayer( 1, 0);
+                    MapArray.instance.activeMap.MovePlayer(1, 0);
                     break;
                 case ConsoleKey.E:
                     if (MapArray.instance.activeMap.InteractWithNPC())
@@ -111,7 +110,70 @@ class Program
         }
     }
 
-    static bool ShowAltMenu(AltMenu altMenu, Player player)
+    static void ShowSaves()
+    {
+        string[] options = new string[4];
+        int selectedIndex = 0;
+        options[0] = "Return";
+        bool isChoiceDone = false;
+        for (int i = 1; i < 4; i++)
+        {
+            if (SaveList.saveList[i - 1] != null)
+            {
+                options[i] = "Save " + (i).ToString();
+            }
+            else
+            {
+                options[i] = "Empty Save";
+            }
+        }
+        while (!isChoiceDone)
+        {
+            Console.Clear();
+            for (int i = 0; i < 4; i++)
+            {
+                if (i == selectedIndex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(options[i]);
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine(options[i]);
+                }
+            }
+            ConsoleKeyInfo keyInfo = Console.ReadKey();
+            switch (keyInfo.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    if (selectedIndex > 0)
+                    {
+                        selectedIndex--;
+                    }
+                    break;
+                case ConsoleKey.DownArrow:
+                    if (selectedIndex < 3)
+                    {
+                        selectedIndex++;
+                    }
+                    break;
+                case ConsoleKey.Enter:
+                    if (selectedIndex == 0)
+                    {
+                        isChoiceDone = true;
+                    }
+                    else
+                    {
+                        Save.LoadData("Save" + (selectedIndex).ToString());
+                        isChoiceDone = true;
+                        RunGame();
+                    }
+                    break;
+            }
+        }
+    }
+    public static bool ShowAltMenu(AltMenu altMenu, Player player)
     {
         bool altMenuActive = true;
 
@@ -140,7 +202,7 @@ class Program
                 }
                 else if (selectedAltOption == "SAVE GAME")
                 {
-                    // Sauvegarde ici
+                    Save.SaveGame(0);
                 }
                 else if (selectedAltOption == "MAIN MENU")
                 {

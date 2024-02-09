@@ -7,20 +7,23 @@ namespace ASCIIFantasy
 {
     public class Player : Character
     {
-        public static Player instance;
+        public static Player instance { get; set; }
         public List<Character> listCharacters { get; set; }
-        public  int positionX;
-        public  int positionY;
+        public int positionX { get; set; }
+        public int positionY { get; set; }
 
-        public int mapIndexX = 0;
-        public int mapIndexY = 0;
-        public int[] mapGlobalIndex  = new int[2];
+        public int mapIndexX { get; set; }
+        public int mapIndexY { get; set; }
+        public int[] mapGlobalIndex { get; set; }
         public Inventory inventory { get; set; }
         int selectedCharacterIndex;
 
         public Player()
         {
             listCharacters = new();
+            mapIndexX = 0;
+            mapIndexY = 0;
+            mapGlobalIndex = new int[2];
             inventory = new();
             positionX = Program.width / 2;
             positionY = Program.height / 2;
@@ -59,11 +62,12 @@ namespace ASCIIFantasy
                 {
                     if (selectedIndex == 0)
                     {
-                        // isChoiceDone = true;
+                        isChoiceDone = true;
                         break;
                     }
                     else
                     {
+                        isChoiceDone = true;
                         selectedCharacterIndex = selectedIndex - 1;
                         SelectCharacterMenu(listCharacters[selectedIndex - 1]);
                     }
@@ -81,7 +85,7 @@ namespace ASCIIFantasy
                     }
                 }
             }
-            // renvoie au menu précédent
+            Program.ShowAltMenu(Program.altMenu, instance);
         }
 
         public void SelectCharacterMenu(Character _selected)
@@ -149,9 +153,8 @@ namespace ASCIIFantasy
                     switch (selectedIndex)
                     {
                         case 0:
+                            isChoiceDone = true;
                             SelectCharacter();
-                            break;
-                        case 6:
                             break;
                     }
                 }
