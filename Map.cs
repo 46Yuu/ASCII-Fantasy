@@ -125,10 +125,21 @@ public class Map
         {
             for (int i = 0; i < width; i++)
             {
-                Console.Write(mapTile[i][j]);
+                if (mapTile[i][j] == 'P')
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write(mapTile[i][j]);
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.Write(mapTile[i][j]);
+                }
             }
             Console.WriteLine();
         }
+        Console.WriteLine($" Zone : {Player.instance.mapGlobalIndex[0]} , {Player.instance.mapGlobalIndex[1]}\n");
+        Console.WriteLine(" Press E to interact with a npc '8' or a chest '='.");
     }
     public void DrawHouse1(int x, int y)
     {

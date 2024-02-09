@@ -256,6 +256,8 @@ namespace ASCIIFantasy
                     Console.WriteLine(_options[i] + "\n");
                 }
             }
+
+            Console.WriteLine($"\n\n Level: {_selected.stats.level}\n Exp: {_selected.stats.experience}/{_selected.stats.experienceToNextLevel}");
         }
 
 

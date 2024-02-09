@@ -60,19 +60,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\VICTOR0323\\.nuget\\packages\\": {}
+    "C:\\Users\\Tran Henri\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\VICTOR0323\\source\\repos\\46Yuu\\ASCII-Fantasy\\ASCIIFantasy.csproj",
+      "projectUniqueName": "D:\\Godot\\Projects\\ASCII-Fantasy\\ASCIIFantasy.csproj",
       "projectName": "ASCIIFantasy",
-      "projectPath": "C:\\Users\\VICTOR0323\\source\\repos\\46Yuu\\ASCII-Fantasy\\ASCIIFantasy.csproj",
-      "packagesPath": "C:\\Users\\VICTOR0323\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\VICTOR0323\\source\\repos\\46Yuu\\ASCII-Fantasy\\obj\\",
+      "projectPath": "D:\\Godot\\Projects\\ASCII-Fantasy\\ASCIIFantasy.csproj",
+      "packagesPath": "C:\\Users\\Tran Henri\\.nuget\\packages\\",
+      "outputPath": "D:\\Godot\\Projects\\ASCII-Fantasy\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\VICTOR0323\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Tran Henri\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

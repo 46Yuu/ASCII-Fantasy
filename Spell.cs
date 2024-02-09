@@ -28,7 +28,7 @@ namespace ASCIIFantasy
                 else if (crit)
                 {
                     damage *= 2;
-                    damage -= receiver.stats.defense;
+                    damage -= rnd.Next(receiver.stats.defense + 1);
                     if (damage < 0)
                         damage = 0;
                     receiver.stats.IncrementHealth(-damage);
@@ -38,7 +38,7 @@ namespace ASCIIFantasy
                 }
                 else
                 {
-                    damage -= receiver.stats.defense;
+                    damage -= rnd.Next(receiver.stats.defense + 1);
                     if (damage < 0)
                         damage = 0;
                     receiver.stats.IncrementHealth(-damage);

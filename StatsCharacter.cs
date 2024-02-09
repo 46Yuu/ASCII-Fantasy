@@ -282,6 +282,17 @@ namespace ASCIIFantasy
             }
         }
 
+        public void UpdateStatsList()
+        {
+            statsList[0] = health;
+            statsList[1] = mana;
+            statsList[2] = attack;
+            statsList[3] = defense;
+            statsList[4] = intelligence;
+            statsList[5] = agility;
+            statsList[6] = luck;
+        }
+
         public void LevelUp()
         {
             level++;
@@ -289,11 +300,12 @@ namespace ASCIIFantasy
             health += 50;
             mana += 20;
             attack += 5;
-            defense += 5;
+            defense += 1;
             intelligence += 5;
             agility += 5;
             luck += 5;
             experience -= experienceToNextLevel;
+            UpdateStatsList();
             int newExperienceToNextLevel = level * 200;
             experienceToNextLevel = newExperienceToNextLevel;
         }
