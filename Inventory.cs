@@ -191,8 +191,8 @@ namespace ASCIIFantasy
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(" > ");
             Console.WriteLine(options[0] + "\n");
-
-            while (true)
+            bool isChoiceDone = false;
+            while (!isChoiceDone)
             {
                 DisplayGearStats(_gearSelected);
 
@@ -201,7 +201,7 @@ namespace ASCIIFantasy
 
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    SelectGearToDisplay();
+                    isChoiceDone = true;
                 }
             }
         }
