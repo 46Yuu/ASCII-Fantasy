@@ -1,14 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "4rVmVtJ54+UD6KiW8sYuVGgJe8FHrVx/g0n4tkFUqYyKVOL7e9TNmCH1Y8mcude1cro8Kb5Fyn6z8p6iVJLdwg==",
+  "dgSpecHash": "KGLq60J8uYPNhZQAB3ZrDxMqK9+RCp9XtU+Y1uc1V+fiCj2sE2JAXaDOv2itkgPvA+MgqI6jq5w67aHq7OGYlw==",
   "success": true,
-  "projectFilePath": "D:\\Godot\\Projects\\ASCII-Fantasy\\ASCIIFantasy.csproj",
+  "projectFilePath": "C:\\Users\\htran\\Documents\\GitHub\\ASCII-Fantasy\\ASCIIFantasy.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Tran Henri\\.nuget\\packages\\nunit\\4.0.1\\nunit.4.0.1.nupkg.sha512",
-    "C:\\Users\\Tran Henri\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\Tran Henri\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\Tran Henri\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\Tran Henri\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.25\\microsoft.netcore.app.host.win-x64.6.0.25.nupkg.sha512"
+    "C:\\Users\\htran\\.nuget\\packages\\nunit\\4.0.1\\nunit.4.0.1.nupkg.sha512"
   ],
   "logs": []
 }
