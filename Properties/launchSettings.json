@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ASCIIFantasy": {
+      "commandName": "Project",
+      "workingDirectory": "D:\\Godot\\Projects\\ASCII-Fantasy"
+    }
+  }
+}

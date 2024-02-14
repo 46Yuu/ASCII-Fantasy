@@ -149,7 +149,7 @@ namespace ASCIIFantasy
             bool isChoiceDone = false;
             for (int i = 0; i < listItemInventory.Count; i++)
             {
-                options[i + 1] = listItemInventory[i].itemName;
+                options[i + 1] = ($"{listItemInventory[i].itemName} x{listItemInventory[i].numberItem}");
             }
             while (!isChoiceDone)
             {

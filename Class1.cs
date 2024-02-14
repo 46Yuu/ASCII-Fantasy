@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -51,6 +52,16 @@ namespace ASCIIFantasy
             {
                 Player.instance.inventory.AddItem(ItemList.instance.listItem[3], 10);
             }
+            bool leave = false;
+            do
+            {
+                Console.WriteLine("You found a chest! You got an item !");
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    leave = true;
+                }
+            } while (!leave);
         }
 
         static void LootGear()
@@ -73,6 +84,16 @@ namespace ASCIIFantasy
             {
                 Player.instance.inventory.AddGear(GearList.instance.listGear[17]);
             }
+            bool leave = false;
+            do
+            {
+                Console.WriteLine("You found a chest! You got a gear !");
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    leave = true;
+                }
+            } while (!leave);
 
         }
 
@@ -100,6 +121,16 @@ namespace ASCIIFantasy
                     Player.instance.AddAttack(ListAttackGlobal.instance.listAttackPhysical[loot]);
                     break;
             }
+            bool leave = false;
+            do
+            {
+                Console.WriteLine("You found a chest! You got a spell !");
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    leave = true;
+                }
+            } while (!leave);
         }
     }
 }

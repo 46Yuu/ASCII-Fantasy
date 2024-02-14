@@ -595,6 +595,11 @@ namespace ASCIIFantasy
                 if (turn == 0)
                 {
                     turn = this.ChoicePlayer(turn);
+                    foreach (Character p in player.listCharacters)
+                    {
+                        p.stats.RegenMana();
+                    }
+
                 }
                 else
                 {
@@ -602,6 +607,7 @@ namespace ASCIIFantasy
                         Console.Write("-");
                     Console.WriteLine();
                     turn = this.ChoiceEnemy(turn);
+                    enemy.stats.RegenMana();
                 }
                 stillCharactersAlive = false;
                 foreach (Character p in player.listCharacters)
@@ -616,11 +622,7 @@ namespace ASCIIFantasy
                 {
                     this.ChangeCharacter(turn, true);
                 }
-                foreach(Character p in player.listCharacters)
-                {
-                    p.stats.RegenMana();
-                }
-                enemy.stats.RegenMana();
+
 
             } while (stillCharactersAlive && (enemy.stats.actual_hp > 0));
             winner = (enemy.stats.actual_hp > 0 ? 1 : 0);

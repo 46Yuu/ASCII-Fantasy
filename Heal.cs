@@ -75,14 +75,14 @@ namespace ASCIIFantasy
                 if (crit)
                 {
                     value = value * 2;
-                    Console.WriteLine($" Lucky critical ! {listCharacters[0].name} healed {value} hp to {listCharacters[selectedIndex].name}!");
+                    Console.WriteLine($" Lucky critical ! {listCharacters[0].name} healed {value} hp to {listCharacters[selectedIndex-1].name}!");
                 }
                 else
                 {
-                    Console.WriteLine($" {listCharacters[0].name} healed {value} hp to {listCharacters[selectedIndex].name}");
+                    Console.WriteLine($" {listCharacters[0].name} healed {value} hp to {listCharacters[selectedIndex-1].name}");
                 }
                 listCharacters[0].stats.IncrementMana(-cost);
-                listCharacters[selectedIndex].stats.IncrementHealth(value);
+                listCharacters[selectedIndex-1].stats.IncrementHealth(value);
                 return (turn == 1 ? 0 : 1, selectedIndex);
             }
             else
