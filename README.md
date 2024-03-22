@@ -12,6 +12,7 @@ Jeu RPG sur terminal avec déplacement possible sur une carte générée aléato
 # Auteurs
 - Henri (46Yuu)
 - Victor (Draknut)
+- Camille  (Jehyann)
 
 # Setup
 - Ouvrir la solution ASCII-Fantasy.sln sur visual studio 2022
