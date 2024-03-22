@@ -1,12 +1,12 @@
 # ASCII-Fantasy
-Jeu RPG sur terminal avec déplacement possible sur une carte générée aléatoirement.
+Jeu RPG sur terminal avec dÃ©placement possible sur une carte gÃ©nÃ©rÃ©e alÃ©atoirement.
 
 # Images
-<img src="MarkdownFiles/image.png" width="80%">
+<img src="MarkdownFiles/image.png" width="50%">
 <img src="MarkdownFiles/image2.png" width="80%">
-<img src="MarkdownFiles/image3.png" width="80%">
+<img src="MarkdownFiles/image3.png" width="25%">
 <img src="MarkdownFiles/image4.png" width="80%">
-<img src="MarkdownFiles/image5.png" width="60%">
+<img src="MarkdownFiles/image5.png" width="50%">
 <img src="MarkdownFiles/image6.png" width="80%">
 
 # Auteurs
